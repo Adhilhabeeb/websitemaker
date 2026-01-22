@@ -9,15 +9,9 @@ app.on("ready", async () => {
             preload: getpathresolver()
         }
     });
-
-    
     poll(mainwidth);
-
-
-
-
     ipcMain.handle("getstaticdata", () => {
-        return { ram: 16, cpu: "applesilicon", os: "mac" };
+        return { ram: 8, cpu: "applesilicon", os: "mac" };
     });
     ipcMain.handle("sendsystemmodel", () => {
         return process.platform;

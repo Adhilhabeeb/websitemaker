@@ -3,7 +3,7 @@ import fs from "node:fs"
 import os from "node:os"
 import { BrowserWindow } from "electron"
 
-
+import  {sendwebcontentsrenderer} from'./utils/types.js'
 let int=500
 
    export  async function poll(browserw:BrowserWindow) {
@@ -14,6 +14,7 @@ let systemdetails={
         total:0,available:0,free:0
     }
 }
+
 
 //  systemdetails["storagdetails"]= await getdatadetsails()
     
@@ -26,7 +27,9 @@ let systemdetails={
 
   setInterval( ()=>{
     //. send realtie. data to renderer
-browserw.webContents.send("statsdata",systemdetails)
+// browserw.webContents.send("statsdata",systemdetails)
+sendwebcontentsrenderer("statsdata",browserw.webContents,systemdetails)
+
  //. send realtie. data to r
   },int)
 

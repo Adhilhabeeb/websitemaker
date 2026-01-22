@@ -1,18 +1,17 @@
 {
   "compilerOptions": {
+    "target": "ES2022",
+    "module": "NodeNext",
 
-    "target": "esnext",
-   
-    "module": "nodenext",
-    "skipLibCheck": true,
-
+    "rootDir": "./",
     "outDir": "../../disteletron",
-   
-    // "allowImportingTsExtensions": true,
-    "strict": true, 
-    // "noEmit": true,
-  
+
+    "strict": true,
+    "skipLibCheck": true
   },
-  
-  
+
+  "include": [
+    "./**/*.ts",
+    "./**/*.cts"
+  ]
 }

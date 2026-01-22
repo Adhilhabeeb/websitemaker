@@ -1,9 +1,9 @@
 import {  useEffect, useLayoutEffect, useState } from 'react'
- import  type {polltye} from "../utils/types"
+ import  type {polltye} from "./eletron/utils/types"
 import './App.css'
  declare global {
     
-    interface Window { electron: polltye  }
+    interface Window { adhil: polltye  }
 }
 
 
@@ -53,10 +53,8 @@ useLayoutEffect(() => {
 }
 
 
-window.electron.subscribestatics((data)=>{
 
-setdata(data)
-})
+  
 
 }, [])
 

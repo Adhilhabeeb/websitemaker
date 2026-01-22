@@ -1,5 +1,6 @@
 import osutils from "os-utils";
 import os from "node:os";
+import { sendwebcontentsrenderer } from './utils/types.js';
 let int = 500;
 export async function poll(browserw) {
     let systemdetails = {
@@ -15,14 +16,10 @@ export async function poll(browserw) {
     let systemspeci = staticdata();
     systemdetails = { ...systemdetails, ...systemspeci };
     setInterval(() => {
-
-
-
-    
+        //. send realtie. data to renderer
+        // browserw.webContents.send("statsdata",systemdetails)
+        sendwebcontentsrenderer("statsdata", browserw.webContents, systemdetails);
         //. send realtie. data to r
-        browserw.webContents.send("statsdata", systemdetails);
-        //. send realtie. data to r
-
     }, int);
     return systemdetails;
 }

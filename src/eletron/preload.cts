@@ -1,9 +1,12 @@
 
 
 import eletron from "electron";
+import {polltye,functionnames} from "./utils/types"
    type subscribestatics=(staic:any)=>void
-eletron.contextBridge.exposeInMainWorld("electron", {
-  subscribestatics: (callback: subscribestatics) => {
+
+
+let functionpass: polltye={
+  subscribestatics: (callback) => {
 
     // sendreltime  i renderer
     eletron.ipcRenderer.on("statsdata", (event: any, statics: any) => {
@@ -15,6 +18,18 @@ eletron.contextBridge.exposeInMainWorld("electron", {
 
   }, 
 
-  getstaticdata: () => eletron.ipcRenderer.invoke("getstaticdata"),
-  sendsystemmodel: () => eletron.ipcRenderer.invoke("sendsystemmodel")
-});
+  getstaticdata: () =>ipcrendererinvoke("getstaticdata"),
+  sendsystemmodel: () =>  ipcrendererinvoke("sendsystemmodel")
+  
+  
+}
+
+eletron.contextBridge.exposeInMainWorld("adhil", functionpass);
+
+
+
+
+
+function ipcrendererinvoke(params:functionnames) {
+  return    eletron.ipcRenderer.invoke(params)
+}

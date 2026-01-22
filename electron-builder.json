@@ -1,0 +1,17 @@
+{
+    "appId":"com.nzemin",
+    "files":["disteletron","distreactele"],
+    "extraResources":["disteletron/preload.cjs"],
+    "icon":"./png.png",
+    "mac":{
+        "target":"dmg"
+    },
+    "linux":{
+        "target":"AppImage",
+        "category":"Utility"
+    },
+    "win":{
+        "target":["portable","msi"]
+    }
+
+}

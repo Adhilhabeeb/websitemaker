@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+
+    "target": "esnext",
+   
+    "module": "nodenext",
+    "skipLibCheck": true,
+
+    "outDir": "../../disteletron",
+   
+    // "allowImportingTsExtensions": true,
+    "strict": true, 
+    // "noEmit": true,
+  
+  },
+  
+  
+}

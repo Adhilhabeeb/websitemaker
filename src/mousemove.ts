@@ -11,6 +11,8 @@ import { useRef } from "react";
 // Posted by slebetman, modified by community. See post 'Timeline' for change history
 // Retrieved 2026-01-29, License - CC BY-SA 3.0
 let oldhrs=useRef< HTMLDivElement[] | undefined>(null)
+let oldtobtm=useRef< HTMLDivElement[] | undefined>(null)
+
 function get (el:any) {
   if (typeof el == 'string') return document.getElementById(el);
 
@@ -75,8 +77,8 @@ oldobj=objset
 setar.delete(JSON.stringify(oldobj))
 // console.log("older:",oldobj)
 oldobj=objset
-console.log("neww:",objset)
-console.log("afterchange olderr:",oldobj)
+// console.log("neww:",objset)
+// console.log("afterchange olderr:",oldobj)
 setar.add(JSON.stringify(objset))
 
 
@@ -107,7 +109,7 @@ if (   Math.abs(leftdiffeernce) <10 ) {
   if (objset.name!=parsed.name  ) {
     
   
-  console.log(parsed.name,"is main elem:")
+  // console.log(parsed.name,"is main elem:")
  
 //  console.log(borel,"is borell")
 if (!borel)  return;
@@ -135,13 +137,28 @@ leftlines.forEach(el=>{
 }else{
   if (objset.name!=parsed.name) {
 const parele = document.getElementById(parsed.name);
-console.log("illllllllllaaaaaaa",parsed.name,"isb",setar)
+// console.log("illllllllllaaaaaaa",parsed.name,"isb",setar)
     
   }
 }
+//checking top
+if ( Math.abs(topdiffeernce) <10 ) {
+   if (objset.name!=parsed.name  ) {
+console.log("near the ",parsed.name,parele,"is elem")
+if (!borel)  return;
 
+let topbtmelem=[borel[0],borel[1]]
+oldtobtm.current?.forEach(el=>{
+  el.style.display="none"
+})
+oldtobtm.current=topbtmelem
+topbtmelem.forEach(el=>{
+  el.style.display="block"
+})
 
-console.log(parsed,"iss spopoipoipipip")
+   }
+}
+// console.log(parsed,"iss spopoipoipipip")
   // console.log("left:",left,"top",top,"is teh objectleft",objleft,"objtop",objtop,"andd.  left =dioference",Math.abs(leftdiffeernce),"and topdiffrenee:",Math.abs(topdiffeernce))
  
  })
@@ -224,14 +241,19 @@ hr4.style.left=(parseInt(element.style.width)+3)+"px"
         hr3.style.display="none"
         hr4.style.display="none"
 
-        console.log(oldhrs,"is solldlhrsss")
+     
      
 oldhrs.current?.forEach(el=>{
-console.log(el,"iisisisiisellkll")
+// console.log(el,"iisisisiisellkll")
 el.style.display="none"
 })
-
+oldtobtm.current?.forEach(el=>{
+// console.log(el,"iisisisiisellkll")
+el.style.display="none"
+})
 oldhrs.current=null
+oldtobtm.current=null
+
 
 
       drag=false;      

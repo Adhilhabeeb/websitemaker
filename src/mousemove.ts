@@ -10,7 +10,7 @@ import { useRef } from "react";
 // Source - https://stackoverflow.com/a
 // Posted by slebetman, modified by community. See post 'Timeline' for change history
 // Retrieved 2026-01-29, License - CC BY-SA 3.0
-let oldhrs=useRef< NodeListOf<HTMLDivElement> | undefined>(null)
+let oldhrs=useRef< HTMLDivElement[] | undefined>(null)
 function get (el:any) {
   if (typeof el == 'string') return document.getElementById(el);
 
@@ -42,7 +42,7 @@ function mouseY (e:MouseEvent) {
   return null;
 }
 
-function dragable (clickEl:HTMLElement,dragEl:HTMLElement,hr:HTMLElement,hr2:HTMLElement,hr3:HTMLElement,hr4:HTMLElement,setar:Set<any>) {
+function dragable (clickEl:HTMLElement,dragEl:HTMLElement,hr:HTMLElement,hr2:HTMLElement,hr3:HTMLElement,hr4:HTMLElement,setar:Set<any>,element:HTMLElement) {
   var p:HTMLElement = get(clickEl);
   var t :HTMLElement= get(dragEl);
   var hr:HTMLElement=get(hr)
@@ -54,6 +54,7 @@ function dragable (clickEl:HTMLElement,dragEl:HTMLElement,hr:HTMLElement,hr2:HTM
   if (t) {
     let oldobj:any;
     var move = function (x:any,y:any) {
+      // console.log(p,"isss pp")
     let objset={
   name:p.dataset.name,
   left:p.style.left,
@@ -62,6 +63,7 @@ function dragable (clickEl:HTMLElement,dragEl:HTMLElement,hr:HTMLElement,hr2:HTM
   bottom:p.style.bottom
 }
 
+// console.log(objset,"is objsetttt")
 if (setar.has(JSON.stringify(objset))) {
 
 // console.log("ond")
@@ -73,8 +75,8 @@ oldobj=objset
 setar.delete(JSON.stringify(oldobj))
 // console.log("older:",oldobj)
 oldobj=objset
-// console.log("neww:",objset)
-// console.log("afterchange olderr:",oldobj)
+console.log("neww:",objset)
+console.log("afterchange olderr:",oldobj)
 setar.add(JSON.stringify(objset))
 
 
@@ -86,6 +88,7 @@ setar.add(JSON.stringify(objset))
 if (setar.size>0) {
  setar.forEach((el,i)=>{
 let parsed=JSON.parse(el)
+// console.log(parsed,"is parsed")
 let left=parseInt(parsed.left)
 let top=parseInt(parsed.top)
 let objleft=parseInt(objset.left)
@@ -95,55 +98,68 @@ let objtop=parseInt(objset.top)
 let leftdiffeernce=left-objleft
 
 let topdiffeernce=top-objtop
-
-console.log("/////////////////////////////////////////////////////////////////////////////////",i,"///////////////////////////////////////////////////////////////////")
-if (  objset.name!=parsed.name  && Math.abs(leftdiffeernce) <10 ) {
-  // console.log(parsed.name,"is main elem:")
-  const parele = document.getElementById(parsed.name);
+// console.log(parsed.name,"is parsed name ")
+let parsedname=parsed.name
+ const parele = document.getElementById(parsed.name);
+  // console.log(parele,"isss parl;eeee")
  let borel= parele?.querySelectorAll(`div`)
+if (   Math.abs(leftdiffeernce) <10 ) {
+  if (objset.name!=parsed.name  ) {
+    
+  
+  console.log(parsed.name,"is main elem:")
+ 
+//  console.log(borel,"is borell")
 if (!borel)  return;
 let leftlines=[borel[2],borel[3]]
-
-
-if (drag) {
+// console.log(leftlines,"is leftlinessss")
 oldhrs.current?.forEach(el=>{
   el.style.display="none"
 })
- console.log("recalled,",borel,parsed.name,"is nmain",oldhrs)
- leftlines.forEach(el=>el.style.display="block")
-  oldhrs.current= borel
-}else{
 
-  // console.log("illllllllll;l;;lllklklkklklklklkllklklklklklkllalakaa")
- borel?.forEach(el=>el.style.display="none")
+oldhrs.current=leftlines
+leftlines.forEach(el=>{
+  el.style.display="block"
+})
 
-}
+
+//  console.log("recalled,",borel,parsed.name,"is nmain",oldhrs)
+//  leftlines.forEach(el=>el.style.display="block")
+//   oldhrs.current= leftlines
+
 
 //  console.log(drag,"is draggg")
 //   console.log(parele,"is parent",borel)
 //   console.log(objset.name,"is child")
-
+}
 }else{
-
+  if (objset.name!=parsed.name) {
+const parele = document.getElementById(parsed.name);
+console.log("illllllllllaaaaaaa",parsed.name,"isb",setar)
+    
+  }
 }
 
 
+console.log(parsed,"iss spopoipoipipip")
   // console.log("left:",left,"top",top,"is teh objectleft",objleft,"objtop",objtop,"andd.  left =dioference",Math.abs(leftdiffeernce),"and topdiffrenee:",Math.abs(topdiffeernce))
-  console.log("*******************************************************************************************************************************************************************************")
+ 
  })
 }
+
+
         // console.log("moving",t,"pos",x,
         //     "ammd",y
         // )
     //  console.log(t.style.left,"is left",(parseInt(t.style.left)+x))
 
-    //    t.style.left = (parseInt(t.style.left)+x) + "px";
+      //  t.style.left = (parseInt(t.style.left)+x) + "px";
     //   t.style.top  = (parseInt(t.style.top) +y) + "px";
     //  console.log(t.style.left,"is left",x + "px","inn",document.documentElement.clientWidth)
 // console.log(window.innerWidth)
 // let lefgtmove= x>document.documentElement.clientWidth-parseInt(t.style.width)?x-(parseInt(t.style.width))+"px":x+"px"
    
-     if (x<document.documentElement.clientWidth-parseInt(t.style.width)&& y<document.documentElement.clientHeight) {
+     if (x<document.documentElement.clientWidth-parseInt(element.style.width)&& y<document.documentElement.clientHeight) {
           t.style.left =x+"px"
           t.style.top =y+"px"
 
@@ -151,12 +167,12 @@ oldhrs.current?.forEach(el=>{
 hr.style.top="-4px"
 hr.style.left=-(parseInt(hr.style.width)/2)+"px"
 //hr2
-hr2.style.top=parseInt(t.style.height)+"px"
+hr2.style.top=parseInt(element.style.height)+"px"
 hr2.style.left=-(parseInt(hr.style.width)/2)+"px"
 
 hr3.style.top=-(parseInt(hr3.style.height)/2)+"px"
 hr4.style.top=-(parseInt(hr4.style.height)/2)+"px"
-hr4.style.left=(parseInt(t.style.width)+3)+"px"
+hr4.style.left=(parseInt(element.style.width)+3)+"px"
 
 
      }
@@ -215,6 +231,7 @@ console.log(el,"iisisisiisellkll")
 el.style.display="none"
 })
 
+oldhrs.current=null
 
 
       drag=false;      

@@ -1,21 +1,21 @@
 import osutils from "os-utils";
+// import fs from "node:fs"
 import os from "node:os";
 import { sendwebcontentsrenderer } from './utils/types.js';
 let int = 500;
+let systemdetails = {
+    cpuusegae: 0,
+    cpuufree: 0,
+    os: "", ram: 1
+};
 export async function poll(browserw) {
-    let systemdetails = {
-        cpuusegae: 0,
-        cpuufree: 0,
-        storagdetails: {
-            total: 0, available: 0, free: 0
-        }
-    };
     //  systemdetails["storagdetails"]= await getdatadetsails()
-    systemdetails["cpuusegae"] = await gpuuseage();
     systemdetails["cpuufree"] = getfree();
     let systemspeci = staticdata();
     systemdetails = { ...systemdetails, ...systemspeci };
-    setInterval(() => {
+    // type  jj=typeof systemdetails
+    setInterval(async () => {
+        systemdetails["cpuusegae"] = await gpuuseage();
         //. send realtie. data to renderer
         // browserw.webContents.send("statsdata",systemdetails)
         sendwebcontentsrenderer("statsdata", browserw.webContents, systemdetails);
@@ -29,21 +29,22 @@ function staticdata() {
     console.log(ooss, "andd", osutils.totalmem() / 1024);
 }
 function gpuuseage() {
-    return new Promise((res, rej) => {
+    return new Promise((res) => {
         osutils.cpuUsage(res);
+        // console.log(`Current CPU usage: ${process.getCPUUsage()}%`);
     });
 }
-function getcpufree() {
-    return new Promise((res, rej) => {
-        osutils.cpuFree(res);
-    });
-}
+// function getcpufree() {
+//     return new Promise((res,rej)=>{
+//         osutils.cpuFree(res)
+//     })
+// }
 function getfree() {
     return osutils.freememPercentage();
 }
-async function getdatadetsails() {
-    // 1 kilobyte = 1024 bytes, 1 megabyte = 1024 kilobytes, 1 gigabyte = 1024 megabytes,
-    //  let { available , free, total } =await disk.check(process.platform=="win32"?'C://':'/')
-    //    console.log(Math.floor(total/1_000_000_000),"is totao",free /1_000_000_000,"ava:",available /1_000_000_000)
-    // return  {available,free,total}
-}
+//  async function getdatadetsails() {
+// // 1 kilobyte = 1024 bytes, 1 megabyte = 1024 kilobytes, 1 gigabyte = 1024 megabytes,
+// //  let { available , free, total } =await disk.check(process.platform=="win32"?'C://':'/')
+// //    console.log(Math.floor(total/1_000_000_000),"is totao",free /1_000_000_000,"ava:",available /1_000_000_000)
+// // return  {available,free,total}
+// }

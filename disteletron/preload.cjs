@@ -6,12 +6,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const electron_1 = __importDefault(require("electron"));
 let functionpass = {
     subscribestatics: (callback) => {
-        // sendreltime  i renderer
-        electron_1.default.ipcRenderer.on("statsdata", (event, statics) => {
+        let fun = (event, statics) => {
             // console.log("sending data to callback ",statics)
+            // console.log(callback,"kk",statics)
             callback(statics);
-        });
-        //. send realtie. data to r
+        };
+        // sendreltime  i renderer
+        electron_1.default.ipcRenderer.on("statsdata", fun); //. send realtie. data to r
+        return () => electron_1.default.ipcRenderer.off("statsdata", fun);
     },
     getstaticdata: () => ipcrendererinvoke("getstaticdata"),
     sendsystemmodel: () => ipcrendererinvoke("sendsystemmodel")

@@ -1,6 +1,7 @@
 import {   useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
- import  type {polltye} from "./eletron/utils/types"
+ import  type {polltye,sendingmenu} from "./eletron/utils/types"
 import './App.css'
+
 
 import Chartt from './Chart';
 import type { systemdetatype } from './eletron/poll';
@@ -24,7 +25,7 @@ import DragableBox from './Dragable';
 let lengh=10
 
 function App() {
-
+const [cou, setcou] = useState(0)
   let vedioref=useRef<HTMLVideoElement >(null)
   let video=vedioref.current
   // console.log("app renered")
@@ -33,6 +34,7 @@ function App() {
   const [system, setsystem] = useState<systemdetatype[]>([])
   // const [dounceva, setdounceva] = useState<any>("")
   const [count, setCount] = useState<number>(0)
+  const [seletedoption, setseletedoption] = useState<sendingmenu>()
   // const [data, setdata] = useState<unknown>()
   const [chargingstatus, setchargingstatus] = useState({
     charging:"not",
@@ -46,55 +48,56 @@ let handleclick=useCallback(()=>{
         // console.log("clidked",count)
       },[])
 
+
+
  useEffect(() => {
-   let datenw=Date.now()
-
-let check=datenw-lastalue.current
-if (check >800) {
-  // console.log("chek",check)
-  lastalue.current=datenw;
   
-}
+let ipcoff=window.adhil.sendmenuselected(
+
+{data:count,callbackj:(dsata)=>{
+  setseletedoption(dsata)
+console.log(dsata,"is dsdatatattatatatata")
+}}
 
 
-
-
+)
  
- }, [value])
+return ipcoff
+ }, [count])
  
 // Source - https://stackoverflow.com/a
 // Posted by Anwar, modified by community. See post 'Timeline' for change history
 // Retrieved 2026-01-20, License - CC BY-SA 4.0
 useLayoutEffect(() => {
-  if ('getBattery' in navigator) {
+//   if ('getBattery' in navigator) {
 
-   (navigator as any).getBattery().then(function(battery:any
+//    (navigator as any).getBattery().then(function(battery:any
 
-    ) {
-      // console.log(battery,"is battery") 
-        function updateBatteryStatus() {
-            // Get the battery percentage (value between 0.0 and 1.0)
-            const percentage = battery.level * 100;
-            // console.log(`Battery Level: ${percentage.toFixed(0)}%`);
+//     ) {
+//       // console.log(battery,"is battery") 
+//         function updateBatteryStatus() {
+//             // Get the battery percentage (value between 0.0 and 1.0)
+//             const percentage = battery.level * 100;
+//             // console.log(`Battery Level: ${percentage.toFixed(0)}%`);
       
-            // Check charging status
-            const charging = battery.charging ? 'Charging' : 'Not Charging';
-            // console.log(`Status: ${charging}`);
-            setchargingstatus({
-              percentage,charging
-            })
-        }
+//             // Check charging status
+//             const charging = battery.charging ? 'Charging' : 'Not Charging';
+//             // console.log(`Status: ${charging}`);
+//             setchargingstatus({
+//               percentage,charging
+//             })
+//         }
 
-        // Initial update
-        updateBatteryStatus();
+//         // Initial update
+//         updateBatteryStatus();
 
-        // Add event listeners to monitor changes
-        battery.addEventListener('levelchange', updateBatteryStatus);
-        battery.addEventListener('chargingchange', updateBatteryStatus);
-    });
-} else {
-    // console.log("Battery Status API not supported in this browser.");
-}
+//         // Add event listeners to monitor changes
+//         battery.addEventListener('levelchange', updateBatteryStatus);
+//         battery.addEventListener('chargingchange', updateBatteryStatus);
+//     });
+// } else {
+//     // console.log("Battery Status API not supported in this browser.");
+// }
 
 // function add(pa: Function) {
 //   let i = 0;
@@ -106,8 +109,20 @@ useLayoutEffect(() => {
 //   };
 // }
 // console.log("is called")
+ async function name() {
+  console.log(await  window.adhil.sendsystemmodel(),"is from model")
+  setTimeout( async () => {
+  console.log(await  window.adhil.sendsystemmodel(),"is from model in timeout")
+    
+  }, 10000);
+}
+name()
+  
 
-return  window.adhil.subscribestatics((f)=>{
+
+
+
+  return  window.adhil.subscribestatics((f)=>{
 
   valuesent.current=f
 setsystem((prev)=>{
@@ -123,6 +138,9 @@ return da
  
 
 })
+
+
+
 }, [])
 
 
@@ -136,7 +154,7 @@ return da
 
       <div className="card"> 
     <DragableBox/>
-         Battery percentage      {chargingstatus.percentage} <br/>
+        seleccted:{seletedoption}  Battery percentage      {chargingstatus.percentage} <br/>
         <button onClick={() => {
 handleclick()
            navigator.mediaDevices.getDisplayMedia({
@@ -162,8 +180,10 @@ handleclick()
 
 
         </button>
-        <button >
-
+        <button onClick={()=>{
+          setCount(count+1)
+        }} >
+   jjjjjjjjjj
    {chargingstatus.charging}
 
         </button>

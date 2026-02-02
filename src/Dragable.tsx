@@ -1,11 +1,14 @@
-import { useMemo, useRef, useState } from 'react'
+import { memo, useCallback, useMemo, useRef, useState } from 'react'
 import Draggable from 'react-draggable'
 import { usemouse } from './mousemove'
 interface dragboxprop{
   checkedasmobile:boolean
 }
 
-function DragableBox({checkedasmobile}:dragboxprop) {
+function DragableBox(props:any) {
+
+let {checkedasmobile}=props
+// console.log(props,"is yyyy")
   let countref=useRef(0)
   const [setaray, setsetaray] = useState(new Set())
   let ref=useRef<HTMLDivElement >(null)
@@ -33,7 +36,7 @@ return {buttonlap,buttonmob}
 },[])
 
 let move=usemouse({buttonlap,buttonmob,checkedasmobile})
-console.log("mouse",)
+// console.log(move,"is move")
   function addbbutton(ele="input") {
     countref.current++
     // setaray.add(JSON.stringify({name:"adhil"}))
@@ -44,11 +47,11 @@ console.log("mouse",)
     // )
 
 let button=document.createElement(ele)
-console.log(button,"is el;eem t")
+// console.log(button,"is el;eem t")
 button.style.width = "100px";
 button.style.height = "30px";
 
-console.log(countref.current,"ius refcount")
+// console.log(countref.current,"ius refcount")
 // button.id=ele+countref.current.toString()
 // button.dataset.name=ele+countref.current.toString()
 
@@ -121,7 +124,7 @@ div.style.top = "0px";
 div.append(hr,hr2,hr3,hr4,button)
 document.body.appendChild(div)
 
-move(div,div,hr,hr2,hr3,hr4,setaray,button)
+move(div,div,hr,hr2,hr3,hr4,setaray,button,checkedasmobile)
 
   }
   function DraggableEventHandler(e:any,data:any) {
@@ -153,4 +156,6 @@ defaultClassNameDragging='isdragging'
   )
 }
 
-export default DragableBox
+
+
+export default  memo(DragableBox)

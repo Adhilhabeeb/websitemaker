@@ -37,6 +37,7 @@ const [cou, setcou] = useState(0)
 let checkmobileinput=useRef <HTMLInputElement>(null)
   let vedioref=useRef<HTMLVideoElement >(null)
   let video=vedioref.current
+  const [checkedasmobile, setcheckedasmobile] = useState(false)
   // console.log("app renered")
   const [value, setvalue] = useState("")
   let valuesent=useRef<systemdetatype >(null)
@@ -52,7 +53,7 @@ let checkmobileinput=useRef <HTMLInputElement>(null)
 
   })  ;
   let  lastalue=useRef(0)
-let checkedasmobile=false
+
 let handleclick=useCallback(()=>{
   setCount(count+1)
         // console.log("clidked",count)
@@ -82,50 +83,8 @@ return ipcoff
 // Retrieved 2026-01-20, License - CC BY-SA 4.0
 useLayoutEffect(() => {
 
- checkmobileinput.current?.addEventListener("change",()=>{
-checkedasmobile= !checkedasmobile
 
- })
-//   if ('getBattery' in navigator) {
 
-//    (navigator as any).getBattery().then(function(battery:any
-
-//     ) {
-//       // console.log(battery,"is battery") 
-//         function updateBatteryStatus() {
-//             // Get the battery percentage (value between 0.0 and 1.0)
-//             const percentage = battery.level * 100;
-//             // console.log(`Battery Level: ${percentage.toFixed(0)}%`);
-      
-//             // Check charging status
-//             const charging = battery.charging ? 'Charging' : 'Not Charging';
-//             // console.log(`Status: ${charging}`);
-//             setchargingstatus({
-//               percentage,charging
-//             })
-//         }
-
-//         // Initial update
-//         updateBatteryStatus();
-
-//         // Add event listeners to monitor changes
-//         battery.addEventListener('levelchange', updateBatteryStatus);
-//         battery.addEventListener('chargingchange', updateBatteryStatus);
-//     });
-// } else {
-//     // console.log("Battery Status API not supported in this browser.");
-// }
-
-// function add(pa: Function) {
-//   let i = 0;
-//   return (b: any) => {
-//     i = b;
-//     return pa((z: any) => {
-//       return i * z;
-//     });
-//   };
-// }
-// console.log("is called")
  async function name() {
   console.log(await  window.adhil.sendsystemmodel(),"is from model")
   setTimeout( async () => {
@@ -177,9 +136,9 @@ return da
       
 
       <div className="card"> 
-<input type="checkbox" id="myCheckbox" ref={checkmobileinput} ></input> is mobile
+<input type="checkbox" id="myCheckbox" ref={checkmobileinput}  onChange={()=>setcheckedasmobile(!checkedasmobile)} ></input> is mobile
        {detectMob()?"ann":"alla"}
-    <DragableBox  checkedasmobile/>
+    <DragableBox  checkedasmobile={checkedasmobile}/>
         seleccted:{seletedoption}  Battery percentage      {chargingstatus.percentage} <br/>
         <button onClick={() => {
 handleclick()

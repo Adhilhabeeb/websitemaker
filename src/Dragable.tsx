@@ -1,13 +1,38 @@
-import { useRef, useState } from 'react'
+import { useMemo, useRef, useState } from 'react'
 import Draggable from 'react-draggable'
 import { usemouse } from './mousemove'
+interface dragboxprop{
+  checkedasmobile:boolean
+}
 
-function DragableBox() {
+function DragableBox({checkedasmobile}:dragboxprop) {
   let countref=useRef(0)
   const [setaray, setsetaray] = useState(new Set())
   let ref=useRef<HTMLDivElement >(null)
   
-let move=usemouse()
+let {buttonlap,buttonmob}=useMemo(()=>{
+  let buttonmob=document.createElement("button")
+  buttonmob.style.width="100px"
+  buttonmob.style.height="40px"
+buttonmob.innerText="btnmob"
+buttonmob.style.border="1px solid black"
+  buttonmob.style.position="absolute"
+  buttonmob.style.left="3%"
+  buttonmob.style.top="0%"
+document.body.appendChild(buttonmob)
+  let buttonlap=document.createElement("button")
+  buttonlap.style.width="393px"
+  buttonlap.style.height="30px"
+buttonlap.innerText="btnlapp"
+buttonlap.style.border="1px solid black"
+  buttonlap.style.position="absolute"
+  buttonlap.style.left="0%"
+  buttonlap.style.top="4%"
+document.body.appendChild(buttonlap)
+return {buttonlap,buttonmob}
+},[])
+
+let move=usemouse({buttonlap,buttonmob,checkedasmobile})
 console.log("mouse",)
   function addbbutton(ele="input") {
     countref.current++

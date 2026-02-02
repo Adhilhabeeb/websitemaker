@@ -12,6 +12,13 @@ import DragableBox from './Dragable';
     interface Window { adhil: polltye  }
 }
 
+// Source - https://stackoverflow.com/a/11381730
+// Posted by Michael Zaporozhets, modified by community. See post 'Timeline' for change history
+// Retrieved 2026-02-02, License - CC BY-SA 4.0
+
+  function detectMob() {
+    return ( ( window.innerWidth <= 800 ) && ( window.innerHeight <= 600 ) );
+  }
 
 // function add(pa: Function) {
 //   let i = 0;
@@ -25,7 +32,9 @@ import DragableBox from './Dragable';
 let lengh=10
 
 function App() {
+ 
 const [cou, setcou] = useState(0)
+let checkmobileinput=useRef <HTMLInputElement>(null)
   let vedioref=useRef<HTMLVideoElement >(null)
   let video=vedioref.current
   // console.log("app renered")
@@ -34,6 +43,7 @@ const [cou, setcou] = useState(0)
   const [system, setsystem] = useState<systemdetatype[]>([])
   // const [dounceva, setdounceva] = useState<any>("")
   const [count, setCount] = useState<number>(0)
+
   const [seletedoption, setseletedoption] = useState<sendingmenu>()
   // const [data, setdata] = useState<unknown>()
   const [chargingstatus, setchargingstatus] = useState({
@@ -42,7 +52,7 @@ const [cou, setcou] = useState(0)
 
   })  ;
   let  lastalue=useRef(0)
-
+let checkedasmobile=false
 let handleclick=useCallback(()=>{
   setCount(count+1)
         // console.log("clidked",count)
@@ -71,6 +81,11 @@ return ipcoff
 // Posted by Anwar, modified by community. See post 'Timeline' for change history
 // Retrieved 2026-01-20, License - CC BY-SA 4.0
 useLayoutEffect(() => {
+
+ checkmobileinput.current?.addEventListener("change",()=>{
+checkedasmobile= !checkedasmobile
+
+ })
 //   if ('getBattery' in navigator) {
 
 //    (navigator as any).getBattery().then(function(battery:any
@@ -162,7 +177,9 @@ return da
       
 
       <div className="card"> 
-    <DragableBox/>
+<input type="checkbox" id="myCheckbox" ref={checkmobileinput} ></input> is mobile
+       {detectMob()?"ann":"alla"}
+    <DragableBox  checkedasmobile/>
         seleccted:{seletedoption}  Battery percentage      {chargingstatus.percentage} <br/>
         <button onClick={() => {
 handleclick()

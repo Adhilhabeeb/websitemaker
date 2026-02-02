@@ -1,6 +1,11 @@
-import { useRef } from "react";
+import { useMemo, useRef } from "react";
+import {isMobile} from "react-device-detect"
+ export function usemouse({buttonlap,buttonmob,checkedasmobile}:{
+  buttonlap:HTMLDivElement,buttonmob:HTMLDivElement,checkedasmobile:boolean
+ }|any) {
+ 
 
- export function usemouse() {
+
     // Source - https://stackoverflow.com/a
 // Posted by slebetman, modified by community. See post 'Timeline' for change history
 // Retrieved 2026-01-29, License - CC BY-SA 3.0
@@ -67,6 +72,11 @@ function dragable (clickEl:HTMLElement,dragEl:HTMLElement,hr:HTMLElement,hr2:HTM
       let mobileik={
        x: 393,y:852
       }
+
+let inmobxper=(x  /(mobileik.x))*100
+// console.log(inmobxper+"%","is iboxer",)
+
+let inlap=(x/window.innerWidth)*100
     let objset={
   name:p.dataset.name,
   left:p.style.left,
@@ -190,30 +200,47 @@ topbtmelem.forEach(el=>{
 
 let vw=window.visualViewport?.width
 let vh=window.visualViewport?.height
+let ismobille=true
 
-    if (x<document.documentElement.clientWidth-parseInt(element.style.width)&& y<document.documentElement.scrollHeight && (x/( vw?vw:window.innerWidth))*100<=((mobileik.x- parseInt(element.style.width) )/( vw?vw:window.innerWidth))*100 && x> parseInt(element.style.width)) {
-    
-console.log("y:",y,"inner height",window.innerHeight,"pppp",(y/window.innerHeight)*100+"%")
-console.log("x:",x,"elentwidth:",parseInt(element.style.width),"innerwidth",window.innerWidth,"and viwpot",window.visualViewport?.width,"anddddd",((x /( vw?vw:window.innerWidth)) *100 ) -(parseInt(element.style.width)/( vw?vw:window.innerWidth)*100)    +"%"
-)
-      t.style.left =((x /( vw?vw:window.innerWidth)) *100 ) -(parseInt(element.style.width)/( vw?vw:window.innerWidth)*100)    +"%"
-      //     t.style.top =((y/( vh?vh:window.innerHeight))*100 ) -((parseInt(element.style.height)/( vh?vh:window.innerHeight)*100) )+"%"
+// when mobile
+    if (  checkedasmobile && ((x/window.innerWidth)*100 <= (mobileik.x/window.innerWidth)*100 ) ) {
+// console.log("y:",y,"inner height",window.innerHeight,"pppp",(y/window.innerHeight)*100+"%")
+// console.log("x:",x,"elentwidth:",parseInt(element.style.width),"innerwidth",window.innerWidth,"and viwpot",window.visualViewport?.width,"anddddd",(x/window.innerWidth)*100    +"%")
+//       t.style.left =((x /( vw?vw:window.innerWidth)) *100 )    +"%"
+//       //     t.style.top =((y/( vh?vh:window.innerHeight))*100 ) -((parseInt(element.style.height)/( vh?vh:window.innerHeight)*100) )+"%"
+// //// inmobile 
+// buttonmob.style.left=inmobxper+"%"
+//       buttonmob.style.top=(y/window.innerHeight)*100+"%"
 
+//inmobile
+      // t.style.left=(x/window.innerWidth)*100+"%"  
       t.style.top=(y/window.innerHeight)*100+"%"
-        //  hr1
-        
-hr.style.top="-4px"
-hr.style.left=-(parseInt(hr.style.width)/2)+"px"
-//hr2
-hr2.style.top=parseInt(element.style.height)+"px"
-hr2.style.left=-(parseInt(hr.style.width)/2)+"px"
+let xbalancewidth;
+    console.log(((x/(mobileik.x)  )*100  -((parseInt(element.style.width)+20)/window.innerWidth)*100   )+"%" ,"is percentahe on that ",(parseInt(element.style.width)/window.innerWidth)*100 )
+//         //  hr1
 
-hr3.style.top=-(parseInt(hr3.style.height)/2)+"px"
-hr4.style.top=-(parseInt(hr4.style.height)/2)+"px"
-hr4.style.left=(parseInt(element.style.width)+3)+"px"
+
+// os we wnt to get in mobile 
+      buttonmob.style.top=(y/window.innerHeight)*100+"%"
+
+buttonmob.style.left=((x/(mobileik.x)  )*100  -((parseInt(element.style.width)+20)/window.innerWidth)*100   )+"%" 
+        
+// os we wnt to get in mobile 
+
+// hr.style.top="-4px"
+// hr.style.left=-(parseInt(hr.style.width)/2)+"px"
+// //hr2
+// hr2.style.top=parseInt(element.style.height)+"px"
+// hr2.style.left=-(parseInt(hr.style.width)/2)+"px"
+
+// hr3.style.top=-(parseInt(hr3.style.height)/2)+"px"
+// hr4.style.top=-(parseInt(hr4.style.height)/2)+"px"
+// hr4.style.left=(parseInt(element.style.width)+3)+"px"
 
 
      }
+
+     // when mobile
     }
     var mouseMoveHandler = function (e:MouseEvent) {
       e = e || window.event;

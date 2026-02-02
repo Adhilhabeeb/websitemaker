@@ -52,7 +52,8 @@ let handleclick=useCallback(()=>{
 
  useEffect(() => {
   
-let ipcoff=window.adhil.sendmenuselected(
+if ("adhil" in window) {
+  let ipcoff=window.adhil.sendmenuselected(
 
 {data:count,callbackj:(dsata)=>{
   setseletedoption(dsata)
@@ -63,6 +64,7 @@ console.log(dsata,"is dsdatatattatatatata")
 )
  
 return ipcoff
+}
  }, [count])
  
 // Source - https://stackoverflow.com/a
@@ -116,13 +118,12 @@ useLayoutEffect(() => {
     
   }, 10000);
 }
-name()
+
+if ("adhil" in window) {
   
 
-
-
-
-  return  window.adhil.subscribestatics((f)=>{
+name()
+ return  window.adhil.subscribestatics((f)=>{
 
   valuesent.current=f
 setsystem((prev)=>{
@@ -139,6 +140,14 @@ return da
 
 })
 
+}
+
+  
+
+
+
+
+ 
 
 
 }, [])

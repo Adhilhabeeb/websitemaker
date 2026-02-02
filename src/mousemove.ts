@@ -21,10 +21,17 @@ function get (el:any) {
 }
 
 function mouseX (e:MouseEvent) {
+     const MOBILE_WIDTH = 375;
+const MOBILE_HEIGHT = 667;
+
   if (e.pageX) {
+ 
     return e.pageX;
   }
   if (e.clientX) {
+    if (e.clientX <= MOBILE_WIDTH && e.clientY <= MOBILE_HEIGHT) {
+    // console.log("Inside mobile viewport:", e.clientX, e.clientY,"iisssss");
+  }
     return e.clientX + (document.documentElement.scrollLeft ?
       document.documentElement.scrollLeft :
       document.body.scrollLeft);
@@ -57,6 +64,9 @@ function dragable (clickEl:HTMLElement,dragEl:HTMLElement,hr:HTMLElement,hr2:HTM
     let oldobj:any;
     var move = function (x:any,y:any) {
       // console.log(p,"isss pp")
+      let mobileik={
+       x: 393,y:852
+      }
     let objset={
   name:p.dataset.name,
   left:p.style.left,
@@ -175,12 +185,23 @@ topbtmelem.forEach(el=>{
     //  console.log(t.style.left,"is left",x + "px","inn",document.documentElement.clientWidth)
 // console.log(window.innerWidth)
 // let lefgtmove= x>document.documentElement.clientWidth-parseInt(t.style.width)?x-(parseInt(t.style.width))+"px":x+"px"
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////mobile
    
-     if (x<document.documentElement.clientWidth-parseInt(element.style.width)&& y<document.documentElement.clientHeight) {
-          t.style.left =x+"px"
-          t.style.top =y+"px"
 
+let vw=window.visualViewport?.width
+let vh=window.visualViewport?.height
+
+    if (x<document.documentElement.clientWidth-parseInt(element.style.width)&& y<document.documentElement.scrollHeight && (x/( vw?vw:window.innerWidth))*100<=((mobileik.x- parseInt(element.style.width) )/( vw?vw:window.innerWidth))*100 && x> parseInt(element.style.width)) {
+    
+console.log("y:",y,"inner height",window.innerHeight,"pppp",(y/window.innerHeight)*100+"%")
+console.log("x:",x,"elentwidth:",parseInt(element.style.width),"innerwidth",window.innerWidth,"and viwpot",window.visualViewport?.width,"anddddd",((x /( vw?vw:window.innerWidth)) *100 ) -(parseInt(element.style.width)/( vw?vw:window.innerWidth)*100)    +"%"
+)
+      t.style.left =((x /( vw?vw:window.innerWidth)) *100 ) -(parseInt(element.style.width)/( vw?vw:window.innerWidth)*100)    +"%"
+      //     t.style.top =((y/( vh?vh:window.innerHeight))*100 ) -((parseInt(element.style.height)/( vh?vh:window.innerHeight)*100) )+"%"
+
+      t.style.top=(y/window.innerHeight)*100+"%"
         //  hr1
+        
 hr.style.top="-4px"
 hr.style.left=-(parseInt(hr.style.width)/2)+"px"
 //hr2

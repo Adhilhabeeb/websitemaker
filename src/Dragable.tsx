@@ -1,4 +1,4 @@
-import { memo, useCallback, useMemo, useRef, useState } from 'react'
+import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import Draggable from 'react-draggable'
 import { usemouse } from './mousemove'
 import { mobileik } from './utils/vierw'
@@ -15,6 +15,10 @@ function DragableBox(props:any) {
 return (window.innerWidth/2)-(mobileik.x/2)
 
   },[])
+
+  const [rectvaluesofdivmob, setrectvaluesofdivmob] = useState<object>();
+
+
 let  divmobilebg=useRef<HTMLDivElement |null >(null) 
 let {checkedasmobile}=props
 // console.log(props,"is yyyy")
@@ -44,8 +48,16 @@ document.body.appendChild(buttonlap)
 return {buttonlap,buttonmob}
 },[])
 
-let move=usemouse({buttonlap,buttonmob,checkedasmobile})
+let move=usemouse({buttonlap,buttonmob,checkedasmobile,divmobilebg})
   
+
+useEffect(()=>{
+ 
+let rect =divmobilebg.current?.getBoundingClientRect()
+console.log(rect,"isrect in drrr")
+
+
+},[checkedasmobile])
 
 // console.log(move,"is move")
   function addbbutton(ele="input") {
@@ -171,7 +183,7 @@ defaultClassNameDragging='isdragging'
      width:`${mobileik.x}px`,
   minHeight:`${mobileik.y}px`,
   left:`${mobileviewleft}px`,
-     background:"red"
+     background:"red",top:"10%"
      }} ref={ divmobilebg}>kjlkj</div>
       
 

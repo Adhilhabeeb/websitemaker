@@ -11,14 +11,21 @@ export function usemouse({
   buttonlap?: HTMLButtonElement;
   buttonmob?: HTMLButtonElement;
   checkedasmobile: Boolean;
-   divmobilebg?:HTMLElement;
+   divmobilebg?:HTMLElement |any;
 }) {
-  const [ismobilechaged, setismobilechaged] = useState<Boolean>(false);
+ 
+  
+
+let rectmobdiv=useRef(null)
   let ismobilevalue = useRef(checkedasmobile);
+let currentrect=useRef<Record <string,number>>(null)
   useEffect(() => {
     ismobilevalue.current = checkedasmobile;
-  
+  let div=divmobilebg.current?.getBoundingClientRect()
+ currentrect.current=div
   }, [checkedasmobile]);
+
+
 
   // Source - https://stackoverflow.com/a
   // Posted by slebetman, modified by community. See post 'Timeline' for change history
@@ -39,6 +46,7 @@ export function usemouse({
     return el;
   }
 
+  
   function mouseX(e: MouseEvent) {
 
     if (e.pageX) {
@@ -83,6 +91,11 @@ export function usemouse({
     checkedasmobile: Boolean,
     divmobilebg?:HTMLDivElement|any
   ) {
+
+ let topdivmob=currentrect.current?.top as number
+ console.log(currentrect.current,"is ccuuuuytyy in dg",topdivmob)
+
+
     var p: HTMLElement = get(clickEl);
     var t: HTMLElement = get(dragEl);
     var hr: HTMLElement = get(hr);
@@ -91,9 +104,12 @@ export function usemouse({
     let offsetX: any = 0;
     let offsetY: any = 0;
     var mousemoveTemp: any = null;
+
     if (t) {
       let oldobj: any;
-      var move = function (x: any, y: any) {
+    
+      var move = function (x: any, y: any) {  
+console.log(window.scrollY,"is scrolly")
         // console.log(
         //   ismobilevalue.current,
         //   "is the mobi checlbox",
@@ -245,12 +261,14 @@ let rightview=mobilevviewleft+mobileik.x
 
 
 
-
-
-console.log(mobilevviewleft,"is ledt vieewrtyh",mobileik.x,"jk and right:",rightview)
+let cury=y -topdivmob;
+// console.log(mobilevviewleft,"is ledt vieewrtyh",mobileik.x,"jk and right:",rightview)
  let curx=x-mobilevviewleft
-if (ismobilevalue.current && x>mobilevviewleft && x<rightview) {
- 
+if (ismobilevalue.current && x>mobilevviewleft && x<rightview && y>topdivmob) {
+
+
+// let y=cury
+// console.log(y,"is greterthan ",topdivmob,cury,"is curly and percenthre",(cury/window.innerHeight)*100)
 let x=curx
    let leftformobile =
           ((x-leftmarginspace) / (mobileik.x)) * 100-((parseInt(element.style.width) ) / window.innerWidth) * 100
@@ -271,13 +289,13 @@ if (x<(iffsetx/2)) {
 //   Math.min(clampx,mobileik.x-iffsetx)
 // )
 t.style.left=(clampx/window.innerWidth)*100 +"%"
-console.log(elemtmovingleft," is elemyt mobvi g left ",(clampx/window.innerWidth)*100 +"%")  
+
 
 
    if (buttonmob) {
 
           // console.log(leftformobile,"isss mob111bbbbb")
-                buttonmob.style.top=(y/window.innerHeight)*100+"%"
+                buttonmob.style.top=(cury/window.innerHeight)*100 +"%"
 
            
      if (leftformobile>0) { // it is used to set the make the leftvalues crt

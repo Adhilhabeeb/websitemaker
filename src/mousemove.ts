@@ -249,10 +249,17 @@ console.log(" called the mobillelel")
         //         //  hr1
 // let  elemtmovingleft=(((x-parseInt(element.style.width))/(window.innerWidth))*100 )  
 let elemtmovingleft=(x/window.innerWidth)*100
-if (x<=mobileik.x && x>0) {
-  t.style.left=elemtmovingleft+"%"
+let iffsetx=element.offsetWidth
+let clampx=x-(iffsetx/2)
+if (x>mobileik.x-(mobileik.x/4)) {
+  clampx=x-(iffsetx)
 }
-console.log(elemtmovingleft," is elemyt mobvi g left ")  
+
+clampx=Math.max(0,
+  Math.min(clampx,mobileik.x-iffsetx)
+)
+t.style.left=(clampx/window.innerWidth)*100 +"%"
+console.log(elemtmovingleft," is elemyt mobvi g left ",(clampx/window.innerWidth)*100 +"%")  
 
         // os we wnt to get in mobile
           if (buttonmob) {

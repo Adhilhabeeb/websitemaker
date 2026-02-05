@@ -1,12 +1,21 @@
 import { memo, useCallback, useMemo, useRef, useState } from 'react'
 import Draggable from 'react-draggable'
 import { usemouse } from './mousemove'
+import { mobileik } from './utils/vierw'
 interface dragboxprop{
   checkedasmobile:boolean
 }
 
-function DragableBox(props:any) {
 
+function DragableBox(props:any) {
+  let mobileviewleft=useMemo(()=>{
+
+
+    
+return (window.innerWidth/2)-(mobileik.x/2)
+
+  },[])
+let  divmobilebg=useRef<HTMLDivElement |null >(null) 
 let {checkedasmobile}=props
 // console.log(props,"is yyyy")
   let countref=useRef(0)
@@ -36,6 +45,8 @@ return {buttonlap,buttonmob}
 },[])
 
 let move=usemouse({buttonlap,buttonmob,checkedasmobile})
+  
+
 // console.log(move,"is move")
   function addbbutton(ele="input") {
     countref.current++
@@ -133,7 +144,7 @@ move(div,div,hr,hr2,hr3,hr4,setaray,button,checkedasmobile)
     )
   }
   return (
- <Draggable
+< ><Draggable
         axis="both"
      
     
@@ -153,6 +164,18 @@ defaultClassNameDragging='isdragging'
 
         </div>
       </Draggable>
+      
+     <div  style={{
+      display:checkedasmobile?"block":"none",
+     position:"absolute",
+     width:`${mobileik.x}px`,
+  minHeight:`${mobileik.y}px`,
+  left:`${mobileviewleft}px`,
+     background:"red"
+     }} ref={ divmobilebg}>kjlkj</div>
+      
+
+      </>
   )
 }
 

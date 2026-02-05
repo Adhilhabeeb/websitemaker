@@ -1,13 +1,17 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { isMobile } from "react-device-detect";
+import { mobileik } from "./utils/vierw";
+
 export function usemouse({
   buttonlap,
   buttonmob,
   checkedasmobile,
+   divmobilebg
 }: {
   buttonlap?: HTMLButtonElement;
   buttonmob?: HTMLButtonElement;
   checkedasmobile: Boolean;
+   divmobilebg?:HTMLElement;
 }) {
   const [ismobilechaged, setismobilechaged] = useState<Boolean>(false);
   let ismobilevalue = useRef(checkedasmobile);
@@ -36,16 +40,12 @@ export function usemouse({
   }
 
   function mouseX(e: MouseEvent) {
-    const MOBILE_WIDTH = 375;
-    const MOBILE_HEIGHT = 667;
 
     if (e.pageX) {
       return e.pageX;
     }
     if (e.clientX) {
-      if (e.clientX <= MOBILE_WIDTH && e.clientY <= MOBILE_HEIGHT) {
-        // console.log("Inside mobile viewport:", e.clientX, e.clientY,"iisssss");
-      }
+     
       return (
         e.clientX +
         (document.documentElement.scrollLeft
@@ -81,6 +81,7 @@ export function usemouse({
     setar: Set<any>,
     element: HTMLElement,
     checkedasmobile: Boolean,
+    divmobilebg?:HTMLDivElement|any
   ) {
     var p: HTMLElement = get(clickEl);
     var t: HTMLElement = get(dragEl);
@@ -99,10 +100,7 @@ export function usemouse({
          
         // );
         // console.log(p,"isss pp")
-        let mobileik = {
-          x: 393,
-          y: 852,
-        };
+       
 
         let inmobxper = (x / mobileik.x) * 100;
         // console.log(inmobxper+"%","is iboxer",)
@@ -119,6 +117,8 @@ export function usemouse({
         };
 
         // console.log(objset,"is objsetttt")
+
+        // check that the value is already in the set 
         if (setar.has(JSON.stringify(objset))) {
           // console.log("ond")
           setar.delete(JSON.stringify(objset));
@@ -134,6 +134,7 @@ export function usemouse({
 
           // console.log("afterrii",setar)
         }
+        // check that the value is already in the set 
 
         if (setar.size > 0) {
           setar.forEach((el, i) => {
@@ -219,7 +220,7 @@ export function usemouse({
         let vw = window.visualViewport?.width;
         let vh = window.visualViewport?.height;
         let ismobille = true;
-        let leftmarginspace=10
+        let leftmarginspace=2
         let leftformobile =
           ((x-leftmarginspace) / (mobileik.x)) * 100-((parseInt(element.style.width) ) / window.innerWidth) * 100
  // //  -
@@ -228,41 +229,52 @@ export function usemouse({
 
          
           ////////////////////////////////////
-        // when mobile
-            if (  ismobilevalue.current && ((x/window.innerWidth)*100 <= ((mobileik.x)  /window.innerWidth)*100 ) ) {
+          //it ius theviewscape wvalues 
+let mobilevviewleft=(window.innerWidth/2)-(mobileik.x/2)
+let rightview=mobilevviewleft+mobileik.x
+          //it ius theviewscape wvalues 
 
-console.log(" called the mobillelel")
+        //letds crtreate  a div width exacty the mobile mobile wifth and height like 
 
-              // console.log("y:",y,"inner height",window.innerHeight,"pppp",(y/window.innerHeight)*100+"%")
-        // console.log("x:",x,"elentwidth:",parseInt(element.style.width),"innerwidth",window.innerWidth,"and viwpot",window.visualViewport?.width,"anddddd",(x/window.innerWidth)*100    +"%")
-        //       t.style.left =((x /( vw?vw:window.innerWidth)) *100 )    +"%"
-        //       //     t.style.top =((y/( vh?vh:window.innerHeight))*100 ) -((parseInt(element.style.height)/( vh?vh:window.innerHeight)*100) )+"%"
-        // //// inmobile
-        // buttonmob.style.left=inmobxper+"%"
-        //       buttonmob.style.top=(y/window.innerHeight)*100+"%"
 
-        //inmobile
-              // t.style.left=(x/window.innerWidth)*100+"%"
-              t.style.top=(y/window.innerHeight)*100+"%"
-        let xbalancewidth;
-            // console.log(((x/(mobileik.x)  )*100  -((parseInt(element.style.width)+20)/window.innerWidth)*100   )+"%" ,"is percentahe on that ",(parseInt(element.style.width)/window.innerWidth)*100 )
-        //         //  hr1
-// let  elemtmovingleft=(((x-parseInt(element.style.width))/(window.innerWidth))*100 )  
+
+   
+        //letds crtreate  a div width exacty the mobile mobile wifth and height like 
+
+
+
+
+
+
+
+console.log(mobilevviewleft,"is ledt vieewrtyh",mobileik.x,"jk and right:",rightview)
+ let curx=x-mobilevviewleft
+if (ismobilevalue.current && x>mobilevviewleft && x<rightview) {
+ 
+let x=curx
+   let leftformobile =
+          ((x-leftmarginspace) / (mobileik.x)) * 100-((parseInt(element.style.width) ) / window.innerWidth) * 100
+ // //  -
+  t.style.top=(y/window.innerHeight)*100+"%"
+
 let elemtmovingleft=(x/window.innerWidth)*100
 let iffsetx=element.offsetWidth
-let clampx=x-(iffsetx/2)
+let clampx=(mobilevviewleft+ x)-(iffsetx/2)
 if (x>mobileik.x-(mobileik.x/4)) {
-  clampx=x-(iffsetx)
+  clampx=(mobilevviewleft+x)-(iffsetx)
+}
+if (x<(iffsetx/2)) {
+  clampx=(mobilevviewleft+x)
 }
 
-clampx=Math.max(0,
-  Math.min(clampx,mobileik.x-iffsetx)
-)
+// clampx=Math.max(0,
+//   Math.min(clampx,mobileik.x-iffsetx)
+// )
 t.style.left=(clampx/window.innerWidth)*100 +"%"
 console.log(elemtmovingleft," is elemyt mobvi g left ",(clampx/window.innerWidth)*100 +"%")  
 
-        // os we wnt to get in mobile
-          if (buttonmob) {
+
+   if (buttonmob) {
 
           // console.log(leftformobile,"isss mob111bbbbb")
                 buttonmob.style.top=(y/window.innerHeight)*100+"%"
@@ -275,8 +287,10 @@ console.log(elemtmovingleft," is elemyt mobvi g left ",(clampx/window.innerWidth
      } 
 
           }
-          
-        // os we wnt to get in mobile
+
+
+
+           // os we wnt to get in mobile
 
         hr.style.top="-4px"
         hr.style.left=-(parseInt(hr.style.width)/2)+"px"
@@ -289,7 +303,74 @@ console.log(elemtmovingleft," is elemyt mobvi g left ",(clampx/window.innerWidth
         hr4.style.left=(parseInt(element.style.width)+3)+"px"
 
 
-            }
+}
+
+
+
+
+
+        // when mobile
+//             if (  ismobilevalue.current && ((x/window.innerWidth)*100 <= ((mobileik.x)  /window.innerWidth)*100 ) ) {
+// console.log("x",x)
+// // console.log(" called the mobillelel")
+
+//               // console.log("y:",y,"inner height",window.innerHeight,"pppp",(y/window.innerHeight)*100+"%")
+//         // console.log("x:",x,"elentwidth:",parseInt(element.style.width),"innerwidth",window.innerWidth,"and viwpot",window.visualViewport?.width,"anddddd",(x/window.innerWidth)*100    +"%")
+//         //       t.style.left =((x /( vw?vw:window.innerWidth)) *100 )    +"%"
+//         //       //     t.style.top =((y/( vh?vh:window.innerHeight))*100 ) -((parseInt(element.style.height)/( vh?vh:window.innerHeight)*100) )+"%"
+//         // //// inmobile
+//         // buttonmob.style.left=inmobxper+"%"
+//         //       buttonmob.style.top=(y/window.innerHeight)*100+"%"
+
+//         //inmobile
+//               // t.style.left=(x/window.innerWidth)*100+"%"
+//               t.style.top=(y/window.innerHeight)*100+"%"
+//         let xbalancewidth;
+//             // console.log(((x/(mobileik.x)  )*100  -((parseInt(element.style.width)+20)/window.innerWidth)*100   )+"%" ,"is percentahe on that ",(parseInt(element.style.width)/window.innerWidth)*100 )
+//         //         //  hr1
+// // let  elemtmovingleft=(((x-parseInt(element.style.width))/(window.innerWidth))*100 )  
+// let elemtmovingleft=(x/window.innerWidth)*100
+// let iffsetx=element.offsetWidth
+// let clampx=x-(iffsetx/2)
+// if (x>mobileik.x-(mobileik.x/4)) {
+//   clampx=x-(iffsetx)
+// }
+
+// clampx=Math.max(0,
+//   Math.min(clampx,mobileik.x-iffsetx)
+// )
+// t.style.left=(clampx/window.innerWidth)*100 +"%"
+// console.log(elemtmovingleft," is elemyt mobvi g left ",(clampx/window.innerWidth)*100 +"%")  
+
+//         // os we wnt to get in mobile
+//           if (buttonmob) {
+
+//           // console.log(leftformobile,"isss mob111bbbbb")
+//                 buttonmob.style.top=(y/window.innerHeight)*100+"%"
+
+           
+//      if (leftformobile>0) { // it is used to set the make the leftvalues crt
+//          buttonmob.style.left = leftformobile  +"%"
+                
+             
+//      } 
+
+//           }
+          
+//         // // os we wnt to get in mobile
+
+//         // hr.style.top="-4px"
+//         // hr.style.left=-(parseInt(hr.style.width)/2)+"px"
+//         // //hr2
+//         // hr2.style.top=parseInt(element.style.height)+"px"
+//         // hr2.style.left=-(parseInt(hr.style.width)/2)+"px"
+
+//         // hr3.style.top=-(parseInt(hr3.style.height)/2)+"px"
+//         // hr4.style.top=-(parseInt(hr4.style.height)/2)+"px"
+//         // hr4.style.left=(parseInt(element.style.width)+3)+"px"
+
+
+//             }
 
             //whe mobile
             //whe lap

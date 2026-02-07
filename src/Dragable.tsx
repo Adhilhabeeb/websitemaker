@@ -1,13 +1,22 @@
 import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import Draggable from 'react-draggable'
 import { usemouse } from './mousemove'
-import { mobileik } from './utils/vierw'
+import { isStringInteger, mobileik } from './utils/vierw'
+import { cssdefalult , type eleent} from './utils/cssdefault'
+import Rightchangingoption from './Rightchangingoption'
+
 interface dragboxprop{
   checkedasmobile:boolean
 }
 
 
 function DragableBox(props:any) {
+const [slecetdelemnt, setslecetdelemnt] = useState<string |null>(null)
+const [elenttype, setelenttype] = useState<string|null>(null)
+const [showsidemenu, setshowsidemenu] = useState(false)
+const [va, setva] = useState("")
+
+
   let mobileviewleft=useMemo(()=>{
 
 
@@ -15,6 +24,15 @@ function DragableBox(props:any) {
 return (window.innerWidth/2)-(mobileik.x/2)
 
   },[])
+useEffect(() => {
+  if (slecetdelemnt) {
+
+   let elemt:string=slecetdelemnt?.split("").filter(el =>!isStringInteger(el)).join("") 
+   setelenttype(elemt)
+  }
+}, [slecetdelemnt])
+
+
 
   const [rectvaluesofdivmob, setrectvaluesofdivmob] = useState<object>();
 
@@ -60,7 +78,8 @@ console.log(rect,"isrect in drrr")
 },[checkedasmobile])
 
 // console.log(move,"is move")
-  function addbbutton(ele="input") {
+
+  function addbbutton(ele:eleent="button") {
     countref.current++
     // setaray.add(JSON.stringify({name:"adhil"}))
     // setaray.add({name:"alfin"})
@@ -70,31 +89,58 @@ console.log(rect,"isrect in drrr")
     // )
 
 let button=document.createElement(ele)
+console.log(ele,"is elemeyt")
+
+
+
+button.id=ele+countref.current.toString()
+let elemntydefauly=cssdefalult[ele]
+
+button.innerText="jloo"
 // console.log(button,"is el;eem t")
-button.style.width = "100px";
-button.style.height = "30px";
+// button.style.width = "100px";
+// button.style.height = "30px";
+//setting fdefalut values to element
+Object.entries(elemntydefauly).forEach((el:any)=>{
+  let [name,value]=el
+button.style[name]=value
+
+})
+
+
+
 
 // console.log(countref.current,"ius refcount")
 // button.id=ele+countref.current.toString()
 // button.dataset.name=ele+countref.current.toString()
 
-button.style.backgroundColor = "#2563eb"; // blue
+// button.style.backgroundColor = "#2563eb"; // blue
 
 // button.style.fontSize = "16px";
 // button.style.cursor = "pointer";
 
 
 //
+
+let keys=Object.entries(elemntydefauly).map((el:any)=>{
+  let [name,value]=el
+return [name,button.style[name]]
+
+})
+let objectcustempro=Object.fromEntries(keys)
+
 let objset={
   name:button.dataset.name,
   left:button.style.left,
   right:button.style.right,
   top:button.style.top,
-  bottom:button.style.bottom
+  bottom:button.style.bottom,
+...objectcustempro
 }
-
+console.log(objset,"is object custem proo")
 setaray.add(JSON.stringify(objset))
 
+console.log(objset,"is the objeset")
 
 //
 // document.body.appendChild(button)
@@ -146,8 +192,8 @@ div.style.left = "0px";
 div.style.top = "0px";
 div.append(hr,hr2,hr3,hr4,button)
 document.body.appendChild(div)
-
-move(div,div,hr,hr2,hr3,hr4,setaray,button,checkedasmobile)
+setslecetdelemnt(div.dataset.name)
+move(div,div,hr,hr2,hr3,hr4,setaray,button,checkedasmobile,setslecetdelemnt)
 
   }
   function DraggableEventHandler(e:any,data:any) {
@@ -156,28 +202,16 @@ move(div,div,hr,hr2,hr3,hr4,setaray,button,checkedasmobile)
     )
   }
   return (
-< ><Draggable
-        axis="both"
+< >
+
+
+<div className='w-full  flex justify-around'>
+   <button onClick={addbbutton.bind(null,"button")} className=" underline bg-cyan-100 ">button</button>
+        <button onClick={addbbutton.bind(null,"div")} className=" underline  bg-pink-500 ">div</button>
+</div>
      
-    
-       cancel="input, button"
-defaultClassName='elm'
-defaultClassNameDragged='dragged'
-defaultClassNameDragging='isdragging'
-        grid={[25, 25]}
-       nodeRef={ref}
-     onStop={ DraggableEventHandler}
 
-        >
-        <div ref={ref} className='w-3xs'>
-          
-
-    <button onClick={addbbutton.bind(null,"button")} className=" underline bg-amber-400 ">Click me</button>
-
-        </div>
-      </Draggable>
-      
-     <div  style={{
+      <button className=' bg-amber-800' onClick={()=>setshowsidemenu(!showsidemenu)} >showsidemenu</button>     <div  style={{
       display:checkedasmobile?"block":"none",
      position:"absolute",
      width:`${mobileik.x}px`,
@@ -185,7 +219,11 @@ defaultClassNameDragging='isdragging'
   left:`${mobileviewleft}px`,
      background:"red",top:"10%"
      }} ref={ divmobilebg}>kjlkj</div>
-      
+    
+              
+        
+    { showsidemenu &&<Rightchangingoption   checkedasmobile={checkedasmobile}   slecetdelemnt={slecetdelemnt}  elenttype={elenttype} />}
+    
 
       </>
   )

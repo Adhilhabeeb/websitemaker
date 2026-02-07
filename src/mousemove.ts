@@ -1,6 +1,8 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState, type Dispatch, type SetStateAction } from "react";
 import { isMobile } from "react-device-detect";
-import { mobileik } from "./utils/vierw";
+import { isStringInteger, mobileik } from "./utils/vierw";
+import { cssdefalult, type eleent } from "./utils/cssdefault";
+
 
 export function usemouse({
   buttonlap,
@@ -89,11 +91,16 @@ let currentrect=useRef<Record <string,number>>(null)
     setar: Set<any>,
     element: HTMLElement,
     checkedasmobile: Boolean,
-    divmobilebg?:HTMLDivElement|any
+        setslecetdelemnt:Dispatch<SetStateAction<string | null>>,
+    divmobilebg?:HTMLDivElement|any,
+
   ) {
 
+
+
+
  let topdivmob=currentrect.current?.top as number
- console.log(currentrect.current,"is ccuuuuytyy in dg",topdivmob)
+//  console.log(currentrect.current,"is ccuuuuytyy in dg",topdivmob)
 
 
     var p: HTMLElement = get(clickEl);
@@ -109,7 +116,7 @@ let currentrect=useRef<Record <string,number>>(null)
       let oldobj: any;
     
       var move = function (x: any, y: any) {  
-console.log(window.scrollY,"is scrolly")
+
         // console.log(
         //   ismobilevalue.current,
         //   "is the mobi checlbox",
@@ -118,11 +125,18 @@ console.log(window.scrollY,"is scrolly")
         // console.log(p,"isss pp")
        
 
-        let inmobxper = (x / mobileik.x) * 100;
-        // console.log(inmobxper+"%","is iboxer",)
+        let elemt:string=p.dataset.name?.split("").filter(el =>!isStringInteger(el)).join("")   as string
+   
 
-        let inlap = (x / window.innerWidth) * 100;
 
+let keys=Object.entries(cssdefalult[elemt]).map((el:any)=>{
+  let [name,value]=el
+return [name,element.style[name]]
+
+})
+let objectcustempro=Object.fromEntries(keys)
+
+      
 
         let objset = {
           name: p.dataset.name,
@@ -130,9 +144,16 @@ console.log(window.scrollY,"is scrolly")
           right: p.style.right,
           top: p.style.top,
           bottom: p.style.bottom,
+...objectcustempro
         };
 
-        // console.log(objset,"is objsetttt")
+       
+
+     
+
+        console.log(objset,"is objsetttt")
+
+        console.log(setar,"is setarray")
 
         // check that the value is already in the set 
         if (setar.has(JSON.stringify(objset))) {
@@ -403,6 +424,7 @@ t.style.left=(clampx/window.innerWidth)*100 +"%"
           hr.style.top = "-4px";
           hr.style.left = -(parseInt(hr.style.width) / 2) + "px";
           //hr2
+          console.log(element.style.height,"is height")
           hr2.style.top = parseInt(element.style.height) + "px";
           hr2.style.left = -(parseInt(hr.style.width) / 2) + "px";
 
@@ -431,6 +453,11 @@ t.style.left=(clampx/window.innerWidth)*100 +"%"
         return false;
       };
       var start_drag = function (e: any) {
+      //  console.log(setslecetdelemnt,"is seteleent",p.dataset.name
+      //  )
+
+       setslecetdelemnt(p.dataset.name as string)
+      
         hr.style.display = "block";
         hr2.style.display = "block";
         hr3.style.display = "block";
@@ -482,7 +509,7 @@ t.style.left=(clampx/window.innerWidth)*100 +"%"
       p.onmousedown = start_drag;
       p.onmouseup = stop_drag;
       document.addEventListener("keydown", (event) => {
-        event.preventDefault();
+     
         if (event.key === "Enter") {
           if (drag) {
             // alert("ooo")

@@ -92,7 +92,9 @@ let currentrect=useRef<Record <string,number>>(null)
     element: HTMLElement,
     checkedasmobile: Boolean,
         setslecetdelemnt:Dispatch<SetStateAction<string | null>>,
+         setmobarr:Set<any>,
     divmobilebg?:HTMLDivElement|any,
+   
 
   ) {
 
@@ -114,7 +116,7 @@ let currentrect=useRef<Record <string,number>>(null)
 
     if (t) {
       let oldobj: any;
-    
+    let oldmobobj:any;
       var move = function (x: any, y: any) {  
 
         // console.log(
@@ -151,9 +153,9 @@ let objectcustempro=Object.fromEntries(keys)
 
      
 
-        console.log(objset,"is objsetttt")
+        // console.log(objset,"is objsetttt")
 
-        console.log(setar,"is setarray")
+        // console.log(setar,"is setarray")
 
         // check that the value is already in the set 
         if (setar.has(JSON.stringify(objset))) {
@@ -285,6 +287,8 @@ let rightview=mobilevviewleft+mobileik.x
 let cury=y -topdivmob;
 // console.log(mobilevviewleft,"is ledt vieewrtyh",mobileik.x,"jk and right:",rightview)
  let curx=x-mobilevviewleft
+
+
 if (ismobilevalue.current && x>mobilevviewleft && x<rightview && y>topdivmob) {
 
 
@@ -314,17 +318,39 @@ t.style.left=(clampx/window.innerWidth)*100 +"%"
 
 
    if (buttonmob) {
+let mobileobjsearr={...objset}
 
           // console.log(leftformobile,"isss mob111bbbbb")
                 buttonmob.style.top=(cury/window.innerHeight)*100 +"%"
-
-           
+mobileobjsearr.top=(cury/window.innerHeight)*100 +"%"
+      
      if (leftformobile>0) { // it is used to set the make the leftvalues crt
          buttonmob.style.left = leftformobile  +"%"
-                
+                mobileobjsearr.left= leftformobile  +"%"
              
      } 
 
+  
+    
+console.log(oldmobobj,"is mpbobj",mobileobjsearr)
+     /////  mobarr setting///////
+        if (setmobarr.has(JSON.stringify(mobileobjsearr))) {
+    
+          setmobarr.delete(JSON.stringify(mobileobjsearr));
+         oldmobobj  = mobileobjsearr;
+        } else {
+          console.log(setmobarr,"is mobarrau")
+        setmobarr.delete(JSON.stringify(oldmobobj));
+        //   // console.log("older:",oldobj)
+          oldmobobj = mobileobjsearr;
+        //   // console.log("neww:",objset)
+        //   // console.log("afterchange olderr:",oldobj)
+          setmobarr.add(JSON.stringify(mobileobjsearr));
+          
+        }
+  
+     /////  mobarr setting///////
+ 
           }
 
 
@@ -424,7 +450,7 @@ t.style.left=(clampx/window.innerWidth)*100 +"%"
           hr.style.top = "-4px";
           hr.style.left = -(parseInt(hr.style.width) / 2) + "px";
           //hr2
-          console.log(element.style.height,"is height")
+          // console.log(element.style.height,"is height")
           hr2.style.top = parseInt(element.style.height) + "px";
           hr2.style.left = -(parseInt(hr.style.width) / 2) + "px";
 

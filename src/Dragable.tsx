@@ -42,6 +42,7 @@ let {checkedasmobile}=props
 // console.log(props,"is yyyy")
   let countref=useRef(0)
   const [setaray, setsetaray] = useState(new Set())
+  const [setmobarr, setsetmobarr] = useState(new Set())
   let ref=useRef<HTMLDivElement >(null)
   
 let {buttonlap,buttonmob}=useMemo(()=>{
@@ -193,7 +194,7 @@ div.style.top = "0px";
 div.append(hr,hr2,hr3,hr4,button)
 document.body.appendChild(div)
 setslecetdelemnt(div.dataset.name)
-move(div,div,hr,hr2,hr3,hr4,setaray,button,checkedasmobile,setslecetdelemnt)
+move(div,div,hr,hr2,hr3,hr4,setaray,button,checkedasmobile,setslecetdelemnt,setmobarr)
 
   }
   function DraggableEventHandler(e:any,data:any) {

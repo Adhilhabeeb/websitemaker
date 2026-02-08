@@ -14,6 +14,9 @@ export function usemouse({
   buttonmob?: HTMLButtonElement;
   checkedasmobile: Boolean;
    divmobilebg?:HTMLElement |any;
+   
+
+   
 }) {
  
   
@@ -93,13 +96,14 @@ let currentrect=useRef<Record <string,number>>(null)
     checkedasmobile: Boolean,
         setslecetdelemnt:Dispatch<SetStateAction<string | null>>,
          setmobarr:Set<any>,
+         mapref:Map<string,any>,
     divmobilebg?:HTMLDivElement|any,
    
 
   ) {
 
 
-
+console.log(mapref,"is mpref")
 
  let topdivmob=currentrect.current?.top as number
 //  console.log(currentrect.current,"is ccuuuuytyy in dg",topdivmob)
@@ -261,7 +265,7 @@ let objectcustempro=Object.fromEntries(keys)
         let ismobille = true;
         let leftmarginspace=2
         let leftformobile =
-          ((x-leftmarginspace) / (mobileik.x)) * 100-((parseInt(element.style.width) ) / window.innerWidth) * 100
+          ((x-leftmarginspace) / (mobileik.x)) * 100-((parseInt(element.style.width)/4 ) / window.innerWidth) * 100
  // //  -
           // ;
 
@@ -291,10 +295,11 @@ let cury=y -topdivmob;
 
 if (ismobilevalue.current && x>mobilevviewleft && x<rightview && y>topdivmob) {
 
-
+console.log(setmobarr,"is  when checkmobile is on array of mobile")
 // let y=cury
 // console.log(y,"is greterthan ",topdivmob,cury,"is curly and percenthre",(cury/window.innerHeight)*100)
 let x=curx
+console.log(element.style.width,"is the element ewidth grtting in mouse move ")
    let leftformobile =
           ((x-leftmarginspace) / (mobileik.x)) * 100-((parseInt(element.style.width) ) / window.innerWidth) * 100
  // //  -
@@ -319,35 +324,49 @@ t.style.left=(clampx/window.innerWidth)*100 +"%"
 
    if (buttonmob) {
 let mobileobjsearr={...objset}
+mobileobjsearr.left=0
+mobileobjsearr.top=0
 
           // console.log(leftformobile,"isss mob111bbbbb")
                 buttonmob.style.top=(cury/window.innerHeight)*100 +"%"
 mobileobjsearr.top=(cury/window.innerHeight)*100 +"%"
-      
+    
      if (leftformobile>0) { // it is used to set the make the leftvalues crt
          buttonmob.style.left = leftformobile  +"%"
-                mobileobjsearr.left= leftformobile  +"%"
+                  mobileobjsearr.left= leftformobile  +"%"
              
-     } 
+     } else{
+         buttonmob.style.left = 0  +"%"
+                  mobileobjsearr.left= 0  +"%"
+
+     }
 
   
     
-console.log(oldmobobj,"is mpbobj",mobileobjsearr)
+// console.log(oldmobobj,"is mpbobj",mobileobjsearr)
+
+
+ mapref.set(mobileobjsearr.name, mobileobjsearr)
+
+
+ console.log("new mapref",mapref)
      /////  mobarr setting///////
         if (setmobarr.has(JSON.stringify(mobileobjsearr))) {
     
           setmobarr.delete(JSON.stringify(mobileobjsearr));
+           console.log("olderond:",oldobj)
          oldmobobj  = mobileobjsearr;
         } else {
-          console.log(setmobarr,"is mobarrau")
+      
         setmobarr.delete(JSON.stringify(oldmobobj));
-        //   // console.log("older:",oldobj)
+          console.log("older:",oldmobobj)
           oldmobobj = mobileobjsearr;
-        //   // console.log("neww:",objset)
+           console.log("neww:",oldmobobj)
         //   // console.log("afterchange olderr:",oldobj)
           setmobarr.add(JSON.stringify(mobileobjsearr));
-          
+             console.log(setmobarr,"afterupdating")
         }
+     
   
      /////  mobarr setting///////
  
@@ -444,6 +463,8 @@ console.log(oldmobobj,"is mpbobj",mobileobjsearr)
           x <
             document.documentElement.clientWidth - parseInt(element.style.width)
         ) {
+console.log(setmobarr,"is  when checkmobile is on array of mobile")
+
           // console.log(checkedasmobile, "is checkasmonile");
           t.style.left = (x / window.innerWidth) * 100 + "%";
           t.style.top = (y / document.documentElement.clientHeight) * 100 + "%";

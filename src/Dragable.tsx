@@ -16,7 +16,8 @@ const [elenttype, setelenttype] = useState<string|null>(null)
 const [showsidemenu, setshowsidemenu] = useState(false)
 const [va, setva] = useState("")
 
-
+const mobMapRef = useRef<Map<string,any>>(new Map())
+let mapref=mobMapRef.current
   let mobileviewleft=useMemo(()=>{
 
 
@@ -30,6 +31,9 @@ useEffect(() => {
    let elemt:string=slecetdelemnt?.split("").filter(el =>!isStringInteger(el)).join("") 
    setelenttype(elemt)
   }
+  return()=>{
+    setshowsidemenu(false)
+  }
 }, [slecetdelemnt])
 
 
@@ -42,7 +46,8 @@ let {checkedasmobile}=props
 // console.log(props,"is yyyy")
   let countref=useRef(0)
   const [setaray, setsetaray] = useState(new Set())
-  const [setmobarr, setsetmobarr] = useState(new Set())
+  // const [setmobarr, setsetmobarr] = useState(new Set())
+  let setmobarr=useRef<Set<any>>(new Set())
   let ref=useRef<HTMLDivElement >(null)
   
 let {buttonlap,buttonmob}=useMemo(()=>{
@@ -69,6 +74,13 @@ return {buttonlap,buttonmob}
 
 let move=usemouse({buttonlap,buttonmob,checkedasmobile,divmobilebg})
   
+
+
+useEffect(() => {
+  
+
+}, [slecetdelemnt])
+
 
 useEffect(()=>{
  
@@ -97,7 +109,7 @@ console.log(ele,"is elemeyt")
 button.id=ele+countref.current.toString()
 let elemntydefauly=cssdefalult[ele]
 
-button.innerText="jloo"
+button.innerText=ele+countref.current.toString()
 // console.log(button,"is el;eem t")
 // button.style.width = "100px";
 // button.style.height = "30px";
@@ -194,7 +206,7 @@ div.style.top = "0px";
 div.append(hr,hr2,hr3,hr4,button)
 document.body.appendChild(div)
 setslecetdelemnt(div.dataset.name)
-move(div,div,hr,hr2,hr3,hr4,setaray,button,checkedasmobile,setslecetdelemnt,setmobarr)
+move(div,div,hr,hr2,hr3,hr4,setaray,button,checkedasmobile,setslecetdelemnt,setmobarr.current,mapref)
 
   }
   function DraggableEventHandler(e:any,data:any) {
@@ -223,7 +235,7 @@ move(div,div,hr,hr2,hr3,hr4,setaray,button,checkedasmobile,setslecetdelemnt,setm
     
               
         
-    { showsidemenu &&<Rightchangingoption   checkedasmobile={checkedasmobile}   slecetdelemnt={slecetdelemnt}  elenttype={elenttype} />}
+    { showsidemenu &&<Rightchangingoption mapref={mapref}   setmobarr={setmobarr.current}  checkedasmobile={checkedasmobile}   slecetdelemnt={slecetdelemnt}  elenttype={elenttype} />}
     
 
       </>

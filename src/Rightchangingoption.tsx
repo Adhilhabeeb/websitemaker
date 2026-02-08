@@ -5,9 +5,12 @@ import ButtonEditor from './custemmenu'
 type propsva={
     slecetdelemnt:string |null,
     elenttype:string |null,
-    checkedasmobile:Boolean
+    checkedasmobile:Boolean,
+    setmobarr:Set<any>,
+     mapref:Map<string,any>,
+    
 }
-function Rightchangingoption({slecetdelemnt,elenttype,checkedasmobile}:propsva) {
+function Rightchangingoption({slecetdelemnt,elenttype,checkedasmobile,setmobarr,mapref}:propsva) {
 const [csscustem, setcsscustem] = useState<Record<string,string|number>|null>(null)
   const [va, setva] = useState("")
 
@@ -16,6 +19,7 @@ const [csscustem, setcsscustem] = useState<Record<string,string|number>|null>(nu
       
   if (slecetdelemnt &&elenttype ) {
     
+console.log(slecetdelemnt,"is slett current")
 
 let maindiv=document.querySelector(`#${slecetdelemnt}`)
 
@@ -34,7 +38,7 @@ setcsscustem(objectwithvalues)
       
         <div className=' w-1/3  absolute to-0%  right-0   fixed bg-amber-50  z-30 '> 
           
-        <ButtonEditor  checkedasmobile={checkedasmobile} csscustem={csscustem} elenttype={elenttype}  slecetdelemnt={slecetdelemnt} />
+        <ButtonEditor  mapref={mapref} setmobarr={setmobarr} checkedasmobile={checkedasmobile} csscustem={csscustem} elenttype={elenttype}  slecetdelemnt={slecetdelemnt} />
         </div>
     </div>
   )

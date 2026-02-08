@@ -44,48 +44,50 @@ div: {
   opacity: "1",
   transform: "none",
   transition: "all 0.25s ease",
-
+position: "relative", // needed for zIndex to work
+  zIndex: "10",
   /* BEHAVIOR */
   overflow: "hidden",
   cursor: "default",
 }
 ,
-button:{
-  "width": "160px",
-  "height": "48px",
+button: {
+  width: "160px",
+  height: "48px",
 
-  "padding": "10px 18px",
+  padding: "10px 18px",
 
-  "backgroundImage": "url('https://example.com/button-bg.png')",
-  "backgroundSize": "cover",
-  "backgroundRepeat": "no-repeat",
-  "backgroundPosition": "center",
+  backgroundImage: "url('https://example.com/button-bg.png')",
+  backgroundSize: "cover",
+  backgroundRepeat: "no-repeat",
+  backgroundPosition: "center",
 
-  "backgroundColor": "#2563eb",
-  "color": "#ffffff",
+  backgroundColor: "#2563eb",
+  color: "#ffffff",
 
-  "border": "1px solid transparent",
-  "borderRadius": "10px",
-  "outline": "none",
+  border: "1px solid transparent",
+  borderRadius: "10px",
+  outline: "none",
 
-  "fontFamily": "system-ui, sans-serif",
-  "fontSize": "15px",
-  "fontWeight": "600",
-  "lineHeight": "1.2",
-  "letterSpacing": "0.4px",
-  "textAlign": "center",
-  "textDecoration": "none",
-  "textTransform": "none",
-  "whiteSpace": "nowrap",
+  fontFamily: "system-ui, sans-serif",
+  fontSize: "15px",
+  fontWeight: "600",
+  lineHeight: "1.2",
+  letterSpacing: "0.4px",
+  textAlign: "center",
+  textDecoration: "none",
+  textTransform: "none",
+  whiteSpace: "nowrap",
 
-  "boxShadow": "0 6px 16px rgba(0,0,0,0.2)",
-  "opacity": "1",
+  boxShadow: "0 6px 16px rgba(0,0,0,0.2)",
+  opacity: "1",
 
-  "transition": "all 0.3s ease",
-  "transform": "none",
-
-
+  transition: "all 0.3s ease",
+  transform: "none",
+  position: "relative", // needed for zIndex to work
+  zIndex: "10",
 }
+
 
 
 

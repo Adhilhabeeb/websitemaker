@@ -4,15 +4,18 @@ import { checkisvwandconverttomobilescerrrnwidth, checkitisinwidth, mobileik } f
 type Styles = Record<string, string | number>;
 
 export default function ButtonEditor({
-  csscustem,slecetdelemnt,elenttype,checkedasmobile
+  csscustem,slecetdelemnt,elenttype,checkedasmobile,setmobarr,mapref
 }: {
   csscustem: Styles | null;
   slecetdelemnt:string |null;
   elenttype:string |null;
   checkedasmobile:Boolean;
+  setmobarr:Set<any>;
+     mapref:Map<string,any>,
+
 }) {
   const [styles, setStyles] = useState<Styles>({});
-
+let oldstyles:any;
   // sync parent → child
   useLayoutEffect(() => {
    
@@ -37,25 +40,69 @@ let maximumwidth=useMemo(()=>{
   useEffect(() => {
       
     if (slecetdelemnt&& elenttype) {
+
+      // console.log(setmobarr,"is te mobile areray ")
   
       let maindiv=document.querySelector(`#${slecetdelemnt}`)
 
 let elemet =maindiv?.querySelector(`#${slecetdelemnt}`) as HTMLElement
 
-console.log(elemet,"is the elemt and maindiv:",maindiv)
+
+let elementfrommap=mapref.get(slecetdelemnt)
+console.log(elementfrommap,"is te lement from map")
 
 
 
+let oldsetovjarrparsed=[...setmobarr]?.find(el=>{
+
+  let elparsed=JSON.parse(el)
+  return elparsed.name==slecetdelemnt
+
+}
+)
+let newparesdfilterobj=JSON.parse(oldsetovjarrparsed??"null")
+
+// console.log(newparesdfilterobj,"is the currentelemet obj  in the mobilearray ")
+
+  let parseobj:any;
+// if (setovjarrparsed.length>0) {
+// parseobj=JSON.parse(setovjarrparsed[0])
+
+// }
+  
 
 Object.entries(styles).forEach((el:[string,string|number])=>{
 let [name,value]=el 
 
+
+if (newparesdfilterobj) {
+  
+  newparesdfilterobj[name]=value
+}
+if (elementfrommap) {
+  elementfrommap[name]=value
+}
  let mobilescreenelementvalue=checkisvwandconverttomobilescerrrnwidth(name,value as string,maximumwidth,checkedasmobile)
 if (elemet) {
-
+// if (parseobj) {
+//   parseobj[name]=value
+ 
+// }
  (elemet.style as any)[name] = mobilescreenelementvalue
+
+
+
 }
 })
+
+
+
+// console.log(newparesdfilterobj,"is the newfilterobject")
+
+if (checkedasmobile && elementfrommap) {
+mapref.set(slecetdelemnt,elementfrommap)
+console.log(mapref,"is new map")
+}
 
     }
 

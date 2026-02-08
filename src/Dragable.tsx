@@ -1,4 +1,4 @@
-import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { memo, useCallback, useEffect, useEffectEvent, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import Draggable from 'react-draggable'
 import { usemouse } from './mousemove'
 import { isStringInteger, mobileik } from './utils/vierw'
@@ -15,9 +15,12 @@ const [slecetdelemnt, setslecetdelemnt] = useState<string |null>(null)
 const [elenttype, setelenttype] = useState<string|null>(null)
 const [showsidemenu, setshowsidemenu] = useState(false)
 const [va, setva] = useState("")
+let navref=useRef<HTMLDivElement|null>(null)
 
 const mobMapRef = useRef<Map<string,any>>(new Map())
 let mapref=mobMapRef.current
+const lapMapRef = useRef<Map<string,any>>(new Map())
+let lapref=lapMapRef.current
   let mobileviewleft=useMemo(()=>{
 
 
@@ -42,7 +45,7 @@ useEffect(() => {
 
 
 let  divmobilebg=useRef<HTMLDivElement |null >(null) 
-let {checkedasmobile}=props
+let {checkedasmobile,  children}=props
 // console.log(props,"is yyyy")
   let countref=useRef(0)
   const [setaray, setsetaray] = useState(new Set())
@@ -50,16 +53,19 @@ let {checkedasmobile}=props
   let setmobarr=useRef<Set<any>>(new Set())
   let ref=useRef<HTMLDivElement >(null)
   
-let {buttonlap,buttonmob}=useMemo(()=>{
-  let buttonmob=document.createElement("button")
-  buttonmob.style.width="100px"
-  buttonmob.style.height="40px"
-buttonmob.innerText="btnmob"
-buttonmob.style.border="1px solid black"
-  buttonmob.style.position="absolute"
-  buttonmob.style.left="3%"
-  buttonmob.style.top="0%"
-document.body.appendChild(buttonmob)
+
+
+  
+let {buttonlap,buttonmobb}=useMemo(()=>{
+  let buttonmobb=document.createElement("button")
+  buttonmobb.style.width="100px"
+  buttonmobb.style.height="40px"
+buttonmobb.innerText="btnmob"
+buttonmobb.style.border="1px solid black"
+  buttonmobb.style.position="absolute"
+  buttonmobb.style.left="0%"
+  buttonmobb.style.top="0%"
+document.body.appendChild(buttonmobb)
   let buttonlap=document.createElement("button")
   buttonlap.style.width="393px"
   buttonlap.style.height="30px"
@@ -68,10 +74,10 @@ buttonlap.style.border="1px solid black"
   buttonlap.style.position="absolute"
   buttonlap.style.left="0%"
   buttonlap.style.top="4%"
-document.body.appendChild(buttonlap)
-return {buttonlap,buttonmob}
+// document.body.appendChild(buttonlap)
+return {buttonlap,buttonmobb}
 },[])
-
+let buttonmob:HTMLElement=useRef(buttonmobb).current as HTMLElement
 let move=usemouse({buttonlap,buttonmob,checkedasmobile,divmobilebg})
   
 
@@ -80,19 +86,14 @@ useEffect(() => {
   
 
 }, [slecetdelemnt])
+let rectvalue=useRef<DOMRect| null>(null)
 
 
-useEffect(()=>{
- 
-let rect =divmobilebg.current?.getBoundingClientRect()
-console.log(rect,"isrect in drrr")
-
-
-},[checkedasmobile])
 
 // console.log(move,"is move")
 
-  function addbbutton(ele:eleent="button") {
+  function addbbutton(ele:eleent="button",e?:React.MouseEvent<HTMLElement>) {
+
     countref.current++
     // setaray.add(JSON.stringify({name:"adhil"}))
     // setaray.add({name:"alfin"})
@@ -103,6 +104,8 @@ console.log(rect,"isrect in drrr")
 
 let button=document.createElement(ele)
 console.log(ele,"is elemeyt")
+
+
 
 
 
@@ -206,7 +209,7 @@ div.style.top = "0px";
 div.append(hr,hr2,hr3,hr4,button)
 document.body.appendChild(div)
 setslecetdelemnt(div.dataset.name)
-move(div,div,hr,hr2,hr3,hr4,setaray,button,checkedasmobile,setslecetdelemnt,setmobarr.current,mapref)
+move(div,div,hr,hr2,hr3,hr4,setaray,button,checkedasmobile,setslecetdelemnt,setmobarr.current,mapref,navref,lapref)
 
   }
   function DraggableEventHandler(e:any,data:any) {
@@ -218,19 +221,24 @@ move(div,div,hr,hr2,hr3,hr4,setaray,button,checkedasmobile,setslecetdelemnt,setm
 < >
 
 
-<div className='w-full  flex justify-around'>
+<div ref={navref} className='w-full absolute to-0%  flex justify-around h-9 bg-amber-100'>
+  {children}
    <button onClick={addbbutton.bind(null,"button")} className=" underline bg-cyan-100 ">button</button>
         <button onClick={addbbutton.bind(null,"div")} className=" underline  bg-pink-500 ">div</button>
+        {slecetdelemnt&& <button className=' bg-amber-800' onClick={()=>setshowsidemenu(!showsidemenu)} >showsidemenu</button>  }  
+      
 </div>
      
 
-      <button className=' bg-amber-800' onClick={()=>setshowsidemenu(!showsidemenu)} >showsidemenu</button>     <div  style={{
-      display:checkedasmobile?"block":"none",
+     
+       <div  id='divrect' style={{
+    
      position:"absolute",
      width:`${mobileik.x}px`,
   minHeight:`${mobileik.y}px`,
   left:`${mobileviewleft}px`,
-     background:"red",top:"10%"
+     background:"red",top:"20%",
+     visibility:checkedasmobile?"visible":"hidden",
      }} ref={ divmobilebg}>kjlkj</div>
     
               

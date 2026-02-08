@@ -7,7 +7,7 @@ div: {
   width: "100px",
  height:"100px",
   padding: "20px",
-
+text:"",
   /* BACKGROUND */
   backgroundColor: "#ffffff",
   backgroundImage: "none",
@@ -54,7 +54,7 @@ position: "relative", // needed for zIndex to work
 button: {
   width: "160px",
   height: "48px",
-
+text:"",
   padding: "10px 18px",
 
   backgroundImage: "url('https://example.com/button-bg.png')",

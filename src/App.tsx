@@ -135,12 +135,15 @@ return da
     <>
       
 
-      <div className="card"> 
+      
+       {/* {detectMob()?"ann":"alla"} */}
+    <DragableBox  checkedasmobile={checkedasmobile}>
 <input type="checkbox" id="myCheckbox" ref={checkmobileinput}  onChange={()=>setcheckedasmobile(!checkedasmobile)} ></input> is mobile
-       {detectMob()?"ann":"alla"}
-    <DragableBox  checkedasmobile={checkedasmobile}/>
-        seleccted:{seletedoption}  Battery percentage      {chargingstatus.percentage} <br/>
-        <button onClick={() => {
+
+
+    </DragableBox>
+       
+        {/* <button onClick={() => {
 handleclick()
            navigator.mediaDevices.getDisplayMedia({
     audio: true,
@@ -164,27 +167,22 @@ handleclick()
     
 
 
-        </button>
-        <button onClick={()=>{
+        </button> */}
+        {/* <button onClick={()=>{
           setCount(count+1)
         }} >
    jjjjjjjjjj
    {chargingstatus.charging}
 
-        </button>
-         <video ref={vedioref} width="320" height="240" autoPlay></video>
+        </button> */}
+         {/* <video ref={vedioref} width="320" height="240" autoPlay></video>
         <p>jjjj
           Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <input  value={value} onChange={(e)=>{
-        setvalue(e.target.value)
-      }} />
-      <p className="read-the-docs">
-        {/* {dounceva} */}
-        Click on the Vite and React logos to learn more
-      </p>
-      <Chartt data={system} />
+        </p> */}
+ 
+    
+   
+      {/* <Chartt data={system} /> */}
     </>
   )
 }

@@ -11,9 +11,9 @@ export function usemouse({
    divmobilebg
 }: {
   buttonlap?: HTMLButtonElement;
-  buttonmob?: HTMLButtonElement;
+  buttonmob?: HTMLElement;
   checkedasmobile: Boolean;
-   divmobilebg?:HTMLElement |any;
+   divmobilebg?: React.RefObject<HTMLDivElement|null >;
    
 
    
@@ -23,10 +23,14 @@ export function usemouse({
 
 let rectmobdiv=useRef(null)
   let ismobilevalue = useRef(checkedasmobile);
-let currentrect=useRef<Record <string,number>>(null)
+let currentrect=useRef<DOMRect |undefined>(null)
+
+
   useEffect(() => {
     ismobilevalue.current = checkedasmobile;
-  let div=divmobilebg.current?.getBoundingClientRect()
+  let div=divmobilebg?.current?.getBoundingClientRect()
+ 
+  console.log("is the divvvv",div)
  currentrect.current=div
   }, [checkedasmobile]);
 
@@ -97,16 +101,23 @@ let currentrect=useRef<Record <string,number>>(null)
         setslecetdelemnt:Dispatch<SetStateAction<string | null>>,
          setmobarr:Set<any>,
          mapref:Map<string,any>,
-    divmobilebg?:HTMLDivElement|any,
+         navref:React.RefObject<HTMLDivElement | null>,
+         lapref:Map<string,any>,
+  
    
 
   ) {
 
 
 console.log(mapref,"is mpref")
+let navbar=navref.current
+let navbarprops=navbar?.getBoundingClientRect().height as number
+
+
 
  let topdivmob=currentrect.current?.top as number
-//  console.log(currentrect.current,"is ccuuuuytyy in dg",topdivmob)
+ alert(topdivmob+"is topdicv")
+ console.log(currentrect.current,"is ccuuuuytyy in dg",topdivmob)
 
 
     var p: HTMLElement = get(clickEl);
@@ -288,18 +299,21 @@ let rightview=mobilevviewleft+mobileik.x
 
 
 
-let cury=y -topdivmob;
 // console.log(mobilevviewleft,"is ledt vieewrtyh",mobileik.x,"jk and right:",rightview)
  let curx=x-mobilevviewleft
 
 
 if (ismobilevalue.current && x>mobilevviewleft && x<rightview && y>topdivmob) {
+  console.log(divmobilebg?.current,"is mmmmmmmmmm")
+  console.log(ismobilevalue.current,"is mobilllelklkljk")
+let cury=y -topdivmob;
 
-console.log(setmobarr,"is  when checkmobile is on array of mobile")
+   console.log("topdiv:",topdivmob,"andd subvalue:",cury,"Anddd",y)
+// console.log(setmobarr,"is  when checkmobile is on array of mobile")
 // let y=cury
 // console.log(y,"is greterthan ",topdivmob,cury,"is curly and percenthre",(cury/window.innerHeight)*100)
 let x=curx
-console.log(element.style.width,"is the element ewidth grtting in mouse move ")
+// console.log(element.style.width,"is the element ewidth grtting in mouse move ")
    let leftformobile =
           ((x-leftmarginspace) / (mobileik.x)) * 100-((parseInt(element.style.width) ) / window.innerWidth) * 100
  // //  -
@@ -331,11 +345,14 @@ mobileobjsearr.top=0
                 buttonmob.style.top=(cury/window.innerHeight)*100 +"%"
 mobileobjsearr.top=(cury/window.innerHeight)*100 +"%"
     
+
      if (leftformobile>0) { // it is used to set the make the leftvalues crt
          buttonmob.style.left = leftformobile  +"%"
                   mobileobjsearr.left= leftformobile  +"%"
              
      } else{
+
+      console.log(leftformobile,"is leftmobillllel")
          buttonmob.style.left = 0  +"%"
                   mobileobjsearr.left= 0  +"%"
 
@@ -344,6 +361,7 @@ mobileobjsearr.top=(cury/window.innerHeight)*100 +"%"
   
     
 // console.log(oldmobobj,"is mpbobj",mobileobjsearr)
+console.log(mobileobjsearr,"is mobilearrayyyyy8790")
 
 
  mapref.set(mobileobjsearr.name, mobileobjsearr)
@@ -461,13 +479,34 @@ mobileobjsearr.top=(cury/window.innerHeight)*100 +"%"
         if (
           !ismobilevalue.current &&
           x <
-            document.documentElement.clientWidth - parseInt(element.style.width)
+            document.documentElement.clientWidth - parseInt(element.style.width) && y>navbarprops
         ) {
 console.log(setmobarr,"is  when checkmobile is on array of mobile")
 
           // console.log(checkedasmobile, "is checkasmonile");
           t.style.left = (x / window.innerWidth) * 100 + "%";
           t.style.top = (y / document.documentElement.clientHeight) * 100 + "%";
+
+
+//  the lap
+
+let lapobject={...objset}
+lapobject.left=0
+lapobject.top=0
+
+ let curyy=y-navbarprops
+ 
+lapobject.left=(x / window.innerWidth) * 100 + "%";
+lapobject.top=(curyy / document.documentElement.clientHeight) * 100 + "%"
+
+lapref.set(lapobject.name,lapobject)
+ console.log(curyy,"is cutrryyyyy",(curyy / document.documentElement.clientHeight) * 100 + "%",lapobject)
+console.log(lapref,"is  lapobjevt ",mapref)
+//  the lap
+
+
+
+
           hr.style.top = "-4px";
           hr.style.left = -(parseInt(hr.style.width) / 2) + "px";
           //hr2
@@ -557,7 +596,7 @@ console.log(setmobarr,"is  when checkmobile is on array of mobile")
       p.onmouseup = stop_drag;
       document.addEventListener("keydown", (event) => {
      
-        if (event.key === "Enter") {
+        if (event.key ===  " ") {
           if (drag) {
             // alert("ooo")
             stop_drag();

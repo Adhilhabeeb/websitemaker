@@ -1,7 +1,10 @@
 
 @import "tailwindcss";
 
+body{
+  min-height: 100vh;
 
+}
 .elm{
   position: absolute;
   left: 60%;

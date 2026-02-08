@@ -73,7 +73,10 @@ let newparesdfilterobj=JSON.parse(oldsetovjarrparsed??"null")
 
 Object.entries(styles).forEach((el:[string,string|number])=>{
 let [name,value]=el 
-
+if (name=="text") {
+  elemet.innerHTML=value as string
+  
+}
 
 if (newparesdfilterobj) {
   
@@ -116,6 +119,7 @@ console.log(mapref,"is new map")
 
     const { name, value } = e.target;
     let {status,valueas}=checkitisinwidth(name,value,maximumwidth,checkedasmobile)
+    
 if (!status) {
   console.log("is greter that the device width")
   return;

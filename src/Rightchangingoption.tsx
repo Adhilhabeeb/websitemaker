@@ -36,7 +36,7 @@ setcsscustem(objectwithvalues)
   return (
     <div>
       
-        <div className=' w-1/3  absolute to-0%  right-0   fixed bg-amber-50  z-30 '> 
+        <div className=' w-1/3  absolute top-15  right-0   fixed bg-amber-50  z-30 '> 
           
         <ButtonEditor  mapref={mapref} setmobarr={setmobarr} checkedasmobile={checkedasmobile} csscustem={csscustem} elenttype={elenttype}  slecetdelemnt={slecetdelemnt} />
         </div>

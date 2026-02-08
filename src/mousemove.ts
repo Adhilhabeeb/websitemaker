@@ -116,7 +116,7 @@ let navbarprops=navbar?.getBoundingClientRect().height as number
 
 
  let topdivmob=currentrect.current?.top as number
- alert(topdivmob+"is topdicv")
+
  console.log(currentrect.current,"is ccuuuuytyy in dg",topdivmob)
 
 

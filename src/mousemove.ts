@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState, type Dispatch, type SetStateAction } from "react";
 import { isMobile } from "react-device-detect";
-import { isStringInteger, mobileik } from "./utils/vierw";
+import { clamp, isStringInteger, mobileik } from "./utils/vierw";
 import { cssdefalult, type eleent } from "./utils/cssdefault";
 
 
@@ -116,7 +116,7 @@ let navbarprops=navbar?.getBoundingClientRect().height as number
 
 
  let topdivmob=currentrect.current?.top as number
-
+let heightofmobiledesigner=currentrect?.current?.height as number
  console.log(currentrect.current,"is ccuuuuytyy in dg",topdivmob)
 
 
@@ -304,6 +304,16 @@ let rightview=mobilevviewleft+mobileik.x
 
 
 if (ismobilevalue.current && x>mobilevviewleft && x<rightview && y>topdivmob) {
+  console.log(heightofmobiledesigner,"is desiggneerrrr  height",y)
+
+  if (y>(heightofmobiledesigner-(parseInt((element.style.height))))) {
+
+let heighmob=y+(parseInt((element.style.height)))
+console.log("heightmob",heighmob,"jheigjt of elemt",element.style.height,"and  value is ",clamp(heighmob,mobileik.y,heighmob) +"px")
+   if (divmobilebg?.current) {
+    divmobilebg.current.style.height=clamp(heighmob,mobileik.y,heighmob) +"px"
+   }
+  }
   console.log(divmobilebg?.current,"is mmmmmmmmmm")
   console.log(ismobilevalue.current,"is mobilllelklkljk")
 let cury=y -topdivmob;

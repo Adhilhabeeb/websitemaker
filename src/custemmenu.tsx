@@ -86,16 +86,20 @@ if (elementfrommap) {
   elementfrommap[name]=value
 }
  let mobilescreenelementvalue=checkisvwandconverttomobilescerrrnwidth(name,value as string,maximumwidth,checkedasmobile)
-if (elemet) {
+if (name=="width"&& checkedasmobile) {
+console.log(name,value,"is teh width ")
+elementfrommap.width=value
+  }
 // if (parseobj) {
 //   parseobj[name]=value
  
 // }
+
  (elemet.style as any)[name] = mobilescreenelementvalue
 
 
 
-}
+
 })
 
 

@@ -347,9 +347,16 @@ t.style.left=(clampx/window.innerWidth)*100 +"%"
 
 
    if (buttonmob) {
-let mobileobjsearr={...objset}
-mobileobjsearr.left=0
-mobileobjsearr.top=0
+let mobileobjsearr:Record<string,string >={...objset}
+if (!mobileobjsearr?.width.includes("vw")) {
+ let mobilex=mobileik.x/100
+  let newmobilekwidth=(parseInt(mobileobjsearr?.width)) /mobilex+"vw"
+console.log(newmobilekwidth,"is widthh")
+mobileobjsearr.width=newmobilekwidth;
+}
+console.log(mobileobjsearr,"is teh aray  from mobbb")
+mobileobjsearr.left="0"
+mobileobjsearr.top="0"
 
           // console.log(leftformobile,"isss mob111bbbbb")
                 buttonmob.style.top=(cury/window.innerHeight)*100 +"%"

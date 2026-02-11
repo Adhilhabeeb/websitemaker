@@ -4,7 +4,7 @@ import { checkisvwandconverttomobilescerrrnwidth, checkitisinwidth, mobileik } f
 type Styles = Record<string, string | number>;
 
 export default function ButtonEditor({
-  csscustem,slecetdelemnt,elenttype,checkedasmobile,setmobarr,mapref
+  csscustem,slecetdelemnt,elenttype,checkedasmobile,setmobarr,mapref,lapref,oldmobmap
 }: {
   csscustem: Styles | null;
   slecetdelemnt:string |null;
@@ -12,6 +12,8 @@ export default function ButtonEditor({
   checkedasmobile:Boolean;
   setmobarr:Set<any>;
      mapref:Map<string,any>,
+     lapref:Map<string,any>,
+     oldmobmap:Map<string,any>,
 
 }) {
   const [styles, setStyles] = useState<Styles>({});
@@ -46,11 +48,12 @@ let maximumwidth=useMemo(()=>{
       let maindiv=document.querySelector(`#${slecetdelemnt}`)
 
 let elemet =maindiv?.querySelector(`#${slecetdelemnt}`) as HTMLElement
-
+let oldmobmapobj=oldmobmap.get(slecetdelemnt)
 
 let elementfrommap=mapref.get(slecetdelemnt)
 console.log(elementfrommap,"is te lement from map")
 
+let lapelementmap=lapref.get(slecetdelemnt)
 
 
 let oldsetovjarrparsed=[...setmobarr]?.find(el=>{
@@ -73,6 +76,7 @@ let newparesdfilterobj=JSON.parse(oldsetovjarrparsed??"null")
 
 Object.entries(styles).forEach((el:[string,string|number])=>{
 let [name,value]=el 
+
 if (name=="text") {
   elemet.innerHTML=value as string
   
@@ -81,6 +85,10 @@ if (name=="text") {
 if (newparesdfilterobj) {
   
   newparesdfilterobj[name]=value
+}
+
+if (lapelementmap) {
+  lapelementmap[name]=value
 }
 if (elementfrommap) {
   elementfrommap[name]=value
@@ -95,6 +103,10 @@ elementfrommap.width=value
  
 // }
 
+if (oldmobmapobj) {
+  oldmobmapobj[name]=mobilescreenelementvalue
+ 
+}
  (elemet.style as any)[name] = mobilescreenelementvalue
 
 
@@ -103,12 +115,20 @@ elementfrommap.width=value
 })
 
 
-
+if (oldmobmapobj) {
+  oldmobmap.set(slecetdelemnt,oldmobmapobj)
+  console.log(oldmobmap,"isd the oldmobilemapaftercss after thecss update ")
+}
 // console.log(newparesdfilterobj,"is the newfilterobject")
 
 if (checkedasmobile && elementfrommap) {
 mapref.set(slecetdelemnt,elementfrommap)
 console.log(mapref,"is new map")
+}
+
+if (!checkedasmobile &&lapelementmap) {
+  lapref.set(slecetdelemnt,lapelementmap)
+  console.log(lapref,"is teh lapref after css update")
 }
 
     }

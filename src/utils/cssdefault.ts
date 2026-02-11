@@ -6,7 +6,7 @@ div: {
   /* SIZE */
   width: "100px",
  height:"100px",
-  padding: "20px",
+  padding: "0px",
 text:"",
   /* BACKGROUND */
   backgroundColor: "#ffffff",
@@ -50,12 +50,28 @@ position: "relative", // needed for zIndex to work
   overflow: "hidden",
   cursor: "default",
 }
+,p:{
+  color: "#334155",
+  fontFamily: "system-ui, sans-serif",
+  fontSize: "15px",
+  fontWeight: "400",
+  text: "its a ptext",
+
+  margin: "0",
+  padding: "0px",
+
+  whiteSpace: "nowrap",
+  position: "absolute"
+  
+ , width:"10px",
+  zIndex: "10"
+}
 ,
 button: {
   width: "160px",
   height: "48px",
-text:"",
-  padding: "10px 18px",
+text:"button",
+  padding: "0px",
 
   backgroundImage: "url('https://example.com/button-bg.png')",
   backgroundSize: "cover",

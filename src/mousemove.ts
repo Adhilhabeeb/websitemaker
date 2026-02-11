@@ -103,6 +103,7 @@ let currentrect=useRef<DOMRect |undefined>(null)
          mapref:Map<string,any>,
          navref:React.RefObject<HTMLDivElement | null>,
          lapref:Map<string,any>,
+        oldmobmap: Map<string,any>,
   
    
 
@@ -129,11 +130,14 @@ let heightofmobiledesigner=currentrect?.current?.height as number
     let offsetY: any = 0;
     var mousemoveTemp: any = null;
 
+
+    console.log("t:",t,"p:",p,element,"is teh elmey")
     if (t) {
       let oldobj: any;
     let oldmobobj:any;
       var move = function (x: any, y: any) {  
 
+        // console.log("x:",x,"y:",y)
         // console.log(
         //   ismobilevalue.current,
         //   "is the mobi checlbox",
@@ -145,12 +149,13 @@ let heightofmobiledesigner=currentrect?.current?.height as number
         let elemt:string=p.dataset.name?.split("").filter(el =>!isStringInteger(el)).join("")   as string
    
 
-
+console.log(elemt,"is elent")
 let keys=Object.entries(cssdefalult[elemt]).map((el:any)=>{
   let [name,value]=el
 return [name,element.style[name]]
 
 })
+console.log("mobile:",mapref,"an lapp:",lapref)
 let objectcustempro=Object.fromEntries(keys)
 
       
@@ -207,53 +212,55 @@ let objectcustempro=Object.fromEntries(keys)
             const parele = document.getElementById(parsed.name);
             // console.log(parele,"isss parl;eeee")
             let borel = parele?.querySelectorAll(`div`);
-            if (Math.abs(leftdiffeernce) < 10) {
-              if (objset.name != parsed.name) {
-                // console.log(parsed.name,"is main elem:")
+            // if (Math.abs(leftdiffeernce) < 10) {
+            //   if (objset.name != parsed.name) {
+            //     // console.log(parsed.name,"is main elem:")
 
-                //  console.log(borel,"is borell")
-                if (!borel) return;
-                let leftlines = [borel[2], borel[3]];
-                // console.log(leftlines,"is leftlinessss")
-                oldhrs.current?.forEach((el) => {
-                  el.style.display = "none";
-                });
+            //     //  console.log(borel,"is borell")
+            //     if (!borel) return;
+            //     let leftlines = [borel[2], borel[3]];
+            //     // console.log(leftlines,"is leftlinessss")
+            //     oldhrs.current?.forEach((el) => {
+            //       el.style.display = "none";
+            //     });
 
-                oldhrs.current = leftlines;
-                leftlines.forEach((el) => {
-                  el.style.display = "block";
-                });
+            //     oldhrs.current = leftlines;
+            //     leftlines.forEach((el) => {
+            //       el.style.display = "block";
+            //     });
 
-                //  console.log("recalled,",borel,parsed.name,"is nmain",oldhrs)
-                //  leftlines.forEach(el=>el.style.display="block")
-                //   oldhrs.current= leftlines
+            //     //  console.log("recalled,",borel,parsed.name,"is nmain",oldhrs)
+            //     //  leftlines.forEach(el=>el.style.display="block")
+            //     //   oldhrs.current= leftlines
 
-                //  console.log(drag,"is draggg")
-                //   console.log(parele,"is parent",borel)
-                //   console.log(objset.name,"is child")
-              }
-            } else {
-              if (objset.name != parsed.name) {
-                const parele = document.getElementById(parsed.name);
-                // console.log("illllllllllaaaaaaa",parsed.name,"isb",setar)
-              }
-            }
+            //     //  console.log(drag,"is draggg")
+            //     //   console.log(parele,"is parent",borel)
+            //     //   console.log(objset.name,"is child")
+            //   }
+            // } 
+            // else {
+            //   if (objset.name != parsed.name) {
+            //     const parele = document.getElementById(parsed.name);
+            //     // console.log("illllllllllaaaaaaa",parsed.name,"isb",setar)
+            //   }
+            // }
             //checking top
-            if (Math.abs(topdiffeernce) < 10) {
-              if (objset.name != parsed.name) {
-                // console.log("near the ", parsed.name, parele, "is elem");
-                if (!borel) return;
+            // if (Math.abs(topdiffeernce) < 10) {
+            //   if (objset.name != parsed.name) {
+            //     // console.log("near the ", parsed.name, parele, "is elem");
+            //     if (!borel) return;
 
-                let topbtmelem = [borel[0], borel[1]];
-                oldtobtm.current?.forEach((el) => {
-                  el.style.display = "none";
-                });
-                oldtobtm.current = topbtmelem;
-                topbtmelem.forEach((el) => {
-                  el.style.display = "block";
-                });
-              }
-            }
+            //     let topbtmelem = [borel[0], borel[1]];
+            //     console.log(topbtmelem,"is topmelem")
+            //     oldtobtm.current?.forEach((el) => {
+            //       el.style.display = "none";
+            //     });
+            //     oldtobtm.current = topbtmelem;
+            //     topbtmelem.forEach((el) => {
+            //       el.style.display = "block";
+            //     });
+            //   }
+            // }
             // console.log(parsed,"iss spopoipoipipip")
             // console.log("left:",left,"top",top,"is teh objectleft",objleft,"objtop",objtop,"andd.  left =dioference",Math.abs(leftdiffeernce),"and topdiffrenee:",Math.abs(topdiffeernce))
           });
@@ -301,14 +308,14 @@ let rightview=mobilevviewleft+mobileik.x
 
 // console.log(mobilevviewleft,"is ledt vieewrtyh",mobileik.x,"jk and right:",rightview)
  let curx=x-mobilevviewleft
-
+let elemntrect= element.getBoundingClientRect() 
 
 if (ismobilevalue.current && x>mobilevviewleft && x<rightview && y>topdivmob) {
   console.log(heightofmobiledesigner,"is desiggneerrrr  height",y)
 
-  if (y>(heightofmobiledesigner-(parseInt((element.style.height))))) {
+  if (y>(heightofmobiledesigner-(elemntrect.height))) {
 
-let heighmob=y+(parseInt((element.style.height)))
+let heighmob=y+(elemntrect.height)
 console.log("heightmob",heighmob,"jheigjt of elemt",element.style.height,"and  value is ",clamp(heighmob,mobileik.y,heighmob) +"px")
    if (divmobilebg?.current) {
     divmobilebg.current.style.height=clamp(heighmob,mobileik.y,heighmob) +"px"
@@ -325,7 +332,7 @@ let cury=y -topdivmob;
 let x=curx
 // console.log(element.style.width,"is the element ewidth grtting in mouse move ")
    let leftformobile =
-          ((x-leftmarginspace) / (mobileik.x)) * 100-((parseInt(element.style.width) ) / window.innerWidth) * 100
+          ((x-leftmarginspace) / (mobileik.x)) * 100-((elemntrect.width ) / window.innerWidth) * 100
  // //  -
   t.style.top=(y/window.innerHeight)*100+"%"
 
@@ -342,17 +349,41 @@ if (x<(iffsetx/2)) {
 // clampx=Math.max(0,
 //   Math.min(clampx,mobileik.x-iffsetx)
 // )
-t.style.left=(clampx/window.innerWidth)*100 +"%"
+// t.style.left=(clampx/window.innerWidth)*100 +"%"
 
+let elWidth = elemntrect.width;
+
+// clamp between 0 and mobile width
+let clampedX = Math.max(
+  0,
+  Math.min(curx, mobileik.x - elWidth)
+);
+t.style.left = mobilevviewleft+ clampedX + "px";
+
+//sertting old mob object
+
+let oldmobmapobj={...objset}
+oldmobmapobj.top=(y/window.innerHeight)*100+"%"
+oldmobmapobj.left= ((mobilevviewleft+ clampedX)/window.innerWidth)*100+"%";
+oldmobmap.set(oldmobmapobj.name,oldmobmapobj)
+console.log(oldmobmap,"is old mobobj",mobilevviewleft+ clampedX )
+//sertting old mob object
 
 
    if (buttonmob) {
 let mobileobjsearr:Record<string,string >={...objset}
-if (!mobileobjsearr?.width.includes("vw")) {
+if ( "width" in  mobileobjsearr) {
+  if (!mobileobjsearr?.width.includes("vw") && "width" in mobileobjsearr) {
  let mobilex=mobileik.x/100
   let newmobilekwidth=(parseInt(mobileobjsearr?.width)) /mobilex+"vw"
 console.log(newmobilekwidth,"is widthh")
 mobileobjsearr.width=newmobilekwidth;
+}
+  console.log("widt ondd")
+}else{
+
+  console.log(leftformobile,"is leftmobile from illl")
+  console.log("illalallalal")
 }
 console.log(mobileobjsearr,"is teh aray  from mobbb")
 mobileobjsearr.left="0"
@@ -362,16 +393,20 @@ mobileobjsearr.top="0"
                 buttonmob.style.top=(cury/window.innerHeight)*100 +"%"
 mobileobjsearr.top=(cury/window.innerHeight)*100 +"%"
     
-
+        
+         let leftPercent = (clampedX / mobileik.x) * 100;
+          buttonmob.style.left = leftformobile  +"%"
+          console.log(leftPercent,"is tye left in leeeeeeee")
+             mobileobjsearr.left = leftPercent + "%";
      if (leftformobile>0) { // it is used to set the make the leftvalues crt
-         buttonmob.style.left = leftformobile  +"%"
-                  mobileobjsearr.left= leftformobile  +"%"
-             
+        
+        //  console.log(Math.abs((leftformobile -((elemntrect.width ) /mobileik.x)*100)) ,"is sttttt")
+       
      } else{
 
       console.log(leftformobile,"is leftmobillllel")
-         buttonmob.style.left = 0  +"%"
-                  mobileobjsearr.left= 0  +"%"
+        //  buttonmob.style.left = 0  +"%"
+        //           mobileobjsearr.left= 0  +"%"
 
      }
 
@@ -410,16 +445,25 @@ console.log(mobileobjsearr,"is mobilearrayyyyy8790")
 
 
            // os we wnt to get in mobile
+ hr.style.top = "-4px";
+          hr.style.left = -(parseInt(hr.style.width) / 2) + "px";
+          //hr2
+          // console.log(element.style.height,"is height")
+          hr2.style.top = elemntrect.height + "px";
+          hr2.style.left = -(parseInt(hr.style.width) / 2) + "px";
 
-        hr.style.top="-4px"
-        hr.style.left=-(parseInt(hr.style.width)/2)+"px"
-        //hr2
-        hr2.style.top=parseInt(element.style.height)+"px"
-        hr2.style.left=-(parseInt(hr.style.width)/2)+"px"
+          hr3.style.top = -(parseInt(hr3.style.height) / 2) + "px";
+          hr4.style.top = -(parseInt(hr4.style.height) / 2) + "px";
+          hr4.style.left = elemntrect.width  + "px";
+        // hr.style.top="-4px"
+        // hr.style.left=-(parseInt(hr.style.width)/2)+"px"
+        // //hr2
+        // hr2.style.top=parseInt(element.style.height)+"px"
+        // hr2.style.left=-(parseInt(hr.style.width)/2)+"px"
 
-        hr3.style.top=-(parseInt(hr3.style.height)/2)+"px"
-        hr4.style.top=-(parseInt(hr4.style.height)/2)+"px"
-        hr4.style.left=(parseInt(element.style.width)+3)+"px"
+        // hr3.style.top=-(parseInt(hr3.style.height)/2)+"px"
+        // hr4.style.top=-(parseInt(hr4.style.height)/2)+"px"
+        // hr4.style.left=(parseInt(element.style.width)+3)+"px"
 
 
 }
@@ -493,13 +537,16 @@ console.log(mobileobjsearr,"is mobilearrayyyyy8790")
 
             //whe mobile
             //whe lap
+
+            // console.log(parseInt(element.style.width),"is elent width",elemntrect)
         if (
           !ismobilevalue.current &&
           x <
-            document.documentElement.clientWidth - parseInt(element.style.width) && y>navbarprops
+            document.documentElement.clientWidth - elemntrect.width && y>navbarprops
         ) {
-console.log(setmobarr,"is  when checkmobile is on array of mobile")
+       
 
+console.log(t,"is the ttttt",p)
           // console.log(checkedasmobile, "is checkasmonile");
           t.style.left = (x / window.innerWidth) * 100 + "%";
           t.style.top = (y / document.documentElement.clientHeight) * 100 + "%";
@@ -528,12 +575,12 @@ console.log(lapref,"is  lapobjevt ",mapref)
           hr.style.left = -(parseInt(hr.style.width) / 2) + "px";
           //hr2
           // console.log(element.style.height,"is height")
-          hr2.style.top = parseInt(element.style.height) + "px";
+          hr2.style.top = elemntrect.height + "px";
           hr2.style.left = -(parseInt(hr.style.width) / 2) + "px";
 
           hr3.style.top = -(parseInt(hr3.style.height) / 2) + "px";
           hr4.style.top = -(parseInt(hr4.style.height) / 2) + "px";
-          hr4.style.left = parseInt(element.style.width) + 3 + "px";
+          hr4.style.left = elemntrect.width + 3 + "px";
         }
       };
       var mouseMoveHandler = function (e: MouseEvent) {
@@ -558,7 +605,7 @@ console.log(lapref,"is  lapobjevt ",mapref)
       var start_drag = function (e: any) {
       //  console.log(setslecetdelemnt,"is seteleent",p.dataset.name
       //  )
-
+console.log("dragged start",p.dataset.name)
        setslecetdelemnt(p.dataset.name as string)
       
         hr.style.display = "block";
@@ -583,6 +630,7 @@ console.log(lapref,"is  lapobjevt ",mapref)
         return false;
       };
       var stop_drag = function () {
+        console.log("dragged stip")
         //  console.log("onmouseuppp")
         hr.style.display = "none";
         hr2.style.display = "none";

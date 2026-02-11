@@ -8,9 +8,11 @@ type propsva={
     checkedasmobile:Boolean,
     setmobarr:Set<any>,
      mapref:Map<string,any>,
+     lapref:Map<string,any>,
+     oldmobmap:Map<string,any>,
     
 }
-function Rightchangingoption({slecetdelemnt,elenttype,checkedasmobile,setmobarr,mapref}:propsva) {
+function Rightchangingoption({slecetdelemnt,elenttype,checkedasmobile,setmobarr,mapref,lapref,oldmobmap}:propsva) {
 const [csscustem, setcsscustem] = useState<Record<string,string|number>|null>(null)
   const [va, setva] = useState("")
 
@@ -38,7 +40,7 @@ setcsscustem(objectwithvalues)
       
         <div className=' w-1/3  absolute top-15  right-0   fixed bg-amber-50  z-30 '> 
           
-        <ButtonEditor  mapref={mapref} setmobarr={setmobarr} checkedasmobile={checkedasmobile} csscustem={csscustem} elenttype={elenttype}  slecetdelemnt={slecetdelemnt} />
+        <ButtonEditor  lapref={lapref} oldmobmap={oldmobmap}   mapref={mapref} setmobarr={setmobarr} checkedasmobile={checkedasmobile} csscustem={csscustem} elenttype={elenttype}  slecetdelemnt={slecetdelemnt} />
         </div>
     </div>
   )

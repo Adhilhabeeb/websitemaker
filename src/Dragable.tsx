@@ -1,7 +1,7 @@
 import { memo, useCallback, useEffect, useEffectEvent, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import Draggable from 'react-draggable'
 import { usemouse } from './mousemove'
-import { isStringInteger, mobileik } from './utils/vierw'
+import { createElementsFromMap, createhtml, isStringInteger, mobileik } from './utils/vierw'
 import { cssdefalult , type eleent} from './utils/cssdefault'
 import Rightchangingoption from './Rightchangingoption'
 
@@ -15,8 +15,28 @@ const [slecetdelemnt, setslecetdelemnt] = useState<string |null>(null)
 const [elenttype, setelenttype] = useState<string|null>(null)
 const [showsidemenu, setshowsidemenu] = useState(false)
 const [va, setva] = useState("")
-let navref=useRef<HTMLDivElement|null>(null)
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+let navref=useRef<HTMLDivElement|null>(null)
+let mobileoldmapstoreing= useRef <Map<string,any>>(new Map())
+let oldmobmap=mobileoldmapstoreing.current
 const mobMapRef = useRef<Map<string,any>>(new Map())
 let mapref=mobMapRef.current
 const lapMapRef = useRef<Map<string,any>>(new Map())
@@ -46,6 +66,24 @@ useEffect(() => {
 
 let  divmobilebg=useRef<HTMLDivElement |null >(null) 
 let {checkedasmobile,  children}=props
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // console.log(props,"is yyyy")
   let countref=useRef(0)
   const [setaray, setsetaray] = useState(new Set())
@@ -65,7 +103,7 @@ buttonmobb.style.border="1px solid black"
   buttonmobb.style.position="absolute"
   buttonmobb.style.left="0%"
   buttonmobb.style.top="0%"
-document.body.appendChild(buttonmobb)
+// document.body.appendChild(buttonmobb)
   let buttonlap=document.createElement("button")
   buttonlap.style.width="393px"
   buttonlap.style.height="30px"
@@ -92,8 +130,14 @@ let rectvalue=useRef<DOMRect| null>(null)
 
 // console.log(move,"is move")
 
-  function addbbutton(ele:eleent="button",e?:React.MouseEvent<HTMLElement>) {
+  function addbbutton(ele:eleent="button",data:Record<string,string> |null,e?:React.MouseEvent<HTMLElement>,) {
+console.log(data,"is teh adtatattatata")
 
+if (data) {
+console.log(data,"data return")
+
+ 
+}
     countref.current++
     // setaray.add(JSON.stringify({name:"adhil"}))
     // setaray.add({name:"alfin"})
@@ -109,20 +153,25 @@ console.log(ele,"is elemeyt")
 
 
 
-button.id=ele+countref.current.toString()
-let elemntydefauly=cssdefalult[ele]
-
-button.innerText=ele+countref.current.toString()
+button.id=  data?.name??  ele+countref.current.toString()
+let elemntydefauly= data ??  cssdefalult[ele]
+if (elemntydefauly?.text&&elemntydefauly?.text.trim()!="") {
+  button.innerText=elemntydefauly.text
+}
 // console.log(button,"is el;eem t")
 // button.style.width = "100px";
 // button.style.height = "30px";
 //setting fdefalut values to element
+
+console.log(elemntydefauly,"is thje elent data")
 Object.entries(elemntydefauly).forEach((el:any)=>{
   let [name,value]=el
+  
 button.style[name]=value
 
 })
 
+button.style.position="absolute";
 
 
 
@@ -146,7 +195,7 @@ return [name,button.style[name]]
 let objectcustempro=Object.fromEntries(keys)
 
 let objset={
-  name:button.dataset.name,
+  name:data?.name?? button.dataset.name,
   left:button.style.left,
   right:button.style.right,
   top:button.style.top,
@@ -169,6 +218,8 @@ hr.style.display="none"
 hr.style.position = "absolute";
 hr.style.left = "0px";
 hr.style.top = "0px";
+hr.style.zIndex = "87999";
+
 hr.id="hrids  hrtop"
 let hr2=document.createElement("div")
 hr2.style.backgroundColor="blue"
@@ -179,6 +230,7 @@ hr2.style.position = "absolute";
 hr2.style.left = "0px";
 hr2.style.top = "0px";
 hr2.id="hrids hrbottom"
+hr2.style.zIndex = "87999";
 
 let hr3=document.createElement("div")
 hr3.style.backgroundColor="green"
@@ -189,7 +241,7 @@ hr3.style.position = "absolute";
 hr3.style.left = "0px";
 hr3.style.top = "0px";
 hr3.id="hrids hrleft"
-
+hr3.style.zIndex = "87999";
 let hr4=document.createElement("div")
 hr4.style.backgroundColor="violet"
 hr4.style.width="1px"
@@ -199,19 +251,54 @@ hr4.style.position = "absolute";
 hr4.style.left = "0px";
 hr4.style.top = "0px";
 hr4.id="hrids hrright"
+hr4.style.zIndex = "87999";
+
 
 let div=document.createElement("div")
-div.id=ele+countref.current.toString()
-div.dataset.name=ele+countref.current.toString()
+div.id=  data?.name??  ele+countref.current.toString()
+div.dataset.name= data?.name??  ele+countref.current.toString()
 div.style.position = "absolute";
-div.style.left = "0px";
-div.style.top = "0px";
+div.style.width="auto"
+div.style.height="auto"
+
+
+div.style.left = data?.left ?? "0px";
+div.style.top = data?.top?? "0px";
 div.append(hr,hr2,hr3,hr4,button)
 document.body.appendChild(div)
 setslecetdelemnt(div.dataset.name)
-move(div,div,hr,hr2,hr3,hr4,setaray,button,checkedasmobile,setslecetdelemnt,setmobarr.current,mapref,navref,lapref)
+move(div,div,hr,hr2,hr3,hr4,setaray,button,checkedasmobile,setslecetdelemnt,setmobarr.current,mapref,navref,lapref,oldmobmap)
 
   }
+
+useEffect(() => {
+  setshowsidemenu(false)
+  if(checkedasmobile){
+  
+createElementsFromMap(oldmobmap,addbbutton)
+console.log(oldmobmap,"is my ioldmaooo")
+  }else{
+    createElementsFromMap(lapref,addbbutton)
+  }
+
+
+
+  return () => {
+    const root = document.getElementById("root");
+let divmob=document.getElementById("divrect")
+Array.from(document.body.children).forEach(el => {
+  if (el !== root &&  el !==divmob) {
+    el.remove();
+  }
+});
+
+console.log(mapref,"is mob",lapref,"is lapppp and oldmaoref",oldmobmap)
+console.log(Array.from(mapref),"is mapppppp")
+  }
+}, [checkedasmobile])
+
+
+
   function DraggableEventHandler(e:any,data:any) {
     console.log(e,
       "isn eeeeee",data
@@ -223,8 +310,10 @@ move(div,div,hr,hr2,hr3,hr4,setaray,button,checkedasmobile,setslecetdelemnt,setm
 
 <div ref={navref} className='w-full absolute to-0%  flex justify-around h-9 bg-amber-100'>
   {children}
-   <button onClick={addbbutton.bind(null,"button")} className=" underline bg-cyan-100 ">button</button>
-        <button onClick={addbbutton.bind(null,"div")} className=" underline  bg-pink-500 ">div</button>
+   <button onClick={addbbutton.bind(null,"button",null)} className=" underline bg-cyan-100 ">button</button>
+        <button onClick={addbbutton.bind(null,"div",null)} className=" underline  bg-pink-500 ">div</button>
+          <button onClick={addbbutton.bind(null,"p",null)} className=" underline bg-cyan-100 ">p</button>
+      {mapref.size>0&&lapref.size>0&& <button onClick={createhtml.bind(null,mapref,lapref)}>create html</button>}
         {slecetdelemnt&& <button className=' bg-amber-800' onClick={()=>setshowsidemenu(!showsidemenu)} >showsidemenu</button>  }  
       
 </div>
@@ -243,7 +332,7 @@ move(div,div,hr,hr2,hr3,hr4,setaray,button,checkedasmobile,setslecetdelemnt,setm
     
               
         
-    { showsidemenu &&<Rightchangingoption mapref={mapref}   setmobarr={setmobarr.current}  checkedasmobile={checkedasmobile}   slecetdelemnt={slecetdelemnt}  elenttype={elenttype} />}
+    { showsidemenu &&<Rightchangingoption mapref={mapref} lapref={lapref}  oldmobmap={oldmobmap}  setmobarr={setmobarr.current}  checkedasmobile={checkedasmobile}   slecetdelemnt={slecetdelemnt}  elenttype={elenttype} />}
     
 
       </>

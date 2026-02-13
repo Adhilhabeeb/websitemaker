@@ -133,7 +133,7 @@ Array.from(document.body.children).forEach(el => {
   console.log(parsedhsitoryu.lapref,"afterr quuiiiiiii")
 
 console.log(lapref,"is new lapref after changed ")
-// console.log(parsedhsitoryu.lapref,"lapppppppppp")
+console.log(parsedhsitoryu.lapref,"lapppppppppp")
 
 // let laprefar=Array.from(parsedhsitoryu.lapref)
 
@@ -149,7 +149,7 @@ oldobj.top=parseInt(oldobj.top)+topnavinpercentage+"%"
 addbbutton(elemt,oldobj)
 // // console.log(obj,"snew and old: ",oldobj, name,navbarprops,"is navbarr",obj.top)
 // // console.log(lapref,"is laprefff")
-// lapref.set(name,oldobj)
+lapref.set(name,obj)
 //  console.log(lapref,"is after  laprefff")
 
 
@@ -160,7 +160,46 @@ lapref=new Map(parsedhsitoryu.lapref)
 
 console.log(lapref,"is arrrr afterall",recentscountref.current)
 }
+else if(parsedhsitoryu.mapref.length>0 && checkedasmobile){
 
+console.log(parsedhsitoryu.mapref,"is mob",parsedhsitoryu.oldmobmap)
+
+   setslecetdelemnt(null)
+    const root = document.getElementById("root");
+let divmob=document.getElementById("divrect")
+Array.from(document.body.children).forEach(el => {
+  if (el !== root &&  el !==divmob) {
+    el.remove();
+  }
+});
+
+
+parsedhsitoryu.oldmobmap.map((el:any)=>{
+let [name,obj]:[string,Record<string,any>]=el;
+let oldobj={...obj}
+  let elemt:string=name?.split("").filter(el =>!isStringInteger(el)).join("") 
+addbbutton(elemt,oldobj)
+
+
+// // console.log(obj,"snew and old: ",oldobj, name,navbarprops,"is navbarr",obj.top)
+// // console.log(lapref,"is laprefff")
+
+//  console.log(lapref,"is after  laprefff")
+
+
+})
+  
+
+mapref=new Map(parsedhsitoryu.mapref)
+oldmobmap=new Map(parsedhsitoryu.oldmobmap)
+
+console.log(mapref,"is mapref",oldmobmap,"is old mob mp")
+
+
+
+
+
+}
 
 
 }
@@ -199,8 +238,7 @@ if (e.currentTarget.id=="+") {
   const [setaray, setsetaray] = useState(new Set())
   // const [setmobarr, setsetmobarr] = useState(new Set())
   let setmobarr=useRef<Set<any>>(new Set())
-  let ref=useRef<HTMLDivElement >(null)
-  
+
 
 
   

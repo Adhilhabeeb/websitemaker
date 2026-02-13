@@ -640,6 +640,8 @@ lapref.set(lapobject.name,lapobject)
       };
       var stop_drag = function () {
         
+
+        console.log(lapref,"is lapref in stopdrag")
         currenthistoryref.current++
     recentscountref.current=currenthistoryref.current
 

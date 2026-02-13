@@ -1,5 +1,6 @@
 import { useEffect, useLayoutEffect, useMemo, useState } from "react";
-import { checkisvwandconverttomobilescerrrnwidth, checkitisinwidth, mobileik } from "./utils/vierw";
+import { checkisvwandconverttomobilescerrrnwidth, checkitisinwidth, cssproper, mobileik } from "./utils/vierw";
+import { cssValueOptions } from "./utils/cssdefault";
 
 type Styles = Record<string, string | number>;
 
@@ -198,6 +199,8 @@ if (!status) {
 
 /* ---------------- FIELD ---------------- */
 
+ 
+
 function Field({
   label,
   name,
@@ -209,8 +212,24 @@ function Field({
   value: string | number;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }) {
+
+  const options = cssValueOptions[name];
+  const [showOptions, setShowOptions] = useState(false);
+
+  const handleOptionClick = (optionValue: string) => {
+    const fakeEvent = {
+      target: {
+        name,
+        value: optionValue,
+      },
+    } as React.ChangeEvent<HTMLInputElement>;
+
+    onChange(fakeEvent);
+    setShowOptions(false);
+  };
+
   return (
-    <div>
+    <div className="mb-4 relative">
       <label className="text-sm font-medium text-slate-600">
         {label}
       </label>
@@ -219,9 +238,25 @@ function Field({
         name={name}
         value={value ?? ""}
         onChange={onChange}
+        onFocus={() => setShowOptions(true)}
         className="mt-1 w-full rounded-lg border px-3 py-2 text-sm
                    focus:outline-none focus:ring-2 focus:ring-blue-500"
       />
+
+      {/* Suggestion Values */}
+      {options && showOptions && (
+        <div className="mt-2 flex flex-wrap gap-2 bg-white p-2 rounded-lg border shadow-md max-h-40 overflow-auto">
+          {options.map((opt) => (
+            <div
+              key={opt}
+              onClick={() => handleOptionClick(opt)}
+              className="px-3 py-1 text-xs bg-slate-100 rounded-md cursor-pointer hover:bg-blue-500 hover:text-white transition"
+            >
+              {opt}
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

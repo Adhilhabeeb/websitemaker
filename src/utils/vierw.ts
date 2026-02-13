@@ -1,3 +1,7 @@
+
+import cssProperties from "mdn-data/css/properties.json" assert { type: "json" }
+import cssSyntaxes from "mdn-data/css/syntaxes.json" assert { type: "json" }
+
 export let mobileik = {
   x: 393,
   y: 852,
@@ -72,15 +76,25 @@ export function clamp(num:number, min:number, max:number) {
   return Math.min(Math.max(num, min), max);
 }
 
- export function createElementsFromMap(map:Map<string,Record<string,string>>,addbutton:(ele:string,data:Record<string,any>)=>void) {
+ export function createElementsFromMap(map:Map<string,Record<string,string>>,addbutton:(ele:string,data:Record<string,any>)=>void,navbarprops:number) {
   let parent=document.body
-console.log(addbutton,"is add button")
+// console.log(addbutton,"is add button")
+console.log(map,"is map as passed  9999")
+
   map.forEach((data, key) => {
 
-    console.log(data,"isthe data",key)
+    console.log(data,"isthe bfore  data",key)
+
+
+let topnavinpercentage=(navbarprops/ document.documentElement.clientHeight) * 100 
+
+data.top=parseInt(data.top)+topnavinpercentage+"%"
+  
     let elemt:string=data.name?.split("").filter(el =>!isStringInteger(el)).join("") 
-    addbutton(elemt,data)
-    console.log(elemt,"is teh lement")
+
+console.log(data,"after upfdate","is old data")
+    // addbutton(elemt,data)
+console.log("mappp:",map)
 //     const element = document.createElement(elemt);
 // Object.entries(data).forEach((el:any)=>{
 //   let [name,value]=el
@@ -210,4 +224,114 @@ export function createhtml(
 </html>`;
 console.log(html,"is html")
   return html;
+}
+
+
+
+
+
+
+const syntaxMap = cssSyntaxes as Record<string, { syntax: string }>
+
+// function expandRepeatStyle(name:string) {
+// let css=cssProperties as Record<string,any>
+//   // 1️⃣ Get background-repeat syntax
+//   const propertySyntax = css[name].syntax  
+
+//   // 2️⃣ Resolve <repeat-style>
+//   const keyMatch = propertySyntax.match(/<([^>]+)>/)
+//   if (!keyMatch) return []
+
+//   const key = keyMatch[1]
+
+//   const resolved = syntaxMap[key].syntax
+
+//   // resolved will be:
+//   // repeat-x | repeat-y | [ repeat | space | round | no-repeat ]{1,2}
+
+//   // 3️⃣ Extract inner group inside brackets
+//   const groupMatch = resolved.match(/\[([^\]]+)\]/)
+
+//   if (!groupMatch) return []
+
+//   const baseValues = groupMatch[1]
+//     .split("|")
+//     .map(v => v.trim())
+
+//   // 4️⃣ Generate 1 and 2 combinations
+//   const result: string[] = []
+
+//   // single
+//   baseValues.forEach(v => result.push(v))
+
+//   // double
+//   baseValues.forEach(a => {
+//     baseValues.forEach(b => {
+//       result.push(a + " " + b)
+//     })
+//   })
+
+//   return result
+// }
+function expandProperty(property: string) {
+let css=cssProperties as Record<string,{syntax:string}>
+
+  const propertyData = css[property]
+
+  if (!propertyData) {
+    console.warn("Property not found:", property)
+    return []
+  }
+
+  const propertySyntax = propertyData.syntax
+
+  // extract <something>
+  const keyMatch = propertySyntax.match(/<([^>]+)>/)
+
+  if (!keyMatch) {
+    // no reusable syntax, just split
+    return propertySyntax
+      .replace(/\{[^}]+\}/g, "")
+      .replace(/[?#*+]/g, "")
+      .replace(/[\[\]]/g, "")
+      .split("|")
+      .map(v => v.trim())
+  }
+
+  const key = keyMatch[1]
+
+  // check if syntax exists in syntaxMap
+  if (!syntaxMap[key]) {
+    // primitive type like <length> or <color>
+    return [`<${key}>`]
+  }
+
+  const resolved = syntaxMap[key].syntax
+
+  const cleaned = resolved
+    .replace(/\{[^}]+\}/g, "")
+    .replace(/[?#*+]/g, "")
+    .replace(/[\[\]]/g, "")
+
+  return cleaned
+    .split("|")
+    .map(v => v.trim())
+}
+function camelToKebab(str: string) {
+  return str
+    .replace(/([a-z])([A-Z])/g, "$1-$2")
+    .toLowerCase()
+}
+
+
+export function cssproper(name:string) {
+  const cssName = camelToKebab(name)
+
+console.log(name,"iiss",expandProperty(cssName),"iss")
+
+
+ 
+  // const expanded = expandRepeatStyle("backgroundRepeat")
+  // console.log(expanded, "expanded values 08788")
+  // return expanded
 }

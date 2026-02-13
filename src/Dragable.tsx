@@ -1,9 +1,10 @@
-import { memo, useCallback, useEffect, useEffectEvent, useLayoutEffect, useMemo, useRef, useState } from 'react'
+import React, { memo, useCallback, useEffect, useEffectEvent, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import Draggable from 'react-draggable'
 import { usemouse } from './mousemove'
-import { createElementsFromMap, createhtml, isStringInteger, mobileik } from './utils/vierw'
+import { createElementsFromMap, createhtml, cssproper, isStringInteger, mobileik } from './utils/vierw'
 import { cssdefalult , type eleent} from './utils/cssdefault'
 import Rightchangingoption from './Rightchangingoption'
+import Leftchanging from './Leftchanging'
 
 interface dragboxprop{
   checkedasmobile:boolean
@@ -17,6 +18,7 @@ const [showsidemenu, setshowsidemenu] = useState(false)
 const [va, setva] = useState("")
 
 
+const [recentbuttonhold, setrecentbuttonhold] = useState(false)
 
 
 
@@ -31,9 +33,9 @@ const [va, setva] = useState("")
 
 
 
-
-
-
+let recentscountref=useRef(0)
+let currenthistoryref=useRef(0)
+let currenthistory=currenthistoryref.current
 let navref=useRef<HTMLDivElement|null>(null)
 let mobileoldmapstoreing= useRef <Map<string,any>>(new Map())
 let oldmobmap=mobileoldmapstoreing.current
@@ -41,6 +43,34 @@ const mobMapRef = useRef<Map<string,any>>(new Map())
 let mapref=mobMapRef.current
 const lapMapRef = useRef<Map<string,any>>(new Map())
 let lapref=lapMapRef.current
+let historytmapref=useRef<Map<number,any>>(new Map())
+let historymap=historytmapref.current
+
+
+useEffect(() => {
+
+  let oldmovbva=  Array.from(oldmobmap)
+let mobmapva= Array.from(mapref)
+let lapva=  Array.from(lapref)
+  
+  let historyobj={
+    mapref:mobmapva,
+    lapref:lapva,
+    oldmobmap:oldmovbva
+  }
+
+  let stringhistroyobj=JSON.stringify(historyobj)
+console.log(historyobj,"is obj")
+historymap.set(currenthistory,stringhistroyobj)
+
+
+// console.log(historymap,"is histiiorry")
+
+},[currenthistory])
+
+
+
+
   let mobileviewleft=useMemo(()=>{
 
 
@@ -70,18 +100,98 @@ let {checkedasmobile,  children}=props
 
 
 
+let timeout;
 
 
 
 
 
 
+useEffect(() => {
+ let parsedhsitoryu= JSON.parse(  historymap.get(recentscountref.current))
+
+
+
+ console.log(historymap,"is history mappp")
+console.log(parsedhsitoryu,"ius patrsed ")
+if(recentscountref.current !=0 &&recentbuttonhold){
+if (parsedhsitoryu.lapref.length>0 && !checkedasmobile
+) {
+
+
+  console.log(parsedhsitoryu.lapref,"qfftettryhriiiiiiiiiiiiiiiiii")
+
+    setslecetdelemnt(null)
+    const root = document.getElementById("root");
+let divmob=document.getElementById("divrect")
+Array.from(document.body.children).forEach(el => {
+  if (el !== root &&  el !==divmob) {
+    el.remove();
+  }
+});
+
+  console.log(parsedhsitoryu.lapref,"afterr quuiiiiiii")
+
+console.log(lapref,"is new lapref after changed ")
+// console.log(parsedhsitoryu.lapref,"lapppppppppp")
+
+// let laprefar=Array.from(parsedhsitoryu.lapref)
+
+parsedhsitoryu.lapref.map((el:any)=>{
+let [name,obj]:[string,Record<string,any>]=el;
+let oldobj={...obj}
+let navbar=navref.current
+let navbarprops=navbar?.getBoundingClientRect().height as number
+
+let topnavinpercentage=(navbarprops/ document.documentElement.clientHeight) * 100 
+oldobj.top=parseInt(oldobj.top)+topnavinpercentage+"%"
+   let elemt:string=name?.split("").filter(el =>!isStringInteger(el)).join("") 
+addbbutton(elemt,oldobj)
+// // console.log(obj,"snew and old: ",oldobj, name,navbarprops,"is navbarr",obj.top)
+// // console.log(lapref,"is laprefff")
+// lapref.set(name,oldobj)
+//  console.log(lapref,"is after  laprefff")
+
+
+})
+  
+
+lapref=new Map(parsedhsitoryu.lapref)
+
+console.log(lapref,"is arrrr afterall",recentscountref.current)
+}
+
+
+
+}
+
+}, [recentscountref.current])
 
 
 
 
 
+function handlerecent(e:React.MouseEvent<SVGSVGElement>) {
 
+setrecentbuttonhold(true)
+timeout=setTimeout(() => {
+  setrecentbuttonhold(false)
+}, 700);
+
+if (e.currentTarget.id=="+") {
+  if (historymap.get(recentscountref.current+1)) {
+ recentscountref.current++
+  
+}
+}else{
+  if (historymap.get(recentscountref.current-1)) {
+
+ recentscountref.current--
+  
+}
+}
+
+}
 
 
 // console.log(props,"is yyyy")
@@ -116,22 +226,18 @@ buttonlap.style.border="1px solid black"
 return {buttonlap,buttonmobb}
 },[])
 let buttonmob:HTMLElement=useRef(buttonmobb).current as HTMLElement
-let move=usemouse({buttonlap,buttonmob,checkedasmobile,divmobilebg})
+let move=usemouse({buttonlap,buttonmob,checkedasmobile,divmobilebg,currenthistoryref,recentscountref})
   
 
 
-useEffect(() => {
-  
-
-}, [slecetdelemnt])
-let rectvalue=useRef<DOMRect| null>(null)
 
 
+const [showpanel, setshowpanel] = useState(false)
 
 // console.log(move,"is move")
 
   function addbbutton(ele:eleent="button",data:Record<string,string> |null,e?:React.MouseEvent<HTMLElement>,) {
-console.log(data,"is teh adtatattatata")
+console.log(data,"is teh adtatattatata",currenthistoryref,"is ref")
 
 if (data) {
 console.log(data,"data return")
@@ -147,9 +253,12 @@ console.log(data,"data return")
     // )
 
 let button=document.createElement(ele)
-console.log(ele,"is elemeyt")
-
-
+// console.log(ele,"is elemeyt")
+if (ele=="input") {
+let input=button as HTMLInputElement
+input.placeholder="Enter value here "
+// input.value="adjik"
+}
 
 
 
@@ -166,6 +275,7 @@ if (elemntydefauly?.text&&elemntydefauly?.text.trim()!="") {
 console.log(elemntydefauly,"is thje elent data")
 Object.entries(elemntydefauly).forEach((el:any)=>{
   let [name,value]=el
+  // console.log(name,"is ythe name ")
   
 button.style[name]=value
 
@@ -202,10 +312,10 @@ let objset={
   bottom:button.style.bottom,
 ...objectcustempro
 }
-console.log(objset,"is object custem proo")
+// console.log(objset,"is object custem proo")
 setaray.add(JSON.stringify(objset))
 
-console.log(objset,"is the objeset")
+// console.log(objset,"is the objeset")
 
 //
 // document.body.appendChild(button)
@@ -267,23 +377,31 @@ div.style.top = data?.top?? "0px";
 div.append(hr,hr2,hr3,hr4,button)
 document.body.appendChild(div)
 setslecetdelemnt(div.dataset.name)
+console.log(currenthistoryref.current,"in histoy")
 move(div,div,hr,hr2,hr3,hr4,setaray,button,checkedasmobile,setslecetdelemnt,setmobarr.current,mapref,navref,lapref,oldmobmap)
 
+
+console.log(lapref,"after adding button ")
   }
 
-useEffect(() => {
-  setshowsidemenu(false)
+useEffect(() => {  
+  let navbar=navref.current
+let navbarprops=navbar?.getBoundingClientRect().height as number
+ setshowsidemenu(false)
+ setshowpanel(false)
   if(checkedasmobile){
-  
-createElementsFromMap(oldmobmap,addbbutton)
+
+createElementsFromMap(oldmobmap,addbbutton,navbarprops)
 console.log(oldmobmap,"is my ioldmaooo")
   }else{
-    createElementsFromMap(lapref,addbbutton)
+    createElementsFromMap(lapref,addbbutton,navbarprops)
   }
 
 
+ 
 
   return () => {
+    setslecetdelemnt(null)
     const root = document.getElementById("root");
 let divmob=document.getElementById("divrect")
 Array.from(document.body.children).forEach(el => {
@@ -310,14 +428,31 @@ console.log(Array.from(mapref),"is mapppppp")
 
 <div ref={navref} className='w-full absolute to-0%  flex justify-around h-9 bg-amber-100'>
   {children}
-   <button onClick={addbbutton.bind(null,"button",null)} className=" underline bg-cyan-100 ">button</button>
-        <button onClick={addbbutton.bind(null,"div",null)} className=" underline  bg-pink-500 ">div</button>
-          <button onClick={addbbutton.bind(null,"p",null)} className=" underline bg-cyan-100 ">p</button>
+  {  showpanel&&  <Leftchanging addbbutton={addbbutton}  setshowpanel={setshowpanel} />}
+  {currenthistoryref.current>0 && <button>{currenthistoryref.current}</button>}
+{ currenthistoryref.current>0 &&    <div className='w-1/12 h-full bg-amber-700 flex items-center justify-around'>
+   <svg onClick={handlerecent}   xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"  id='-' className="size-5">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M9 15 3 9m0 0 6-6M3 9h12a6 6 0 0 1 0 12h-3" />
+  
+</svg>
+
+<p> {recentscountref.current}</p>
+<svg onClick={handlerecent}  xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" id='+' className="size-5">
+  <path stroke-linecap="round" stroke-linejoin="round" d="m15 15 6-6m0 0-6-6m6 6H9a6 6 0 0 0 0 12h3" />
+</svg>
+
+   
+   </div>}
+      <button onClick={()=>setshowpanel(!showpanel)}>show panel</button>
       {mapref.size>0&&lapref.size>0&& <button onClick={createhtml.bind(null,mapref,lapref)}>create html</button>}
         {slecetdelemnt&& <button className=' bg-amber-800' onClick={()=>setshowsidemenu(!showsidemenu)} >showsidemenu</button>  }  
-      
-</div>
+       {/* <input
      
+        className="w-2xl rounded-lg border text-sm
+                   focus:outline-none focus:ring-2 focus:ring-blue-500"
+      /> */}
+</div>
+
 
      
        <div  id='divrect' style={{

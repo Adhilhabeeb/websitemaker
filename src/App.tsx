@@ -7,6 +7,7 @@ import Chartt from './Chart';
 import type { systemdetatype } from './eletron/poll';
 
 import DragableBox from './Dragable';
+import { cssproper } from './utils/vierw';
  declare global {
     
     interface Window { adhil: polltye  }
@@ -78,12 +79,15 @@ return ipcoff
 }
  }, [count])
  
+ const [user, setuser] = useState<any>()
 // Source - https://stackoverflow.com/a
 // Posted by Anwar, modified by community. See post 'Timeline' for change history
 // Retrieved 2026-01-20, License - CC BY-SA 4.0
 useLayoutEffect(() => {
 
-
+if (localStorage.getItem("webmakerlogged")) {
+  setuser(localStorage.getItem("webmakerlogged"))
+}
 
  async function name() {
   console.log(await  window.adhil.sendsystemmodel(),"is from model")
@@ -134,6 +138,7 @@ return da
   return (
     <>
       
+
 
       
        {/* {detectMob()?"ann":"alla"} */}

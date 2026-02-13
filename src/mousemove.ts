@@ -8,11 +8,13 @@ export function usemouse({
   buttonlap,
   buttonmob,
   checkedasmobile,
-   divmobilebg
+   divmobilebg,currenthistoryref,recentscountref
 }: {
   buttonlap?: HTMLButtonElement;
   buttonmob?: HTMLElement;
   checkedasmobile: Boolean;
+    currenthistoryref: React.RefObject<number >
+    recentscountref:React.RefObject<number >
    divmobilebg?: React.RefObject<HTMLDivElement|null >;
    
 
@@ -20,6 +22,9 @@ export function usemouse({
 }) {
  
   
+
+
+
 
 let rectmobdiv=useRef(null)
   let ismobilevalue = useRef(checkedasmobile);
@@ -30,7 +35,7 @@ let currentrect=useRef<DOMRect |undefined>(null)
     ismobilevalue.current = checkedasmobile;
   let div=divmobilebg?.current?.getBoundingClientRect()
  
-  console.log("is the divvvv",div)
+  // console.log("is the divvvv",div)
  currentrect.current=div
   }, [checkedasmobile]);
 
@@ -104,13 +109,16 @@ let currentrect=useRef<DOMRect |undefined>(null)
          navref:React.RefObject<HTMLDivElement | null>,
          lapref:Map<string,any>,
         oldmobmap: Map<string,any>,
+   
+
+        
   
    
 
   ) {
 
 
-console.log(mapref,"is mpref")
+// console.log(mapref,"is mpref")
 let navbar=navref.current
 let navbarprops=navbar?.getBoundingClientRect().height as number
 
@@ -118,7 +126,7 @@ let navbarprops=navbar?.getBoundingClientRect().height as number
 
  let topdivmob=currentrect.current?.top as number
 let heightofmobiledesigner=currentrect?.current?.height as number
- console.log(currentrect.current,"is ccuuuuytyy in dg",topdivmob)
+//  console.log(currentrect.current,"is ccuuuuytyy in dg",topdivmob)
 
 
     var p: HTMLElement = get(clickEl);
@@ -131,7 +139,7 @@ let heightofmobiledesigner=currentrect?.current?.height as number
     var mousemoveTemp: any = null;
 
 
-    console.log("t:",t,"p:",p,element,"is teh elmey")
+    // console.log("t:",t,"p:",p,element,"is teh elmey")
     if (t) {
       let oldobj: any;
     let oldmobobj:any;
@@ -149,13 +157,13 @@ let heightofmobiledesigner=currentrect?.current?.height as number
         let elemt:string=p.dataset.name?.split("").filter(el =>!isStringInteger(el)).join("")   as string
    
 
-console.log(elemt,"is elent")
+// console.log(elemt,"is elent")
 let keys=Object.entries(cssdefalult[elemt]).map((el:any)=>{
   let [name,value]=el
 return [name,element.style[name]]
 
 })
-console.log("mobile:",mapref,"an lapp:",lapref)
+// console.log("mobile:",mapref,"an lapp:",lapref)
 let objectcustempro=Object.fromEntries(keys)
 
       
@@ -203,7 +211,7 @@ let objectcustempro=Object.fromEntries(keys)
             let top = parseInt(parsed.top);
             let objleft = parseInt(objset.left);
             let objtop = parseInt(objset.top);
-
+// console.log("left:",left,"top:",top,"objleft",objleft,"objtop:",objtop)
             let leftdiffeernce = left - objleft;
 
             let topdiffeernce = top - objtop;
@@ -212,32 +220,33 @@ let objectcustempro=Object.fromEntries(keys)
             const parele = document.getElementById(parsed.name);
             // console.log(parele,"isss parl;eeee")
             let borel = parele?.querySelectorAll(`div`);
-            // if (Math.abs(leftdiffeernce) < 10) {
-            //   if (objset.name != parsed.name) {
-            //     // console.log(parsed.name,"is main elem:")
+            if (Math.abs(leftdiffeernce) < 10) {
+              if (objset.name != parsed.name) {
+                // console.log(parsed.name,"is main elem:")
 
-            //     //  console.log(borel,"is borell")
-            //     if (!borel) return;
-            //     let leftlines = [borel[2], borel[3]];
-            //     // console.log(leftlines,"is leftlinessss")
-            //     oldhrs.current?.forEach((el) => {
-            //       el.style.display = "none";
-            //     });
+                 console.log(borel,"is borell")
+                if (!borel) return;
+                let leftlines = [borel[2], borel[3]];
+                // console.log(leftlines,"is lefdt loines")
+                // // console.log(leftlines,"is leftlinessss")
+                oldhrs.current?.forEach((el) => {
+                  el.style.display = "none";
+                });
 
-            //     oldhrs.current = leftlines;
-            //     leftlines.forEach((el) => {
-            //       el.style.display = "block";
-            //     });
+                oldhrs.current = leftlines;
+                leftlines.forEach((el) => {
+                  el.style.display = "block";
+                });
 
-            //     //  console.log("recalled,",borel,parsed.name,"is nmain",oldhrs)
-            //     //  leftlines.forEach(el=>el.style.display="block")
-            //     //   oldhrs.current= leftlines
+                //  console.log("recalled,",borel,parsed.name,"is nmain",oldhrs)
+                //  leftlines.forEach(el=>el.style.display="block")
+                //   oldhrs.current= leftlines
 
-            //     //  console.log(drag,"is draggg")
-            //     //   console.log(parele,"is parent",borel)
-            //     //   console.log(objset.name,"is child")
-            //   }
-            // } 
+                //  console.log(drag,"is draggg")
+                //   console.log(parele,"is parent",borel)
+                //   console.log(objset.name,"is child")
+              }
+            } 
             // else {
             //   if (objset.name != parsed.name) {
             //     const parele = document.getElementById(parsed.name);
@@ -311,21 +320,21 @@ let rightview=mobilevviewleft+mobileik.x
 let elemntrect= element.getBoundingClientRect() 
 
 if (ismobilevalue.current && x>mobilevviewleft && x<rightview && y>topdivmob) {
-  console.log(heightofmobiledesigner,"is desiggneerrrr  height",y)
+  // console.log(heightofmobiledesigner,"is desiggneerrrr  height",y)
 
   if (y>(heightofmobiledesigner-(elemntrect.height))) {
 
 let heighmob=y+(elemntrect.height)
-console.log("heightmob",heighmob,"jheigjt of elemt",element.style.height,"and  value is ",clamp(heighmob,mobileik.y,heighmob) +"px")
+// console.log("heightmob",heighmob,"jheigjt of elemt",element.style.height,"and  value is ",clamp(heighmob,mobileik.y,heighmob) +"px")
    if (divmobilebg?.current) {
     divmobilebg.current.style.height=clamp(heighmob,mobileik.y,heighmob) +"px"
    }
   }
-  console.log(divmobilebg?.current,"is mmmmmmmmmm")
-  console.log(ismobilevalue.current,"is mobilllelklkljk")
+  // console.log(divmobilebg?.current,"is mmmmmmmmmm")
+  // console.log(ismobilevalue.current,"is mobilllelklkljk")
 let cury=y -topdivmob;
 
-   console.log("topdiv:",topdivmob,"andd subvalue:",cury,"Anddd",y)
+  //  console.log("topdiv:",topdivmob,"andd subvalue:",cury,"Anddd",y)
 // console.log(setmobarr,"is  when checkmobile is on array of mobile")
 // let y=cury
 // console.log(y,"is greterthan ",topdivmob,cury,"is curly and percenthre",(cury/window.innerHeight)*100)
@@ -366,7 +375,7 @@ let oldmobmapobj={...objset}
 oldmobmapobj.top=(y/window.innerHeight)*100+"%"
 oldmobmapobj.left= ((mobilevviewleft+ clampedX)/window.innerWidth)*100+"%";
 oldmobmap.set(oldmobmapobj.name,oldmobmapobj)
-console.log(oldmobmap,"is old mobobj",mobilevviewleft+ clampedX )
+// console.log(oldmobmap,"is old mobobj",mobilevviewleft+ clampedX )
 //sertting old mob object
 
 
@@ -376,16 +385,16 @@ if ( "width" in  mobileobjsearr) {
   if (!mobileobjsearr?.width.includes("vw") && "width" in mobileobjsearr) {
  let mobilex=mobileik.x/100
   let newmobilekwidth=(parseInt(mobileobjsearr?.width)) /mobilex+"vw"
-console.log(newmobilekwidth,"is widthh")
+// console.log(newmobilekwidth,"is widthh")
 mobileobjsearr.width=newmobilekwidth;
 }
-  console.log("widt ondd")
+  // console.log("widt ondd")
 }else{
 
-  console.log(leftformobile,"is leftmobile from illl")
-  console.log("illalallalal")
+  // console.log(leftformobile,"is leftmobile from illl")
+  // console.log("illalallalal")
 }
-console.log(mobileobjsearr,"is teh aray  from mobbb")
+// console.log(mobileobjsearr,"is teh aray  from mobbb")
 mobileobjsearr.left="0"
 mobileobjsearr.top="0"
 
@@ -396,7 +405,7 @@ mobileobjsearr.top=(cury/window.innerHeight)*100 +"%"
         
          let leftPercent = (clampedX / mobileik.x) * 100;
           buttonmob.style.left = leftformobile  +"%"
-          console.log(leftPercent,"is tye left in leeeeeeee")
+          // console.log(leftPercent,"is tye left in leeeeeeee")
              mobileobjsearr.left = leftPercent + "%";
      if (leftformobile>0) { // it is used to set the make the leftvalues crt
         
@@ -404,7 +413,7 @@ mobileobjsearr.top=(cury/window.innerHeight)*100 +"%"
        
      } else{
 
-      console.log(leftformobile,"is leftmobillllel")
+      // console.log(leftformobile,"is leftmobillllel")
         //  buttonmob.style.left = 0  +"%"
         //           mobileobjsearr.left= 0  +"%"
 
@@ -413,28 +422,28 @@ mobileobjsearr.top=(cury/window.innerHeight)*100 +"%"
   
     
 // console.log(oldmobobj,"is mpbobj",mobileobjsearr)
-console.log(mobileobjsearr,"is mobilearrayyyyy8790")
+// console.log(mobileobjsearr,"is mobilearrayyyyy8790")
 
 
  mapref.set(mobileobjsearr.name, mobileobjsearr)
 
 
- console.log("new mapref",mapref)
+//  console.log("new mapref",mapref)
      /////  mobarr setting///////
         if (setmobarr.has(JSON.stringify(mobileobjsearr))) {
     
           setmobarr.delete(JSON.stringify(mobileobjsearr));
-           console.log("olderond:",oldobj)
+          //  console.log("olderond:",oldobj)
          oldmobobj  = mobileobjsearr;
         } else {
       
         setmobarr.delete(JSON.stringify(oldmobobj));
-          console.log("older:",oldmobobj)
+          // console.log("older:",oldmobobj)
           oldmobobj = mobileobjsearr;
-           console.log("neww:",oldmobobj)
+          //  console.log("neww:",oldmobobj)
         //   // console.log("afterchange olderr:",oldobj)
           setmobarr.add(JSON.stringify(mobileobjsearr));
-             console.log(setmobarr,"afterupdating")
+            //  console.log(setmobarr,"afterupdating")
         }
      
   
@@ -546,7 +555,7 @@ console.log(mobileobjsearr,"is mobilearrayyyyy8790")
         ) {
        
 
-console.log(t,"is the ttttt",p)
+// console.log(t,"is the ttttt",p)
           // console.log(checkedasmobile, "is checkasmonile");
           t.style.left = (x / window.innerWidth) * 100 + "%";
           t.style.top = (y / document.documentElement.clientHeight) * 100 + "%";
@@ -564,8 +573,8 @@ lapobject.left=(x / window.innerWidth) * 100 + "%";
 lapobject.top=(curyy / document.documentElement.clientHeight) * 100 + "%"
 
 lapref.set(lapobject.name,lapobject)
- console.log(curyy,"is cutrryyyyy",(curyy / document.documentElement.clientHeight) * 100 + "%",lapobject)
-console.log(lapref,"is  lapobjevt ",mapref)
+//  console.log(curyy,"is cutrryyyyy",(curyy / document.documentElement.clientHeight) * 100 + "%",lapobject)
+// console.log(lapref,"is  lapobjevt ",mapref)
 //  the lap
 
 
@@ -605,7 +614,7 @@ console.log(lapref,"is  lapobjevt ",mapref)
       var start_drag = function (e: any) {
       //  console.log(setslecetdelemnt,"is seteleent",p.dataset.name
       //  )
-console.log("dragged start",p.dataset.name)
+// console.log("dragged start",p.dataset.name)
        setslecetdelemnt(p.dataset.name as string)
       
         hr.style.display = "block";
@@ -630,7 +639,12 @@ console.log("dragged start",p.dataset.name)
         return false;
       };
       var stop_drag = function () {
-        console.log("dragged stip")
+        
+        currenthistoryref.current++
+    recentscountref.current=currenthistoryref.current
+
+   
+        console.log(currenthistoryref.current,"is the valueeee")
         //  console.log("onmouseuppp")
         hr.style.display = "none";
         hr2.style.display = "none";
@@ -657,8 +671,14 @@ console.log("dragged start",p.dataset.name)
         }
         return false;
       };
-      p.onmousedown = start_drag;
+      if (p.id.includes("input")) {
+          p.onfocus = start_drag;
       p.onmouseup = stop_drag;
+      }else{
+  p.onmousedown = start_drag;
+      p.onmouseup = stop_drag;
+      }
+    
       document.addEventListener("keydown", (event) => {
      
         if (event.key ===  " ") {

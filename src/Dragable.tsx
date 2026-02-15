@@ -432,7 +432,7 @@ let navbarprops=navbar?.getBoundingClientRect().height as number
 createElementsFromMap(oldmobmap,addbbutton,navbarprops)
 console.log(oldmobmap,"is my ioldmaooo")
   }else{
-    createElementsFromMap(lapref,addbbutton,navbarprops)
+    createElementsFromMap(lapref,addbbutton,navbarprops,checkedasmobile)
   }
 
 

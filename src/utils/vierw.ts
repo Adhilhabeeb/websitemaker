@@ -76,45 +76,72 @@ export function clamp(num:number, min:number, max:number) {
   return Math.min(Math.max(num, min), max);
 }
 
- export function createElementsFromMap(map:Map<string,Record<string,string>>,addbutton:(ele:string,data:Record<string,any>)=>void,navbarprops:number) {
+ export function createElementsFromMap(map:Map<string,Record<string,string>>,addbutton:(ele:string,data:Record<string,any>)=>void,navbarprops:number,checkmobile:boolean=true) {
   let parent=document.body
 // console.log(addbutton,"is add button")
-console.log(map,"is map as passed  9999")
+console.log(map,"is map as passed  9999",Array.from(map))
+let arrayfrommap=Array.from(map)
+let copiedarrau=[...arrayfrommap]
+copiedarrau.map(el=>{
+let [name,data]=el
 
-  map.forEach((data, key) => {
+let newdata={...data}
 
-    console.log(data,"isthe bfore  data",key)
+console.log(name,data,"isssss")
+
+if (!checkmobile) {
 
 
-let topnavinpercentage=(navbarprops/ document.documentElement.clientHeight) * 100 
+  
+ 
 
-data.top=parseInt(data.top)+topnavinpercentage+"%"
+  let topnavinpercentage=(navbarprops/ document.documentElement.clientHeight) * 100 
+console.log("topper",navbarprops,"peerrr",topnavinpercentage)
+newdata.top=parseInt(data.top)+topnavinpercentage+"%"
+}
+
   
     let elemt:string=data.name?.split("").filter(el =>!isStringInteger(el)).join("") 
+console.log(elemt,"data after ",newdata,"amd ",map)
+     addbutton(elemt,newdata)
 
-console.log(data,"after upfdate","is old data")
-    // addbutton(elemt,data)
-console.log("mappp:",map)
-//     const element = document.createElement(elemt);
-// Object.entries(data).forEach((el:any)=>{
-//   let [name,value]=el
-// element.style[name]=value
+console.log("afterallmap",map)
+})
 
-// })
-// element.style.position="absolute"
-    // // optional id
-    // el.id = key;
+//   map.forEach((data, key) => {
 
-    // // text
-    // if (data.text) element.innerHTML = data.text;
+//     console.log(data,"isthe bfore  data",key)
 
-    // // // styles
-    // // if (data.styles) {
-    // //   Object.assign(el.style, data.styles);
-    // // }
 
-    // parent.appendChild(element);
-  });
+// let topnavinpercentage=(navbarprops/ document.documentElement.clientHeight) * 100 
+
+// data.top=parseInt(data.top)+topnavinpercentage+"%"
+  
+//     let elemt:string=data.name?.split("").filter(el =>!isStringInteger(el)).join("") 
+
+// console.log(data,"after upfdate","is old data")
+//     // addbutton(elemt,data)
+// console.log("mappp:",map)
+// //     const element = document.createElement(elemt);
+// // Object.entries(data).forEach((el:any)=>{
+// //   let [name,value]=el
+// // element.style[name]=value
+
+// // })
+// // element.style.position="absolute"
+//     // // optional id
+//     // el.id = key;
+
+//     // // text
+//     // if (data.text) element.innerHTML = data.text;
+
+//     // // // styles
+//     // // if (data.styles) {
+//     // //   Object.assign(el.style, data.styles);
+//     // // }
+
+//     // parent.appendChild(element);
+//   });
 }
 
 

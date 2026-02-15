@@ -254,22 +254,22 @@ let objectcustempro=Object.fromEntries(keys)
             //   }
             // }
             //checking top
-            // if (Math.abs(topdiffeernce) < 10) {
-            //   if (objset.name != parsed.name) {
-            //     // console.log("near the ", parsed.name, parele, "is elem");
-            //     if (!borel) return;
+            if (Math.abs(topdiffeernce) < 10) {
+              if (objset.name != parsed.name) {
+                // console.log("near the ", parsed.name, parele, "is elem");
+                if (!borel) return;
 
-            //     let topbtmelem = [borel[0], borel[1]];
-            //     console.log(topbtmelem,"is topmelem")
-            //     oldtobtm.current?.forEach((el) => {
-            //       el.style.display = "none";
-            //     });
-            //     oldtobtm.current = topbtmelem;
-            //     topbtmelem.forEach((el) => {
-            //       el.style.display = "block";
-            //     });
-            //   }
-            // }
+                let topbtmelem = [borel[0], borel[1]];
+                console.log(topbtmelem,"is topmelem")
+                oldtobtm.current?.forEach((el) => {
+                  el.style.display = "none";
+                });
+                oldtobtm.current = topbtmelem;
+                topbtmelem.forEach((el) => {
+                  el.style.display = "block";
+                });
+              }
+            }
             // console.log(parsed,"iss spopoipoipipip")
             // console.log("left:",left,"top",top,"is teh objectleft",objleft,"objtop",objtop,"andd.  left =dioference",Math.abs(leftdiffeernce),"and topdiffrenee:",Math.abs(topdiffeernce))
           });

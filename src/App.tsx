@@ -8,6 +8,22 @@ import type { systemdetatype } from './eletron/poll';
 
 import DragableBox from './Dragable';
 import { cssproper } from './utils/vierw';
+import Navbar from './Navbar';
+import { BrowserRouter, Routes ,Route} from 'react-router';
+import {  useAuth } from '@clerk/clerk-react';
+import Loader from './Loader';
+import AuthGuard from './AuthGuard';
+import { Home } from 'lucide-react';
+import Cusatemsignin from './Cusatemsignin';
+import Custemsignup from './custemsignup';
+import Footer from './Footer';
+import { ThemeProvider } from './components/ui/theme-provider';
+import { useTheme } from 'next-themes';
+import { dark } from '@clerk/themes';
+import Clerkprovider from './Clerkprovider';
+
+import Dashboard from './Home';
+
  declare global {
     
     interface Window { adhil: polltye  }
@@ -33,7 +49,9 @@ import { cssproper } from './utils/vierw';
 let lengh=10
 
 function App() {
- 
+  
+
+  
 const [cou, setcou] = useState(0)
 let checkmobileinput=useRef <HTMLInputElement>(null)
   let vedioref=useRef<HTMLVideoElement >(null)
@@ -132,7 +150,7 @@ return da
 
 
 
-
+const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY
 
 
   return (
@@ -142,11 +160,11 @@ return da
 
       
        {/* {detectMob()?"ann":"alla"} */}
-    <DragableBox  checkedasmobile={checkedasmobile}>
+    {/* <DragableBox  checkedasmobile={checkedasmobile}>
 <input type="checkbox" id="myCheckbox" ref={checkmobileinput}  onChange={()=>setcheckedasmobile(!checkedasmobile)} ></input> is mobile
 
 
-    </DragableBox>
+    </DragableBox> */}
        
         {/* <button onClick={() => {
 handleclick()
@@ -184,10 +202,36 @@ handleclick()
         <p>jjjj
           Edit <code>src/App.tsx</code> and save to test HMR
         </p> */}
- 
-    
+ <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
    
-      {/* <Chartt data={system} /> */}
+   <Clerkprovider>
+     <BrowserRouter>
+<Navbar/>
+     
+        <Routes>
+          <Route path="/" element={
+
+            <AuthGuard>
+            <Dashboard/>
+            </AuthGuard>
+          } />
+          <Route path="/signin" element={<Cusatemsignin/>} />
+          <Route path="/signup" element={< Custemsignup/>} />
+
+        </Routes>
+      <Footer/>
+    </BrowserRouter>
+
+   </Clerkprovider>
+  
+    
+
+
+
+ </ThemeProvider>
+    
+
+    
     </>
   )
 }

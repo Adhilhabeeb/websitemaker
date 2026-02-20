@@ -1,4 +1,4 @@
-import {   useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
+import React, {   createContext, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, type SetStateAction } from 'react'
  import  type {polltye,sendingmenu} from "./eletron/utils/types"
 import './App.css'
 
@@ -24,18 +24,41 @@ import Clerkprovider from './Clerkprovider';
 
 import Dashboard from './Home';
 
+
  declare global {
     
     interface Window { adhil: polltye  }
 }
 
+
 // Source - https://stackoverflow.com/a/11381730
 // Posted by Michael Zaporozhets, modified by community. See post 'Timeline' for change history
 // Retrieved 2026-02-02, License - CC BY-SA 4.0
+export interface Contextapptype {
+  checkedasmobile: boolean
+  setcheckedasmobile: React.Dispatch<SetStateAction<boolean>>
+  showpanel:boolean,
+  setshowpanel: React.Dispatch<SetStateAction<boolean>>
+currenthistoryref:React.RefObject<number>
+recentscountref:React.RefObject<number>,
+handleecentfunction:((e:any)=>void) |null,
+ forceRender:React.Dispatch<SetStateAction<number>>
+sethandleecentfunction:React.Dispatch<SetStateAction<((target:string)=>void)|null >>
+  setshowsidemenu:React.Dispatch<SetStateAction<boolean>>
+  mobMapRef:React.RefObject<Map<string,any>>
+  lapMapRef:React.RefObject<Map<string,any>>
+  mobileoldmapstoreing:React.RefObject<Map<string,any>>
+  historytmapref:React.RefObject<Map<number,any>>
+  showsidemenu:boolean
+  slecetdelemnt:string|null
+  setslecetdelemnt:React.Dispatch<SetStateAction<string |null>>
+}
 
+export const NavContext = createContext<Contextapptype | undefined>(undefined)
   function detectMob() {
     return ( ( window.innerWidth <= 800 ) && ( window.innerHeight <= 600 ) );
   }
+
 
 // function add(pa: Function) {
 //   let i = 0;
@@ -49,9 +72,17 @@ import Dashboard from './Home';
 let lengh=10
 
 function App() {
-  
+  const [projpage, setprojpage] = useState(false)
+  const [, forceRender] = useState(0)
+const [showsidemenu, setshowsidemenu] = useState(false)
+const [slecetdelemnt, setslecetdelemnt] = useState<string |null>(null)
+  const [handleecentfunction, sethandleecentfunction] = useState<((target:string)=>void )|null>(null)
+let currenthistoryref=useRef(0)
+let recentscountref=useRef(0)
+  let navref=useRef<HTMLElement |null>(null)
 
-  
+
+  const [showpanel, setshowpanel] = useState(false)
 const [cou, setcou] = useState(0)
 let checkmobileinput=useRef <HTMLInputElement>(null)
   let vedioref=useRef<HTMLVideoElement >(null)
@@ -148,10 +179,26 @@ return da
 
 }, [])
 
+const [navrefrect, setnavrefrect] = useState<DOMRect>()
 
 
+
+console.log(navref.current?.getBoundingClientRect(),"is navvref")
+// let navreffromdom=useMemo(()=>{
+// return navref.current?.getBoundingClientRect();
+// },[navref.current])
 const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY
 
+useEffect(() => {
+ if (navref.current) {
+console.log(navref.current?.getBoundingClientRect(),"iss333s")
+  setnavrefrect(navref.current?.getBoundingClientRect())
+ }
+}, [navref.current])
+const mobMapRef = useRef<Map<string,any>>(new Map())
+const lapMapRef = useRef<Map<string,any>>(new Map())
+let mobileoldmapstoreing= useRef <Map<string,any>>(new Map())
+let historytmapref=useRef<Map<number,any>>(new Map())
 
   return (
     <>
@@ -160,11 +207,7 @@ const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY
 
       
        {/* {detectMob()?"ann":"alla"} */}
-    {/* <DragableBox  checkedasmobile={checkedasmobile}>
-<input type="checkbox" id="myCheckbox" ref={checkmobileinput}  onChange={()=>setcheckedasmobile(!checkedasmobile)} ></input> is mobile
 
-
-    </DragableBox> */}
        
         {/* <button onClick={() => {
 handleclick()
@@ -202,11 +245,14 @@ handleclick()
         <p>jjjj
           Edit <code>src/App.tsx</code> and save to test HMR
         </p> */}
+        <NavContext.Provider value={{ checkedasmobile,setcheckedasmobile,showpanel,setshowpanel,currenthistoryref,recentscountref,sethandleecentfunction,handleecentfunction:handleecentfunction,forceRender,setshowsidemenu,showsidemenu,slecetdelemnt,setslecetdelemnt,mobMapRef,lapMapRef,historytmapref,mobileoldmapstoreing}}>
+
+
  <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
    
    <Clerkprovider>
      <BrowserRouter>
-<Navbar/>
+<Navbar navref={navref}/>
      
         <Routes>
           <Route path="/" element={
@@ -217,6 +263,12 @@ handleclick()
           } />
           <Route path="/signin" element={<Cusatemsignin/>} />
           <Route path="/signup" element={< Custemsignup/>} />
+            <Route path="/project/:id"  element={  <AuthGuard>
+               <DragableBox  recentscountref={recentscountref} currenthistoryref={currenthistoryref} checkedasmobile={checkedasmobile} navref={navref} >
+
+
+    </DragableBox>
+            </AuthGuard>} />
 
         </Routes>
       <Footer/>
@@ -230,7 +282,7 @@ handleclick()
 
  </ThemeProvider>
     
-
+        </NavContext.Provider>
     
     </>
   )

@@ -13,6 +13,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 import { Plus } from "lucide-react"
+import { Link } from "react-router"
 
 function Dashboard() {
   const { user, isLoaded, isSignedIn } = useUser()
@@ -96,8 +97,12 @@ function Dashboard() {
                 </p>
               </CardContent>
               <CardFooter>
+                <Link  to={`/project/${index}`}>
+                
+                
+                
                 <Button
-    size="sm"
+    size="sm" 
     className="absolute bottom-4 right-4 
                opacity-0 translate-y-2
                group-hover:opacity-100 
@@ -106,6 +111,7 @@ function Dashboard() {
   >
     Open
   </Button>
+  </Link>
               </CardFooter>
             </Card>
           ))}

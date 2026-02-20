@@ -4,7 +4,7 @@ function Footer() {
   return (
     <div>
 
-         <footer className="bg-slate-900 text-white py-8">
+         <footer className="bg-slate-900 text-white py-8 absolute bottom-0">
         <div className="max-w-7xl mx-auto px-6 md:px-8 flex flex-col md:flex-row justify-between items-center gap-4 text-sm">
           <p>© 2026 SiteCraft. All rights reserved.</p>
           <div className="flex gap-6">

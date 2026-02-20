@@ -8,13 +8,14 @@ export function usemouse({
   buttonlap,
   buttonmob,
   checkedasmobile,
-   divmobilebg,currenthistoryref,recentscountref
+   divmobilebg,currenthistoryref,recentscountref,forceRender
 }: {
   buttonlap?: HTMLButtonElement;
   buttonmob?: HTMLElement;
   checkedasmobile: Boolean;
     currenthistoryref: React.RefObject<number >
     recentscountref:React.RefObject<number >
+    forceRender:React.Dispatch<SetStateAction<number>>
    divmobilebg?: React.RefObject<HTMLDivElement|null >;
    
 
@@ -22,7 +23,7 @@ export function usemouse({
 }) {
  
   
-
+console.log(currenthistoryref,"in currentistrrryyyyyyyy")
 
 
 
@@ -641,12 +642,14 @@ lapref.set(lapobject.name,lapobject)
       var stop_drag = function () {
         
 
-        console.log(lapref,"is lapref in stopdrag")
+     
+      
         currenthistoryref.current++
+          
     recentscountref.current=currenthistoryref.current
-
-   
-        console.log(currenthistoryref.current,"is the valueeee")
+console.log(recentscountref,"is countref",currenthistoryref)
+   forceRender(prev=>prev+1)
+       
         //  console.log("onmouseuppp")
         hr.style.display = "none";
         hr2.style.display = "none";

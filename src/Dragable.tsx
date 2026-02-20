@@ -1,10 +1,11 @@
-import React, { memo, useCallback, useEffect, useEffectEvent, useLayoutEffect, useMemo, useRef, useState } from 'react'
+import React, { memo, useCallback, useContext, useEffect, useEffectEvent, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import Draggable from 'react-draggable'
 import { usemouse } from './mousemove'
 import { createElementsFromMap, createhtml, cssproper, isStringInteger, mobileik } from './utils/vierw'
 import { cssdefalult , type eleent} from './utils/cssdefault'
 import Rightchangingoption from './Rightchangingoption'
 import Leftchanging from './Leftchanging'
+import { NavContext, type Contextapptype } from './App'
 
 interface dragboxprop{
   checkedasmobile:boolean
@@ -12,9 +13,12 @@ interface dragboxprop{
 
 
 function DragableBox(props:any) {
-const [slecetdelemnt, setslecetdelemnt] = useState<string |null>(null)
+  let{showpanel,setshowpanel,sethandleecentfunction,forceRender,setshowsidemenu,showsidemenu,slecetdelemnt,setslecetdelemnt,mobMapRef,lapMapRef,historytmapref,mobileoldmapstoreing} =useContext<Contextapptype>(NavContext as any)
+
+let {checkedasmobile,navref,currenthistoryref,recentscountref}=props
+ 
+
 const [elenttype, setelenttype] = useState<string|null>(null)
-const [showsidemenu, setshowsidemenu] = useState(false)
 const [va, setva] = useState("")
 
 
@@ -33,22 +37,18 @@ const [recentbuttonhold, setrecentbuttonhold] = useState(false)
 
 
 
-let recentscountref=useRef(0)
-let currenthistoryref=useRef(0)
+
 let currenthistory=currenthistoryref.current
-let navref=useRef<HTMLDivElement|null>(null)
-let mobileoldmapstoreing= useRef <Map<string,any>>(new Map())
+
 let oldmobmap=mobileoldmapstoreing.current
-const mobMapRef = useRef<Map<string,any>>(new Map())
 let mapref=mobMapRef.current
-const lapMapRef = useRef<Map<string,any>>(new Map())
 let lapref=lapMapRef.current
-let historytmapref=useRef<Map<number,any>>(new Map())
 let historymap=historytmapref.current
 
 
 useEffect(() => {
 
+  console.log("changed currenthistorref:",currenthistoryref.current)
   let oldmovbva=  Array.from(oldmobmap)
 let mobmapva= Array.from(mapref)
 let lapva=  Array.from(lapref)
@@ -60,13 +60,13 @@ let lapva=  Array.from(lapref)
   }
 
   let stringhistroyobj=JSON.stringify(historyobj)
-console.log(historyobj,"is obj")
+// console.log(historyobj,"is obj",currenthistory,"is hisnum")
 historymap.set(currenthistory,stringhistroyobj)
 
 
-// console.log(historymap,"is histiiorry")
 
-},[currenthistory])
+
+},[currenthistoryref.current])
 
 
 
@@ -78,6 +78,8 @@ historymap.set(currenthistory,stringhistroyobj)
 return (window.innerWidth/2)-(mobileik.x/2)
 
   },[])
+  
+  
 useEffect(() => {
   if (slecetdelemnt) {
 
@@ -95,7 +97,6 @@ useEffect(() => {
 
 
 let  divmobilebg=useRef<HTMLDivElement |null >(null) 
-let {checkedasmobile,  children}=props
 
 
 
@@ -108,13 +109,14 @@ let timeout;
 
 
 useEffect(() => {
+
  let parsedhsitoryu= JSON.parse(  historymap.get(recentscountref.current))
 
 
+ console.log(recentscountref,"is revemnddnd changed")
 
- console.log(historymap,"is history mappp")
-console.log(parsedhsitoryu,"ius patrsed ")
 if(recentscountref.current !=0 &&recentbuttonhold){
+  console.log(recentscountref,"iiiiiii",parsedhsitoryu)
 if (parsedhsitoryu.lapref.length>0 && !checkedasmobile
 ) {
 
@@ -210,14 +212,14 @@ console.log(mapref,"is mapref",oldmobmap,"is old mob mp")
 
 
 
-function handlerecent(e:React.MouseEvent<SVGSVGElement>) {
-
+let handlerecent=function (target:string) {
+console.log("called recen fffft")
 setrecentbuttonhold(true)
 timeout=setTimeout(() => {
   setrecentbuttonhold(false)
 }, 700);
 
-if (e.currentTarget.id=="+") {
+if (target=="+") {
   if (historymap.get(recentscountref.current+1)) {
  recentscountref.current++
   
@@ -229,8 +231,23 @@ if (e.currentTarget.id=="+") {
   
 }
 }
+forceRender(prev=>prev+1)
 
 }
+
+useEffect(() => {
+
+
+  sethandleecentfunction(()=>{
+
+
+    return handlerecent
+  })
+
+  // return () => {
+  //   sethandleecentfunction(null)
+  // }
+}, [])
 
 
 // console.log(props,"is yyyy")
@@ -264,13 +281,13 @@ buttonlap.style.border="1px solid black"
 return {buttonlap,buttonmobb}
 },[])
 let buttonmob:HTMLElement=useRef(buttonmobb).current as HTMLElement
-let move=usemouse({buttonlap,buttonmob,checkedasmobile,divmobilebg,currenthistoryref,recentscountref})
+let move=usemouse({buttonlap,buttonmob,checkedasmobile,divmobilebg,currenthistoryref,recentscountref,forceRender})
   
 
 
 
 
-const [showpanel, setshowpanel] = useState(false)
+
 
 // console.log(move,"is move")
 
@@ -411,7 +428,7 @@ div.style.height="auto"
 
 
 div.style.left = data?.left ?? "0px";
-div.style.top = data?.top?? "0px";
+div.style.top = data?.top?? navref.current?.getBoundingClientRect().height+10+"px";
 div.append(hr,hr2,hr3,hr4,button)
 document.body.appendChild(div)
 setslecetdelemnt(div.dataset.name)
@@ -464,26 +481,13 @@ console.log(Array.from(mapref),"is mapppppp")
 < >
 
 
-<div ref={navref} className='w-full absolute to-0%  flex justify-around h-9 bg-amber-100'>
-  {children}
+<div  className='w-full absolute to-0%  flex justify-around h-9'>
+
   {  showpanel&&  <Leftchanging addbbutton={addbbutton}  setshowpanel={setshowpanel} />}
-  {currenthistoryref.current>0 && <button>{currenthistoryref.current}</button>}
-{ currenthistoryref.current>0 &&    <div className='w-1/12 h-full bg-amber-700 flex items-center justify-around'>
-   <svg onClick={handlerecent}   xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"  id='-' className="size-5">
-  <path stroke-linecap="round" stroke-linejoin="round" d="M9 15 3 9m0 0 6-6M3 9h12a6 6 0 0 1 0 12h-3" />
-  
-</svg>
+ 
 
-<p> {recentscountref.current}</p>
-<svg onClick={handlerecent}  xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" id='+' className="size-5">
-  <path stroke-linecap="round" stroke-linejoin="round" d="m15 15 6-6m0 0-6-6m6 6H9a6 6 0 0 0 0 12h3" />
-</svg>
-
-   
-   </div>}
-      <button onClick={()=>setshowpanel(!showpanel)}>show panel</button>
-      {mapref.size>0&&lapref.size>0&& <button onClick={createhtml.bind(null,mapref,lapref)}>create html</button>}
-        {slecetdelemnt&& <button className=' bg-amber-800' onClick={()=>setshowsidemenu(!showsidemenu)} >showsidemenu</button>  }  
+      
+    
        {/* <input
      
         className="w-2xl rounded-lg border text-sm

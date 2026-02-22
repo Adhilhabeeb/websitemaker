@@ -1,5 +1,5 @@
 import { useUser } from "@clerk/clerk-react"
-import { useState } from "react"
+import { useContext, useEffect, useState, useTransition } from "react"
 import { Card, CardContent, CardFooter } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -14,31 +14,91 @@ import {
 } from "@/components/ui/dialog"
 import { Plus } from "lucide-react"
 import { Link } from "react-router"
+import { NavContext, type Contextapptype } from "./App"
+import { insertDataSupabasefromnmap } from "./lib/Supabaseopertions"
+import { useQuery } from "@tanstack/react-query"
+import { supabase } from "./lib/supabase"
 
 function Dashboard() {
+ const [isPending, startTransition] = useTransition();
+  let context=useContext<Contextapptype |undefined>(NavContext )
+
+  if (!context) {
+    throw new Error("contecxtnot fund ");
+    
+  }
+  // let {mobMapRef,mobileoldmapstoreing,lapMapRef,historytmapref}=context
+  // console.log(mobMapRef,mobileoldmapstoreing,lapMapRef,historytmapref,mapreffff)
   const { user, isLoaded, isSignedIn } = useUser()
 
-  const [projects, setProjects] = useState([
-    {
-      name: "Project 1",
-      description: "This is my website project built using React and Tailwind."
-    }
-  ])
+  const [projects, setProjects] = useState <any[]>([])
 
   const [name, setName] = useState("")
   const [description, setDescription] = useState("")
   const [open, setOpen] = useState(false)
 
   if (!isLoaded) return <div className="p-8">Loading...</div>
-  if (!isSignedIn) return <div className="p-8">Not signed in</div>
+  if (!isSignedIn) return <div className="p-8">Not signed in</div>;
+const { data, isLoading } = useQuery({
+  queryKey: ["projects", user.primaryEmailAddress?.emailAddress],
+  queryFn: async () => {
+    const { data, error } = await supabase
+      .from("websitemaker")
+      .select("*")
+      .eq("email", user.primaryEmailAddress?.emailAddress)
 
-  const handleCreateProject = () => {
+    if (error) throw error
+    return data
+  },
+  enabled: !!user.primaryEmailAddress?.emailAddress,
+  retry: 3,
+select: (data) => {
+  return data.map(el => {
+    const obn = Object.entries(el).map(([name, value]) => {
+
+       
+
+      try {
+         const parsedValue = JSON.parse(value as string)
+          if (Array.isArray(parsedValue)) {
+          return [name, parsedValue]
+        }
+      
+      } catch (error) {
+        
+      }
+
+      return [name, value]
+    })
+
+    return Object.fromEntries(obn)
+  })
+}
+})
+
+useEffect(() => {
+ if (data) {
+  setProjects(data)
+ }
+}, [data])
+
+  
+console.log(data,"isa datyata")
+  const handleCreateProject = async () => {
+
     if (!name.trim()) return
+
+startTransition(async () => {
+  let email=user.primaryEmailAddress?.emailAddress as string
+  console.log(email,"is suer email")
+        await  insertDataSupabasefromnmap(name,description,email)
 
     setProjects([...projects, { name, description }])
     setName("")
     setDescription("")
     setOpen(false)
+        });
+
   }
 
   return (
@@ -90,14 +150,14 @@ function Dashboard() {
             >
               <CardContent className="p-6 space-y-3">
                 <h3 className="font-semibold text-lg">
-                  {project.name}
+                  {project.projectname}
                 </h3>
                 <p className="text-sm text-muted-foreground">
                   {project.description}
                 </p>
               </CardContent>
               <CardFooter>
-                <Link  to={`/project/${index}`}>
+                <Link  to={`/project/${project.name}`}>
                 
                 
                 

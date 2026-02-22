@@ -31,6 +31,8 @@ let elemet =maindiv?.querySelector(`#${slecetdelemnt}`) as HTMLElement
 console.log(elemet,"us teh elemy ",maindiv)
 let value=Object.entries(cssdefalult[elenttype]).map(([name,value]:any)=>[name,elemet?.style[name]])
 let objectwithvalues=Object.fromEntries(value)
+
+console.log("objectvalueincss",objectwithvalues)
 setcsscustem(objectwithvalues)
   }
     }, [slecetdelemnt,elenttype])

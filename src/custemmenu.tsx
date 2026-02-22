@@ -1,12 +1,15 @@
-import { useEffect, useLayoutEffect, useMemo, useState } from "react";
+import { useContext, useEffect, useLayoutEffect, useMemo, useState } from "react";
 import { checkisvwandconverttomobilescerrrnwidth, checkitisinwidth, cssproper, mobileik } from "./utils/vierw";
 import { cssValueOptions } from "./utils/cssdefault";
+import { NavContext } from "./App";
 
 type Styles = Record<string, string | number>;
 
 export default function ButtonEditor({
   csscustem,slecetdelemnt,elenttype,checkedasmobile,setmobarr,mapref,lapref,oldmobmap
 }: {
+
+
   csscustem: Styles | null;
   slecetdelemnt:string |null;
   elenttype:string |null;
@@ -17,12 +20,20 @@ export default function ButtonEditor({
      oldmobmap:Map<string,any>,
 
 }) {
+    let contextr=useContext(NavContext)
+    if (!contextr) {
+      throw Error("context ius niot getteds ")
+    }
+
+    let {lapMapRef,mobMapRef,historytmapref,mobileoldmapstoreing}=contextr
+    console.log(lapMapRef,mobMapRef,historytmapref,mobileoldmapstoreing,"is mps")
   const [styles, setStyles] = useState<Styles>({});
 let oldstyles:any;
   // sync parent → child
   useLayoutEffect(() => {
    
     if (csscustem) {
+     
       setStyles(csscustem);
     }
   }, [csscustem]);
@@ -49,22 +60,14 @@ let maximumwidth=useMemo(()=>{
       let maindiv=document.querySelector(`#${slecetdelemnt}`)
 
 let elemet =maindiv?.querySelector(`#${slecetdelemnt}`) as HTMLElement
-let oldmobmapobj=oldmobmap.get(slecetdelemnt)
+let oldmobmapobj=mobileoldmapstoreing.current.get(slecetdelemnt)
 
-let elementfrommap=mapref.get(slecetdelemnt)
-console.log(elementfrommap,"is te lement from map")
+let elementfrommap=mobMapRef.current.get(slecetdelemnt)
+console.log(elementfrommap,"is te lement from mapmopbilr and oldmobikle:",oldmobmapobj)
 
-let lapelementmap=lapref.get(slecetdelemnt)
+let lapelementmap=lapMapRef.current.get(slecetdelemnt)
 
 
-let oldsetovjarrparsed=[...setmobarr]?.find(el=>{
-
-  let elparsed=JSON.parse(el)
-  return elparsed.name==slecetdelemnt
-
-}
-)
-let newparesdfilterobj=JSON.parse(oldsetovjarrparsed??"null")
 
 // console.log(newparesdfilterobj,"is the currentelemet obj  in the mobilearray ")
 
@@ -83,27 +86,34 @@ if (name=="text") {
   
 }
 
-if (newparesdfilterobj) {
-  
-  newparesdfilterobj[name]=value
-}
+
 
 if (lapelementmap) {
   lapelementmap[name]=value
 }
-if (elementfrommap) {
-  elementfrommap[name]=value
-}
+
  let mobilescreenelementvalue=checkisvwandconverttomobilescerrrnwidth(name,value as string,maximumwidth,checkedasmobile)
-if (name=="width"&& checkedasmobile) {
-console.log(name,value,"is teh width ")
-elementfrommap.width=value
-  }
+
 // if (parseobj) {
 //   parseobj[name]=value
  
 // }
+if (elementfrommap) {
+  elementfrommap[name]=value
+}
+if (name=="width"&& checkedasmobile) {
+  console.log(name,value,"is teh width ",elementfrommap?.width,"is width in elemet map")
+  if (!elementfrommap?.width?.includes("vw")) {
+    let valueinvw=(parseInt(value as string)/mobileik.x)*100+"vw"
+   console.log(value,"is the value",name,"and",parseInt(value as string),"annn",mobileik.x,valueinvw)
+    elementfrommap.width=valueinvw
+  }else{
+ elementfrommap.width=value
+  }
+  
 
+
+  }
 if (oldmobmapobj) {
   oldmobmapobj[name]=mobilescreenelementvalue
  
@@ -117,18 +127,20 @@ if (oldmobmapobj) {
 
 
 if (oldmobmapobj) {
-  oldmobmap.set(slecetdelemnt,oldmobmapobj)
+  mobileoldmapstoreing.current.set(slecetdelemnt,oldmobmapobj)
   console.log(oldmobmap,"isd the oldmobilemapaftercss after thecss update ")
 }
 // console.log(newparesdfilterobj,"is the newfilterobject")
 
 if (checkedasmobile && elementfrommap) {
-mapref.set(slecetdelemnt,elementfrommap)
+
+  console.log(elementfrommap,"is the elemnt from map")
+mobMapRef.current.set(slecetdelemnt,elementfrommap)
 console.log(mapref,"is new map")
 }
 
 if (!checkedasmobile &&lapelementmap) {
-  lapref.set(slecetdelemnt,lapelementmap)
+  lapMapRef.current.set(slecetdelemnt,lapelementmap)
   console.log(lapref,"is teh lapref after css update")
 }
 
@@ -175,7 +187,7 @@ if (!status) {
             
             return (
             
-            <Field
+            <Field checklfunction={checkisvwandconverttomobilescerrrnwidth}
               key={name}
               label={name}
               name={name}
@@ -201,7 +213,7 @@ if (!status) {
 
  
 
-function Field({
+function Field({ checklfunction,
   label,
   name,
   value,
@@ -211,6 +223,7 @@ function Field({
   name: string;
   value: string | number;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  checklfunction:typeof checkisvwandconverttomobilescerrrnwidth
 }) {
 
   const options = cssValueOptions[name];

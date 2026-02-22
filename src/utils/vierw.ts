@@ -1,4 +1,5 @@
 
+import { QueryClient } from "@tanstack/react-query";
 import cssProperties from "mdn-data/css/properties.json" assert { type: "json" }
 import cssSyntaxes from "mdn-data/css/syntaxes.json" assert { type: "json" }
 
@@ -70,6 +71,8 @@ switch (name) {
 }
 
 }
+export type checkandgetmobilewidthparamstype = Parameters<typeof checkisvwandconverttomobilescerrrnwidth>;
+// Result: type UserParams = [name: string, age: number, isActive: boolean]
 
 
 export function clamp(num:number, min:number, max:number) {
@@ -144,12 +147,14 @@ console.log("afterallmap",map)
 //   });
 }
 
+export const queryClient = new QueryClient()
 
-
-export function createhtml(
+export  async function createhtml(
   mobilemap: Map<string, any>,
   lapmap: Map<string, any>
 ) {
+
+  console.log(mobilemap,"is mob lap:",lapmap)
   const mobileData = JSON.stringify(Array.from(mobilemap.entries()));
   const lapData = JSON.stringify(Array.from(lapmap.entries()));
 
@@ -250,6 +255,7 @@ export function createhtml(
 </body>
 </html>`;
 console.log(html,"is html")
+   await navigator.clipboard.writeText(html);
   return html;
 }
 

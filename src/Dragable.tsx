@@ -158,9 +158,9 @@ lapref.set(name,obj)
 })
   
 
-lapref=new Map(parsedhsitoryu.lapref)
+lapMapRef.current=new Map(parsedhsitoryu.lapref)
 
-console.log(lapref,"is arrrr afterall",recentscountref.current)
+console.log(lapMapRef.current,"is arrrr afterall",recentscountref.current)
 }
 else if(parsedhsitoryu.mapref.length>0 && checkedasmobile){
 
@@ -192,8 +192,8 @@ addbbutton(elemt,oldobj)
 })
   
 
-mapref=new Map(parsedhsitoryu.mapref)
-oldmobmap=new Map(parsedhsitoryu.oldmobmap)
+mobMapRef.current=new Map(parsedhsitoryu.mapref)
+mobileoldmapstoreing.current=new Map(parsedhsitoryu.oldmobmap)
 
 console.log(mapref,"is mapref",oldmobmap,"is old mob mp")
 
@@ -205,7 +205,7 @@ console.log(mapref,"is mapref",oldmobmap,"is old mob mp")
 
 
 }
-
+forceRender(prev=>prev+1)
 }, [recentscountref.current])
 
 

@@ -1,5 +1,6 @@
 import React, {
   createContext,
+  Suspense,
   useCallback,
   useEffect,
   useLayoutEffect,
@@ -31,6 +32,7 @@ import { dark } from "@clerk/themes";
 import Clerkprovider from "./Clerkprovider";
 
 import Dashboard from "./Home";
+import Designviewer from "./Designviewer";
 
 declare global {
   interface Window {
@@ -61,6 +63,9 @@ export interface Contextapptype {
   showsidemenu: boolean;
   slecetdelemnt: string | null;
   setslecetdelemnt: React.Dispatch<SetStateAction<string | null>>;
+  setMode:React.Dispatch<SetStateAction< "mobile" | "desktop" >>;
+mode: "mobile" | "desktop"
+  
 }
 
 export const NavContext = createContext<Contextapptype | undefined>(undefined);
@@ -185,7 +190,7 @@ function App() {
   const lapMapRef = useRef<Map<string, any>>(new Map());
   let mobileoldmapstoreing = useRef<Map<string, any>>(new Map());
   let historytmapref = useRef<Map<number, any>>(new Map());
-
+const [mode, setMode] = useState< "mobile" | "desktop">("desktop");
   return (
     <>
       {/* {detectMob()?"ann":"alla"} */}
@@ -248,7 +253,7 @@ handleclick()
           mobMapRef,
           lapMapRef,
           historytmapref,
-          mobileoldmapstoreing
+          mobileoldmapstoreing,setMode,mode
         }}
       >
         <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
@@ -262,6 +267,16 @@ handleclick()
                   element={
                     <AuthGuard>
                       <Dashboard />
+                    </AuthGuard>
+                  }
+                />
+                 <Route
+                  path="/designview"
+                  element={
+                    <AuthGuard>
+                     <Suspense fallback={<Loader/>}>
+                       <Designviewer mobref={mobMapRef}  lapref={lapMapRef}/>
+                     </Suspense>
                     </AuthGuard>
                   }
                 />

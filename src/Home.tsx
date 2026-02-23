@@ -157,7 +157,7 @@ startTransition(async () => {
                 </p>
               </CardContent>
               <CardFooter>
-                <Link  to={`/project/${project.name}`}>
+                <Link  to={`/project/${project.projectname}`}>
                 
                 
                 

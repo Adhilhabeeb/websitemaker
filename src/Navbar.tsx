@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Menu, X } from "lucide-react"
 import { SignedIn, SignedOut, UserButton } from "@clerk/react-router"
-import { Link, useLocation } from "react-router"
+import { Link, useLocation, useNavigate } from "react-router"
 import { ThemeToggle } from "./components/ui/theme"
 import { NavContext, type Contextapptype } from "./App"
 import { createhtml } from "./utils/vierw"
@@ -12,11 +12,13 @@ const navitems: string[][] = [
   ["Pricing", "/pricing"]
 ]
 
+
 type navprops = {
   navref: React.RefObject<HTMLElement | null>
 }
 
 export default function Navbar({ navref }: navprops) {
+  let navigate=useNavigate()
   const [projpage, setprojpage] = useState(false)
   const [isOpen, setIsOpen] = useState(false)
 
@@ -35,13 +37,13 @@ export default function Navbar({ navref }: navprops) {
     setshowsidemenu,
     showsidemenu,
     mobMapRef,
-    lapMapRef,
+    lapMapRef,setMode
   } = context
 
   const location = useLocation()
 
   useEffect(() => {
-    setprojpage(location.pathname.includes("project"))
+    setprojpage(location.pathname.includes("project")|| location.pathname.includes("design"))
     setIsOpen(false) // close mobile menu on route change
   }, [location.pathname])
 
@@ -92,7 +94,28 @@ export default function Navbar({ navref }: navprops) {
               />
               Mobile
             </label>
+   <Button
+              size="sm"
+              variant="secondary"
+              className="hover:scale-105 transition-transform"
+            onClick={()=>{
+             if (location.pathname.includes("project")) {
+              localStorage.setItem("projnav",location.pathname)
+              navigate("/designview")
+             }else{
+let locationbpathfromlocalstoprage=localStorage.getItem("projnav")
+locationbpathfromlocalstoprage&&navigate(locationbpathfromlocalstoprage)
+             }
+            }}
+            >
+           {location.pathname.includes("project")?"View Design":"View Project"}
+            </Button>
+{location.pathname.includes("design")&&<>
 
+
+              <Button onClick={() => setMode("mobile")}>Mobile</Button>
+< Button onClick={() => setMode("desktop")}>Desktop</ Button>
+</>}
             <Button
               size="sm"
               variant="secondary"
@@ -101,6 +124,7 @@ export default function Navbar({ navref }: navprops) {
             >
               Panel
             </Button>
+       
 
             {slecetdelemnt && (
               <Button
@@ -112,13 +136,16 @@ export default function Navbar({ navref }: navprops) {
             )}
 
             {mapref.size > 0 && lapref.size > 0 && (
+
+              <>
+               
               <Button
                 size="sm"
                 onClick={() => createhtml(mapref, lapref)}
               >
                 Export HTML
-              </Button>
-            )}
+              </Button> </>
+            )} 
 
             {currenthistoryref.current > 0 && (
               <div className="flex items-center gap-3

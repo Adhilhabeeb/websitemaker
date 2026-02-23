@@ -258,7 +258,92 @@ console.log(html,"is html")
    await navigator.clipboard.writeText(html);
   return html;
 }
+export function createViewDesignHtml(
+  mobilemap: Map<string, any>,
+  lapmap: Map<string, any>,
+  mode: "mobile" | "desktop"
+) {
+  const mobileData = JSON.stringify(Array.from(mobilemap.entries()));
+  const lapData = JSON.stringify(Array.from(lapmap.entries()));
 
+  return `
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<style>
+  body {
+    margin: 0;
+    padding: 0;
+  }
+</style>
+</head>
+
+<body>
+<div id="app"></div>
+
+<script>
+  const mobileMap = new Map(${mobileData});
+  const lapMap = new Map(${lapData});
+  let viewMode = "${mode}";
+
+  const VALID_TAGS = new Set([
+    "div","p","span","button","img",
+    "section","article","header","footer"
+  ]);
+
+  function clearUI() {
+    const app = document.getElementById("app");
+    if (app) app.innerHTML = "";
+  }
+
+  function buildUIFromMap(map) {
+    const app = document.getElementById("app");
+    if (!app) return;
+
+    Array.from(map.entries()).forEach(([key, config]) => {
+      const rawTag = key.replace(/\\d+/g, "").toLowerCase();
+      const tag = VALID_TAGS.has(rawTag) ? rawTag : "div";
+
+      const el = document.createElement(tag);
+      el.id = key;
+
+      if (config.text) el.textContent = config.text;
+
+      for (const prop in config) {
+        if (prop === "text" || prop === "name") continue;
+
+        if (prop === "src" && tag === "img") {
+          el.src = config[prop];
+          continue;
+        }
+
+        if (prop in el.style) {
+          el.style[prop] = config[prop];
+        }
+      }
+
+      app.appendChild(el);
+    });
+  }
+
+  function buildUI() {
+    clearUI();
+    const activeMap = viewMode === "mobile"
+      ? mobileMap
+      : lapMap;
+
+    buildUIFromMap(activeMap);
+  }
+
+  document.addEventListener("DOMContentLoaded", buildUI);
+</script>
+
+</body>
+</html>
+`;
+}
 
 
 

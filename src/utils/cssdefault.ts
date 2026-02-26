@@ -79,19 +79,19 @@ input: {
   // backgroundRepeat: "no-repeat",
   // backgroundPosition: "center",
 
-  // backgroundColor: "#ffffff",
-  // color: "red",
+  backgroundColor: "#ffffff",
+  color: "red",
 
   border: "1px solid #d1d5db",
-  // borderRadius: "10px",
-  // outline: "none",
+  borderRadius: "10px",
+  outline: "none",
 
-  // fontFamily: "system-ui, sans-serif",
+  fontFamily: "system-ui, sans-serif",
 
-  // textAlign: "left",
-  // textDecoration: "none",
-  // textTransform: "none",
-  // whiteSpace: "nowrap",
+  textAlign: "left",
+  textDecoration: "none",
+  textTransform: "none",
+  whiteSpace: "nowrap",
 
   boxShadow: "0 4px 12px rgba(0,0,0,0.08)",
   // opacity: "1",
@@ -100,7 +100,7 @@ input: {
   // transform: "none",
   position: "relative",
   zIndex: "10",
-
+placeholder:"enter your name",
   // optional placeholder styling support (if handled separately)
   placeholderColor: "#9ca3af"
 }

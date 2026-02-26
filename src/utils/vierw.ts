@@ -291,7 +291,7 @@ export function createViewDesignHtml(
 
   const VALID_TAGS = new Set([
     "div","p","span","button","img",
-    "section","article","header","footer"
+    "section","article","header","footer","input"
   ]);
 
   function clearUI() {

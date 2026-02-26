@@ -29,7 +29,16 @@ let maindiv=document.querySelector(`#${slecetdelemnt}`)
 let elemet =maindiv?.querySelector(`#${slecetdelemnt}`) as HTMLElement
 
 console.log(elemet,"us teh elemy ",maindiv)
-let value=Object.entries(cssdefalult[elenttype]).map(([name,value]:any)=>[name,elemet?.style[name]])
+let value=Object.entries(cssdefalult[elenttype]).map(([name,value]:any)=>{
+  if (name=="placeholder") {
+    let el=elemet as HTMLInputElement
+    return [name,el.placeholder]
+  }
+  
+  
+  return[name,elemet?.style[name]]
+
+})
 let objectwithvalues=Object.fromEntries(value)
 
 console.log("objectvalueincss",objectwithvalues)

@@ -86,6 +86,12 @@ if (name=="text") {
   
 }
 
+if (name=="placeholder") {
+let el=elemet as HTMLInputElement
+  el.placeholder=value as string
+}
+
+
 
 
 if (lapelementmap) {

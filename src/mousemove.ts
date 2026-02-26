@@ -1,7 +1,8 @@
-import { useCallback, useEffect, useMemo, useRef, useState, type Dispatch, type SetStateAction } from "react";
+import { useCallback, useContext, useEffect, useMemo, useRef, useState, type Dispatch, type SetStateAction } from "react";
 import { isMobile } from "react-device-detect";
 import { clamp, isStringInteger, mobileik } from "./utils/vierw";
 import { cssdefalult, type eleent } from "./utils/cssdefault";
+import { NavContext } from "./App";
 
 
 export function usemouse({
@@ -24,9 +25,13 @@ export function usemouse({
  
   
 
+let context=useContext(NavContext)
 
+if (!context) {
+throw new Error("ssry");
 
-
+}
+let {mobMapRef,mobileoldmapstoreing,lapMapRef}=context
 let rectmobdiv=useRef(null)
   let ismobilevalue = useRef(checkedasmobile);
 let currentrect=useRef<DOMRect |undefined>(null)
@@ -376,6 +381,8 @@ let oldmobmapobj={...objset}
 oldmobmapobj.top=(y/window.innerHeight)*100+"%"
 oldmobmapobj.left= ((mobilevviewleft+ clampedX)/window.innerWidth)*100+"%";
 oldmobmap.set(oldmobmapobj.name,oldmobmapobj)
+mobileoldmapstoreing.current.set(oldmobmapobj.name,oldmobmapobj)
+
 // console.log(oldmobmap,"is old mobobj",mobilevviewleft+ clampedX )
 //sertting old mob object
 
@@ -427,7 +434,7 @@ mobileobjsearr.top=(cury/window.innerHeight)*100 +"%"
 
 
  mapref.set(mobileobjsearr.name, mobileobjsearr)
-
+mobMapRef.current.set(mobileobjsearr.name, mobileobjsearr)
 
 //  console.log("new mapref",mapref)
      /////  mobarr setting///////
@@ -574,6 +581,7 @@ lapobject.left=(x / window.innerWidth) * 100 + "%";
 lapobject.top=(curyy / document.documentElement.clientHeight) * 100 + "%"
 
 lapref.set(lapobject.name,lapobject)
+lapMapRef.current.set(lapobject.name,lapobject)
 //  console.log(curyy,"is cutrryyyyy",(curyy / document.documentElement.clientHeight) * 100 + "%",lapobject)
 // console.log(lapref,"is  lapobjevt ",mapref)
 //  the lap
@@ -677,8 +685,8 @@ console.log(recentscountref,"is countref",currenthistoryref)
         return false;
       };
       if (p.id.includes("input")) {
-          p.onfocus = start_drag;
-      p.onmouseup = stop_drag;
+     p.onpointerdown = start_drag
+p.onpointerup = stop_drag
       }else{
   p.onmousedown = start_drag;
       p.onmouseup = stop_drag;

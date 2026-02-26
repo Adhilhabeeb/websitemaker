@@ -6,8 +6,8 @@ import { cssdefalult , type eleent} from './utils/cssdefault'
 import Rightchangingoption from './Rightchangingoption'
 import Leftchanging from './Leftchanging'
 import { NavContext, type Contextapptype } from './App'
-import { useParams } from 'react-router'
-import { fetchProjectById } from './lib/Supabaseopertions'
+import { useLocation, useParams } from 'react-router'
+import { fetchProjectById, updatemapsave } from './lib/Supabaseopertions'
 
 interface dragboxprop{
   checkedasmobile:boolean
@@ -16,7 +16,8 @@ interface dragboxprop{
 
 function DragableBox(props:any) {
   let {id}=useParams()
-  let{showpanel,setshowpanel,sethandleecentfunction,forceRender,setshowsidemenu,showsidemenu,slecetdelemnt,setslecetdelemnt,mobMapRef,lapMapRef,historytmapref,mobileoldmapstoreing} =useContext<Contextapptype>(NavContext as any)
+  let location=useLocation()
+  let{showpanel,setshowpanel,sethandleecentfunction,forceRender,setshowsidemenu,showsidemenu,slecetdelemnt,setslecetdelemnt,mobMapRef,lapMapRef,historytmapref,mobileoldmapstoreing,mode} =useContext<Contextapptype>(NavContext as any)
 
 let {checkedasmobile,navref,currenthistoryref,recentscountref,setcheckedasmobile}=props
  
@@ -45,8 +46,13 @@ let mobref=JSON.parse(data.mobref)
  let lapref= JSON.parse(data.lapref)
  let mobileoldmap=JSON.parse(data.mobileoldmap)
  let histrorymap=JSON.parse(data.histrorymap)
+console.log("mobref:", mobref)
 
-// console.log("mobref:",mobref,lapref,"is lap",mobileoldmap,"is mobile old,map",historymap,"is hostory")
+console.log("lapref:", lapref)
+
+console.log("mobileOldMap:", mobileoldmap)
+
+console.log("historyMap:", historymap)
 historytmapref.current=new Map(histrorymap)
 mobMapRef.current=new Map(mobref)
 lapMapRef.current=new Map(lapref)
@@ -54,11 +60,34 @@ mobileoldmapstoreing.current=new Map(mobileoldmap)
  let navbar=navref.current
 let navbarprops=navbar?.getBoundingClientRect().height as number
 setcheckedasmobile(false)
+    setslecetdelemnt(null)
+    const root = document.getElementById("root");
+let divmob=document.getElementById("divrect")
+Array.from(document.body.children).forEach(el => {
+  if (el !== root &&  el !==divmob) {
+    el.remove();
+  }
+});
+
+// console.log(mapref,"is mob",lapref,"is lapppp and oldmaoref",oldmobmap)
+// console.log(Array.from(mapref),"is mapppppp")
     createElementsFromMap(lapref,addbbutton,navbarprops,checkedasmobile)
     
 }
 
  fetch(id)
+
+console.log(lapMapRef.current,"is after")
+
+ return()=>{
+let pathname=location.pathname
+
+let id=pathname.replace("/project/","")
+console.log(id,"id the id")
+updatemapsave(id,mobMapRef.current,lapMapRef.current,historytmapref.current,mobileoldmapstoreing.current)
+
+    
+ }
 },[])
 
 
@@ -471,6 +500,10 @@ console.log(lapref,"after adding button ")
   }
 
 useEffect(() => {  
+
+
+ setslecetdelemnt(null)
+  console.log(lapMapRef,"is lappmobbref")
   let navbar=navref.current
 let navbarprops=navbar?.getBoundingClientRect().height as number
  setshowsidemenu(false)

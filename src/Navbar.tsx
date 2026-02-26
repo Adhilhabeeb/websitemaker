@@ -66,7 +66,7 @@ let {id}=useParams()
 
 
 
-
+console.log(slecetdelemnt,"is sletelent")
     function handlesave() {
 
 
@@ -74,6 +74,9 @@ let pathname=location.pathname
 
 let id=pathname.replace("/project/","")
 console.log(id,"id the id")
+
+
+console.log(lapMapRef,"is lapp")
 updatemapsave(id,mobMapRef.current,lapMapRef.current,historytmapref.current,mobileoldmapstoreing.current)
 
     

@@ -6,6 +6,8 @@ import { cssdefalult , type eleent} from './utils/cssdefault'
 import Rightchangingoption from './Rightchangingoption'
 import Leftchanging from './Leftchanging'
 import { NavContext, type Contextapptype } from './App'
+import { useParams } from 'react-router'
+import { fetchProjectById } from './lib/Supabaseopertions'
 
 interface dragboxprop{
   checkedasmobile:boolean
@@ -13,13 +15,17 @@ interface dragboxprop{
 
 
 function DragableBox(props:any) {
+  let {id}=useParams()
   let{showpanel,setshowpanel,sethandleecentfunction,forceRender,setshowsidemenu,showsidemenu,slecetdelemnt,setslecetdelemnt,mobMapRef,lapMapRef,historytmapref,mobileoldmapstoreing} =useContext<Contextapptype>(NavContext as any)
 
-let {checkedasmobile,navref,currenthistoryref,recentscountref}=props
+let {checkedasmobile,navref,currenthistoryref,recentscountref,setcheckedasmobile}=props
  
 
 const [elenttype, setelenttype] = useState<string|null>(null)
 const [va, setva] = useState("")
+
+
+
 
 
 const [recentbuttonhold, setrecentbuttonhold] = useState(false)
@@ -28,7 +34,32 @@ const [recentbuttonhold, setrecentbuttonhold] = useState(false)
 
 
 
+useLayoutEffect(()=>{
+if (!id) return;
+ async function fetch(id:string) {
+  let data= await fetchProjectById(id)
 
+
+
+let mobref=JSON.parse(data.mobref)
+ let lapref= JSON.parse(data.lapref)
+ let mobileoldmap=JSON.parse(data.mobileoldmap)
+ let histrorymap=JSON.parse(data.histrorymap)
+
+// console.log("mobref:",mobref,lapref,"is lap",mobileoldmap,"is mobile old,map",historymap,"is hostory")
+historytmapref.current=new Map(histrorymap)
+mobMapRef.current=new Map(mobref)
+lapMapRef.current=new Map(lapref)
+mobileoldmapstoreing.current=new Map(mobileoldmap)
+ let navbar=navref.current
+let navbarprops=navbar?.getBoundingClientRect().height as number
+setcheckedasmobile(false)
+    createElementsFromMap(lapref,addbbutton,navbarprops,checkedasmobile)
+    
+}
+
+ fetch(id)
+},[])
 
 
 

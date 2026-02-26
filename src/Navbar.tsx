@@ -1,11 +1,12 @@
-import React, { useContext, useEffect, useState } from "react"
+import React, { useCallback, useContext, useEffect, useLayoutEffect, useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Menu, X } from "lucide-react"
-import { SignedIn, SignedOut, UserButton } from "@clerk/react-router"
-import { Link, useLocation, useNavigate } from "react-router"
+import { SignedIn, SignedOut, UserButton, useUser } from "@clerk/react-router"
+import { Link, useLocation, useNavigate, useParams } from "react-router"
 import { ThemeToggle } from "./components/ui/theme"
 import { NavContext, type Contextapptype } from "./App"
 import { createhtml } from "./utils/vierw"
+import { updatemapsave } from "./lib/Supabaseopertions"
 
 const navitems: string[][] = [
   ["Home", "/"],
@@ -18,6 +19,10 @@ type navprops = {
 }
 
 export default function Navbar({ navref }: navprops) {
+
+
+
+
   let navigate=useNavigate()
   const [projpage, setprojpage] = useState(false)
   const [isOpen, setIsOpen] = useState(false)
@@ -37,10 +42,12 @@ export default function Navbar({ navref }: navprops) {
     setshowsidemenu,
     showsidemenu,
     mobMapRef,
-    lapMapRef,setMode
+    lapMapRef,setMode,mobileoldmapstoreing,historytmapref
   } = context
 
   const location = useLocation()
+
+
 
   useEffect(() => {
     setprojpage(location.pathname.includes("project")|| location.pathname.includes("design"))
@@ -54,6 +61,23 @@ export default function Navbar({ navref }: navprops) {
   const mapref = mobMapRef.current
   const lapref = lapMapRef.current
 
+let {id}=useParams()
+
+
+
+
+
+    function handlesave() {
+
+
+let pathname=location.pathname
+
+let id=pathname.replace("/project/","")
+console.log(id,"id the id")
+updatemapsave(id,mobMapRef.current,lapMapRef.current,historytmapref.current,mobileoldmapstoreing.current)
+
+    
+  }
   return (
     <nav
       ref={navref}
@@ -144,6 +168,15 @@ locationbpathfromlocalstoprage&&navigate(locationbpathfromlocalstoprage)
                 onClick={() => createhtml(mapref, lapref)}
               >
                 Export HTML
+              </Button>
+              
+                   <Button
+                size="sm"
+                onClick={() =>{
+handlesave()
+} }
+              >
+         save
               </Button> </>
             )} 
 

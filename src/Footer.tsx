@@ -6,7 +6,7 @@ function Footer() {
   const [projpage, setprojpage] = useState(false)
 
   useEffect(() => {
-    setprojpage(location.pathname.includes("project"))
+    setprojpage(location.pathname.includes("project")|| location.pathname.includes("design"))
  
   }, [location.pathname])
 

@@ -79,7 +79,8 @@ export function clamp(num:number, min:number, max:number) {
   return Math.min(Math.max(num, min), max);
 }
 
- export function createElementsFromMap(map:Map<string,Record<string,string>>,addbutton:(ele:string,data:Record<string,any>)=>void,navbarprops:number,checkmobile:boolean=true) {
+ export function createElementsFromMap(map:Map<string,Record<string,string>>,
+  addbutton:(ele:string,data:Record<string,any>)=>void,navbarprops:number,checkmobile:boolean=true) {
   let parent=document.body
 // console.log(addbutton,"is add button")
 console.log(map,"is map as passed  9999",Array.from(map))

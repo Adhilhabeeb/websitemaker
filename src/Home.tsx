@@ -27,7 +27,7 @@ function Dashboard() {
     throw new Error("contecxtnot fund ");
     
   }
-  // let {mobMapRef,mobileoldmapstoreing,lapMapRef,historytmapref}=context
+  let {mobMapRef,mobileoldmapstoreing,lapMapRef,historytmapref}=context
   // console.log(mobMapRef,mobileoldmapstoreing,lapMapRef,historytmapref,mapreffff)
   const { user, isLoaded, isSignedIn } = useUser()
 
@@ -78,6 +78,7 @@ select: (data) => {
 
 useEffect(() => {
  if (data) {
+  console.log(data,"is teh datata")
   setProjects(data)
  }
 }, [data])
@@ -85,7 +86,10 @@ useEffect(() => {
   
 console.log(data,"isa datyata")
   const handleCreateProject = async () => {
-
+mobMapRef.current=new Map()
+mobileoldmapstoreing.current=new Map()
+lapMapRef.current=new Map()
+historytmapref.current=new Map()
     if (!name.trim()) return
 
 startTransition(async () => {
@@ -157,7 +161,13 @@ startTransition(async () => {
                 </p>
               </CardContent>
               <CardFooter>
-                <Link  to={`/project/${project.projectname}`}>
+                <Link  to={`/project/${project.id}`}  onClick={()=>{
+
+                  mobMapRef.current=new Map()
+mobileoldmapstoreing.current=new Map()
+lapMapRef.current=new Map()
+historytmapref.current=new Map()
+                }}>
                 
                 
                 

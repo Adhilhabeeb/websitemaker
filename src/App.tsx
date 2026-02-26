@@ -191,6 +191,11 @@ function App() {
   let mobileoldmapstoreing = useRef<Map<string, any>>(new Map());
   let historytmapref = useRef<Map<number, any>>(new Map());
 const [mode, setMode] = useState< "mobile" | "desktop">("desktop");
+
+
+
+
+
   return (
     <>
       {/* {detectMob()?"ann":"alla"} */}
@@ -290,6 +295,7 @@ handleclick()
                         recentscountref={recentscountref}
                         currenthistoryref={currenthistoryref}
                         checkedasmobile={checkedasmobile}
+                        setcheckedasmobile={setcheckedasmobile}
                         navref={navref}
                       ></DragableBox>
                     </AuthGuard>

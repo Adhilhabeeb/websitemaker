@@ -21,8 +21,9 @@ export function checkitisinwidth(
   name: string,
   value: string,
   maxwidth: number,
-  checkedasmobile: Boolean,
+
 ): checkretur {
+  
   switch (name) {
     case "width":
       
@@ -44,7 +45,7 @@ export function checkitisinwidth(
 export function checkisvwandconverttomobilescerrrnwidth(
   name: string,
   value: string ,
-  maxwidth: number,
+  
   checkedasmobile: Boolean,
 ):string {
 
@@ -81,7 +82,7 @@ export function clamp(num:number, min:number, max:number) {
 
  export function createElementsFromMap(map:Map<string,Record<string,string>>,
   addbutton:(ele:string,data:Record<string,any>)=>void,navbarprops:number,checkmobile:boolean=true) {
-  let parent=document.body
+  // let parent=document.body
 // console.log(addbutton,"is add button")
 console.log(map,"is map as passed  9999",Array.from(map))
 let arrayfrommap=Array.from(map)

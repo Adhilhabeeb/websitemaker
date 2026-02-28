@@ -1,5 +1,5 @@
-import {  type ReactNode, useEffect, useLayoutEffect } from "react";
-import { useAuth, useUser } from "@clerk/clerk-react";
+import {  type ReactNode, useLayoutEffect } from "react";
+import {  useUser } from "@clerk/clerk-react";
 import { useNavigate } from "react-router";
 import LandingPage from "./Landingpage";
 import Loader from "./Loader";

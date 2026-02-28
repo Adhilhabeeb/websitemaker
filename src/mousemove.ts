@@ -1,12 +1,12 @@
-import { useCallback, useContext, useEffect, useMemo, useRef, useState, type Dispatch, type SetStateAction } from "react";
-import { isMobile } from "react-device-detect";
+import { useCallback, useContext, useEffect, useRef, type Dispatch, type SetStateAction } from "react";
+
 import { clamp, isStringInteger, mobileik } from "./utils/vierw";
-import { cssdefalult, type eleent } from "./utils/cssdefault";
+import { cssdefalult } from "./utils/cssdefault";
 import { NavContext } from "./App";
 
 
 export function usemouse({
-  buttonlap,
+
   buttonmob,
   checkedasmobile,
    divmobilebg,currenthistoryref,recentscountref,forceRender
@@ -32,7 +32,7 @@ throw new Error("ssry");
 
 }
 let {mobMapRef,mobileoldmapstoreing,lapMapRef}=context
-let rectmobdiv=useRef(null)
+// let rectmobdiv=useRef(null)
   let ismobilevalue = useRef(checkedasmobile);
 let currentrect=useRef<DOMRect |undefined>(null)
 
@@ -108,7 +108,7 @@ let currentrect=useRef<DOMRect |undefined>(null)
     hr4: HTMLElement,
     setar: Set<any>,
     element: HTMLElement,
-    checkedasmobile: Boolean,
+
         setslecetdelemnt:Dispatch<SetStateAction<string | null>>,
          setmobarr:Set<any>,
          mapref:Map<string,any>,
@@ -165,7 +165,7 @@ let heightofmobiledesigner=currentrect?.current?.height as number
 
 // console.log(elemt,"is elent")
 let keys=Object.entries(cssdefalult[elemt]).map((el:any)=>{
-  let [name,value]=el
+  let [name]=el
 return [name,element.style[name]]
 
 })
@@ -210,7 +210,7 @@ let objectcustempro=Object.fromEntries(keys)
         // check that the value is already in the set 
 
         if (setar.size > 0) {
-          setar.forEach((el, i) => {
+          setar.forEach((el) => {
             let parsed = JSON.parse(el);
             // console.log(parsed,"is parsed")
             let left = parseInt(parsed.left);
@@ -222,7 +222,7 @@ let objectcustempro=Object.fromEntries(keys)
 
             let topdiffeernce = top - objtop;
             // console.log(parsed.name,"is parsed name ")
-            let parsedname = parsed.name;
+            // let parsedname = parsed.name;
             const parele = document.getElementById(parsed.name);
             // console.log(parele,"isss parl;eeee")
             let borel = parele?.querySelectorAll(`div`);
@@ -293,13 +293,13 @@ let objectcustempro=Object.fromEntries(keys)
         // let lefgtmove= x>document.documentElement.clientWidth-parseInt(t.style.width)?x-(parseInt(t.style.width))+"px":x+"px"
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////mobile
   // importnt 
-        let vw = window.visualViewport?.width;
-        let vh = window.visualViewport?.height;
-        let ismobille = true;
+        // let vw = window.visualViewport?.width;
+        // let vh = window.visualViewport?.height;
+        // let ismobille = true;
         let leftmarginspace=2
-        let leftformobile =
-          ((x-leftmarginspace) / (mobileik.x)) * 100-((parseInt(element.style.width)/4 ) / window.innerWidth) * 100
- // //  -
+//         let leftformobile =
+//           ((x-leftmarginspace) / (mobileik.x)) * 100-((parseInt(element.style.width)/4 ) / window.innerWidth) * 100
+//  // //  -
           // ;
 
 
@@ -351,15 +351,15 @@ let x=curx
  // //  -
   t.style.top=(y/window.innerHeight)*100+"%"
 
-let elemtmovingleft=(x/window.innerWidth)*100
-let iffsetx=element.offsetWidth
-let clampx=(mobilevviewleft+ x)-(iffsetx/2)
-if (x>mobileik.x-(mobileik.x/4)) {
-  clampx=(mobilevviewleft+x)-(iffsetx)
-}
-if (x<(iffsetx/2)) {
-  clampx=(mobilevviewleft+x)
-}
+// let elemtmovingleft=(x/window.innerWidth)*100
+// let iffsetx=element.offsetWidth
+// let clampx=(mobilevviewleft+ x)-(iffsetx/2)
+// if (x>mobileik.x-(mobileik.x/4)) {
+//   clampx=(mobilevviewleft+x)-(iffsetx)
+// }
+// if (x<(iffsetx/2)) {
+//   clampx=(mobilevviewleft+x)
+// }
 
 // clampx=Math.max(0,
 //   Math.min(clampx,mobileik.x-iffsetx)

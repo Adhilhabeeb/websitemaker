@@ -1,10 +1,10 @@
 import React, {
   createContext,
-  Suspense,
-  useCallback,
+  
+
   useEffect,
   useLayoutEffect,
-  useMemo,
+  
   useRef,
   useState,
   type SetStateAction
@@ -12,23 +12,21 @@ import React, {
 import type { polltye, sendingmenu } from "./eletron/utils/types";
 import "./App.css";
 import {   QueryClientProvider} from "@tanstack/react-query";
-import Chartt from "./Chart";
+
 import type { systemdetatype } from "./eletron/poll";
 
 import DragableBox from "./Dragable";
-import { cssproper, queryClient } from "./utils/vierw";
+import {  queryClient } from "./utils/vierw";
 import Navbar from "./Navbar";
 import { BrowserRouter, Routes, Route } from "react-router";
-import { useAuth } from "@clerk/clerk-react";
-import Loader from "./Loader";
+
 import AuthGuard from "./AuthGuard";
-import { Home } from "lucide-react";
+
 import Cusatemsignin from "./Cusatemsignin";
 import Custemsignup from "./custemsignup";
 import Footer from "./Footer";
 import { ThemeProvider } from "./components/ui/theme-provider";
-import { useTheme } from "next-themes";
-import { dark } from "@clerk/themes";
+
 import Clerkprovider from "./Clerkprovider";
 
 import Dashboard from "./Home";
@@ -69,9 +67,6 @@ mode: "mobile" | "desktop"
 }
 
 export const NavContext = createContext<Contextapptype | undefined>(undefined);
-function detectMob() {
-  return window.innerWidth <= 800 && window.innerHeight <= 600;
-}
 
 // function add(pa: Function) {
 //   let i = 0;
@@ -85,7 +80,7 @@ function detectMob() {
 let lengh = 10;
 
 function App() {
-  const [projpage, setprojpage] = useState(false);
+
   const [, forceRender] = useState(0);
   const [showsidemenu, setshowsidemenu] = useState(false);
   const [slecetdelemnt, setslecetdelemnt] = useState<string | null>(null);
@@ -97,30 +92,23 @@ function App() {
   let navref = useRef<HTMLElement | null>(null);
 
   const [showpanel, setshowpanel] = useState(false);
-  const [cou, setcou] = useState(0);
-  let checkmobileinput = useRef<HTMLInputElement>(null);
-  let vedioref = useRef<HTMLVideoElement>(null);
-  let video = vedioref.current;
+  // const [cou, setcou] = useState(0);
+
+  // let vedioref = useRef<HTMLVideoElement>(null);
+  // let video = vedioref.current;
   const [checkedasmobile, setcheckedasmobile] = useState(false);
   // console.log("app renered")
-  const [value, setvalue] = useState("");
+  // const [value, setvalue] = useState("");
   let valuesent = useRef<systemdetatype>(null);
-  const [system, setsystem] = useState<systemdetatype[]>([]);
+  const [, setsystem] = useState<systemdetatype[]>([]);
   // const [dounceva, setdounceva] = useState<any>("")
-  const [count, setCount] = useState<number>(0);
+  const [count] = useState<number>(0);
 
-  const [seletedoption, setseletedoption] = useState<sendingmenu>();
+  const [, setseletedoption] = useState<sendingmenu>();
   // const [data, setdata] = useState<unknown>()
-  const [chargingstatus, setchargingstatus] = useState({
-    charging: "not",
-    percentage: 0
-  });
-  let lastalue = useRef(0);
 
-  let handleclick = useCallback(() => {
-    setCount(count + 1);
-    // console.log("clidked",count)
-  }, []);
+  // let lastalue = useRef(0);
+
 
   useEffect(() => {
     if ("adhil" in window) {
@@ -136,7 +124,7 @@ function App() {
     }
   }, [count]);
 
-  const [user, setuser] = useState<any>();
+  const [, setuser] = useState<any>();
   // Source - https://stackoverflow.com/a
   // Posted by Anwar, modified by community. See post 'Timeline' for change history
   // Retrieved 2026-01-20, License - CC BY-SA 4.0
@@ -172,13 +160,13 @@ function App() {
     }
   }, []);
 
-  const [navrefrect, setnavrefrect] = useState<DOMRect>();
+  const [, setnavrefrect] = useState<DOMRect>();
 
   // console.log(navref.current?.getBoundingClientRect(), "is navvref");
   // let navreffromdom=useMemo(()=>{
   // return navref.current?.getBoundingClientRect();
   // },[navref.current])
-  const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
+  // const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
 
   useEffect(() => {
     if (navref.current) {

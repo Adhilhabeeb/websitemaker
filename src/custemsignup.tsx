@@ -1,5 +1,5 @@
 import { SignUp } from '@clerk/clerk-react'
-import React from 'react'
+
 
 function Custemsignup() {
   return (

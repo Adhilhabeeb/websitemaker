@@ -1,12 +1,9 @@
-import { useState, type FormEvent } from "react";
-import { SignIn, useSignIn } from "@clerk/clerk-react";
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
+import { SignIn } from "@clerk/clerk-react";
 
-import React from 'react'
+
+
+
 
 function Cusatemsignin() {
   return (

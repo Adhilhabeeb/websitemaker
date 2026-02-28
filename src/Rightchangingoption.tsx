@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react'
-import { cssdefalult, type eleent } from './utils/cssdefault'
+import  { useEffect, useState } from 'react'
+import { cssdefalult } from './utils/cssdefault'
 import ButtonEditor from './custemmenu'
 
 type propsva={
@@ -14,7 +14,7 @@ type propsva={
 }
 function Rightchangingoption({slecetdelemnt,elenttype,checkedasmobile,setmobarr,mapref,lapref,oldmobmap}:propsva) {
 const [csscustem, setcsscustem] = useState<Record<string,string|number>|null>(null)
-  const [va, setva] = useState("")
+  // const [va, setva] = useState("")
 
     useEffect(() => {
 
@@ -29,7 +29,7 @@ let maindiv=document.querySelector(`#${slecetdelemnt}`)
 let elemet =maindiv?.querySelector(`#${slecetdelemnt}`) as HTMLElement
 
 console.log(elemet,"us teh elemy ",maindiv)
-let value=Object.entries(cssdefalult[elenttype]).map(([name,value]:any)=>{
+let value=Object.entries(cssdefalult[elenttype]).map(([name]:any)=>{
   if (name=="placeholder") {
     let el=elemet as HTMLInputElement
     return [name,el.placeholder]

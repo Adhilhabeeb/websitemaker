@@ -1,8 +1,8 @@
-import React, { useCallback, useContext, useEffect, useLayoutEffect, useState } from "react"
+import React, {  useContext, useEffect, useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Menu, X } from "lucide-react"
-import { SignedIn, SignedOut, UserButton, useUser } from "@clerk/react-router"
-import { Link, useLocation, useNavigate, useParams } from "react-router"
+import { SignedIn, SignedOut, UserButton } from "@clerk/react-router"
+import { Link, useLocation, useNavigate } from "react-router"
 import { ThemeToggle } from "./components/ui/theme"
 import { NavContext, type Contextapptype } from "./App"
 import { createhtml } from "./utils/vierw"
@@ -61,7 +61,7 @@ export default function Navbar({ navref }: navprops) {
   const mapref = mobMapRef.current
   const lapref = lapMapRef.current
 
-let {id}=useParams()
+// let {id}=useParams()
 
 
 

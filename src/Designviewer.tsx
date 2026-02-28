@@ -1,14 +1,14 @@
-import React, { useContext, useMemo, useState, useTransition } from 'react'
-import { Button } from './components/ui/button';
+import React, { useContext, useMemo } from 'react'
+// import { Button } from './components/ui/button';
 import { NavContext } from './App';
-import { createhtml, createViewDesignHtml, mobileik } from './utils/vierw';
+import {  createViewDesignHtml, mobileik } from './utils/vierw';
 
  function Designviewer({mobref,lapref}:{
   
  mobref:React.RefObject< Map<string, any>>
  lapref:React.RefObject< Map<string, any>>
 }) {
-  let[pending,starttransition]=useTransition()
+  // let[pending,starttransition]=useTransition()
 let  context=useContext(NavContext)
 if (!context) {
   throw Error("soem thing error")

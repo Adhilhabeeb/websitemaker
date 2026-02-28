@@ -1,4 +1,4 @@
-import React from 'react'
+
 import CustemRight from './CustemRight'
 
 function Leftchanging({addbbutton,setshowpanel}:{

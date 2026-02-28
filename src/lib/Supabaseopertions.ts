@@ -46,22 +46,24 @@ mobileoldmapref=new Map())=>{
      let lapData=Array.from(lapref)
       let histdata=Array.from(historytmapref)
        let mobileOld=Array.from(mobileoldmapref)
-
+console.log(histdata,"is before updating to ui ")
        const { data, error } = await supabase
     .from("websitemaker")
     .update({
+      
       mobref: JSON.stringify(mobData),
       lapref: JSON.stringify(lapData),
       histrorymap: JSON.stringify(histdata),
       mobileoldmap: JSON.stringify(mobileOld),
     })
-    .eq("id", id) 
-
+    .eq("id", id) .select()
+  .single();
+console.log(data,"i sthe datata")
   if (error) {
     console.log("Update Error:", error)
   } else {
     queryClient.invalidateQueries({ queryKey: ["projects"] })
-    console.log("Updated:", data)
+    console.log("Updated:", data,historytmapref)
   }
 }
 
@@ -77,5 +79,6 @@ export const fetchProjectById = async (id: string) => {
     return null
   }
 
+  console.log(data,)
   return data
 }

@@ -21,7 +21,7 @@ import { supabase } from "./lib/supabase"
 import Loader from "./Loader"
 
 function Dashboard() {
- const [isPending, startTransition] = useTransition();
+ const [, startTransition] = useTransition();
   let context=useContext<Contextapptype |undefined>(NavContext )
 
   if (!context) {

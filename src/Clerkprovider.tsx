@@ -1,9 +1,9 @@
 import { ClerkProvider } from '@clerk/clerk-react'
 import { dark } from '@clerk/themes'
 import { useTheme } from 'next-themes'
-import React, { type ReactNode } from 'react'
+import  { type ReactNode } from 'react'
 
-function Clerkprovider({children,...props}:{
+function Clerkprovider({children}:{
     children:ReactNode
 }) {
  const { resolvedTheme } = useTheme()

@@ -1,12 +1,12 @@
 import { useContext, useEffect, useLayoutEffect, useMemo, useState } from "react";
-import { checkisvwandconverttomobilescerrrnwidth, checkitisinwidth, cssproper, mobileik } from "./utils/vierw";
+import { checkisvwandconverttomobilescerrrnwidth, checkitisinwidth, mobileik } from "./utils/vierw";
 import { cssValueOptions } from "./utils/cssdefault";
 import { NavContext } from "./App";
 
 type Styles = Record<string, string | number>;
 
 export default function ButtonEditor({
-  csscustem,slecetdelemnt,elenttype,checkedasmobile,setmobarr,mapref,lapref,oldmobmap
+  csscustem,slecetdelemnt,elenttype,checkedasmobile,mapref,lapref,oldmobmap
 }: {
 
 
@@ -28,7 +28,7 @@ export default function ButtonEditor({
     let {lapMapRef,mobMapRef,historytmapref,mobileoldmapstoreing}=contextr
     console.log(lapMapRef,mobMapRef,historytmapref,mobileoldmapstoreing,"is mps")
   const [styles, setStyles] = useState<Styles>({});
-let oldstyles:any;
+// let oldstyles:any;
   // sync parent → child
   useLayoutEffect(() => {
    
@@ -71,7 +71,7 @@ let lapelementmap=lapMapRef.current.get(slecetdelemnt)
 
 // console.log(newparesdfilterobj,"is the currentelemet obj  in the mobilearray ")
 
-  let parseobj:any;
+  // let parseobj:any;
 // if (setovjarrparsed.length>0) {
 // parseobj=JSON.parse(setovjarrparsed[0])
 
@@ -98,7 +98,7 @@ if (lapelementmap) {
   lapelementmap[name]=value
 }
 
- let mobilescreenelementvalue=checkisvwandconverttomobilescerrrnwidth(name,value as string,maximumwidth,checkedasmobile)
+ let mobilescreenelementvalue=checkisvwandconverttomobilescerrrnwidth(name,value as string,checkedasmobile)
 
 // if (parseobj) {
 //   parseobj[name]=value
@@ -161,7 +161,7 @@ if (!checkedasmobile &&lapelementmap) {
     // console.log(e,"eee")
 
     const { name, value } = e.target;
-    let {status,valueas}=checkitisinwidth(name,value,maximumwidth,checkedasmobile)
+    let {status,valueas}=checkitisinwidth(name,value,maximumwidth)
     
 if (!status) {
   console.log("is greter that the device width")
@@ -219,7 +219,7 @@ if (!status) {
 
  
 
-function Field({ checklfunction,
+function Field({ 
   label,
   name,
   value,

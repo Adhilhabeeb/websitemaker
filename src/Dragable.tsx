@@ -1,7 +1,7 @@
-import React, { memo, useCallback, useContext, useEffect, useEffectEvent, useLayoutEffect, useMemo, useRef, useState } from 'react'
-import Draggable from 'react-draggable'
+import  { memo, useContext, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
+
 import { usemouse } from './mousemove'
-import { createElementsFromMap, createhtml, cssproper, isStringInteger, mobileik } from './utils/vierw'
+import { createElementsFromMap, isStringInteger, mobileik } from './utils/vierw'
 import { cssdefalult , type eleent} from './utils/cssdefault'
 import Rightchangingoption from './Rightchangingoption'
 import Leftchanging from './Leftchanging'
@@ -9,21 +9,18 @@ import { NavContext, type Contextapptype } from './App'
 import { useLocation, useParams } from 'react-router'
 import { fetchProjectById, updatemapsave } from './lib/Supabaseopertions'
 
-interface dragboxprop{
-  checkedasmobile:boolean
-}
 
 
 function DragableBox(props:any) {
   let {id}=useParams()
   let location=useLocation()
-  let{showpanel,setshowpanel,sethandleecentfunction,forceRender,setshowsidemenu,showsidemenu,slecetdelemnt,setslecetdelemnt,mobMapRef,lapMapRef,historytmapref,mobileoldmapstoreing,mode} =useContext<Contextapptype>(NavContext as any)
+  let{showpanel,setshowpanel,sethandleecentfunction,forceRender,setshowsidemenu,showsidemenu,slecetdelemnt,setslecetdelemnt,mobMapRef,lapMapRef,historytmapref,mobileoldmapstoreing} =useContext<Contextapptype>(NavContext as any)
 
 let {checkedasmobile,navref,currenthistoryref,recentscountref,setcheckedasmobile}=props
  
 
 const [elenttype, setelenttype] = useState<string|null>(null)
-const [va, setva] = useState("")
+
 
 
 
@@ -52,8 +49,7 @@ console.log("lapref:", lapref)
 
 console.log("mobileOldMap:", mobileoldmap)
 
-console.log(" is hoistory map:", historymap)
-historytmapref.current=new Map()
+console.log(" is hoistory map:", histrorymap)
 mobMapRef.current=new Map(mobref)
 lapMapRef.current=new Map(lapref)
 mobileoldmapstoreing.current=new Map(mobileoldmap)
@@ -69,10 +65,16 @@ Array.from(document.body.children).forEach(el => {
   }
 });
 
+
 // console.log(mapref,"is mob",lapref,"is lapppp and oldmaoref",oldmobmap)
 // console.log(Array.from(mapref),"is mapppppp")
     createElementsFromMap(lapref,addbbutton,navbarprops,checkedasmobile)
-    
+historytmapref.current=new Map(histrorymap)
+currenthistoryref.current=new Map(histrorymap).size
+recentscountref.current=new Map(histrorymap).size
+  
+
+console.log(currenthistoryref,"is current",recentscountref,"is recrent and :map historty:",historytmapref.current)
 }
 
  fetch(id)
@@ -81,13 +83,15 @@ console.log(lapMapRef.current,"is after")
 
  return()=>{
 let pathname=location.pathname
-
-let id=pathname.replace("/project/","")
+if (lapMapRef.current.size>0 || mobMapRef.current.size>0) {
+ 
+  let id=pathname.replace("/project/","")
 console.log(id,"id the id")
 updatemapsave(id,mobMapRef.current,lapMapRef.current,historytmapref.current,mobileoldmapstoreing.current)
-currenthistoryref.current=0
-recentscountref.current=0
-    
+
+    console.log(historytmapref.current,"is histroyymapp")
+}
+
  }
 },[])
 
@@ -159,7 +163,7 @@ useEffect(() => {
 
 
 
-  const [rectvaluesofdivmob, setrectvaluesofdivmob] = useState<object>();
+  // const [rectvaluesofdivmob, setrectvaluesofdivmob] = useState<object>();
 
 
 let  divmobilebg=useRef<HTMLDivElement |null >(null) 
@@ -167,7 +171,7 @@ let  divmobilebg=useRef<HTMLDivElement |null >(null)
 
 
 
-let timeout;
+// let timeout;
 
 
 
@@ -283,7 +287,7 @@ let handlerecent=function (target:string) {
 
 console.log("called recen fffft")
 setrecentbuttonhold(true)
-timeout=setTimeout(() => {
+setTimeout(() => {
   setrecentbuttonhold(false)
 }, 700);
 
@@ -324,7 +328,7 @@ useEffect(() => {
 
 // console.log(props,"is yyyy")
   let countref=useRef(0)
-  const [setaray, setsetaray] = useState(new Set())
+  const [setaray,] = useState(new Set())
   // const [setmobarr, setsetmobarr] = useState(new Set())
   let setmobarr=useRef<Set<any>>(new Set())
 
@@ -363,7 +367,7 @@ let move=usemouse({buttonlap,buttonmob,checkedasmobile,divmobilebg,currenthistor
 
 // console.log(move,"is move")
 
-  function addbbutton(ele:eleent="button",data:Record<string,string> |null,e?:React.MouseEvent<HTMLElement>,) {
+  function addbbutton(ele:eleent="button",data:Record<string,string> |null,) {
 console.log(data,"is teh adtatattatata",currenthistoryref,"is ref")
 
 if (data) {
@@ -425,7 +429,7 @@ button.style.position="absolute";
 //
 
 let keys=Object.entries(elemntydefauly).map((el:any)=>{
-  let [name,value]=el
+  let [name,]=el
 return [name,button.style[name]]
 
 })
@@ -505,7 +509,7 @@ div.append(hr,hr2,hr3,hr4,button)
 document.body.appendChild(div)
 setslecetdelemnt(div.dataset.name)
 console.log(currenthistoryref.current,"in histoy")
-move(div,div,hr,hr2,hr3,hr4,setaray,button,checkedasmobile,setslecetdelemnt,setmobarr.current,mapref,navref,lapref,oldmobmap)
+move(div,div,hr,hr2,hr3,hr4,setaray,button,setslecetdelemnt,setmobarr.current,mapref,navref,lapref,oldmobmap)
 
 
 console.log(lapref,"after adding button ")
@@ -548,11 +552,7 @@ console.log(Array.from(mapref),"is mapppppp")
 
 
 
-  function DraggableEventHandler(e:any,data:any) {
-    console.log(e,
-      "isn eeeeee",data
-    )
-  }
+
   return (
 < >
 

@@ -137,20 +137,20 @@ locationbpathfromlocalstoprage&&navigate(locationbpathfromlocalstoprage)
             >
            {location.pathname.includes("project")?"View Design":"View Project"}
             </Button>
-{location.pathname.includes("design")&&<>
+{location.pathname.includes("design")?<>
 
 
               <Button onClick={() => setMode("mobile")}>Mobile</Button>
 < Button onClick={() => setMode("desktop")}>Desktop</ Button>
-</>}
-            <Button
+</>:     <Button
               size="sm"
               variant="secondary"
               className="hover:scale-105 transition-transform"
               onClick={() => setshowpanel(!showpanel)}
             >
               Panel
-            </Button>
+            </Button>}
+       
        
 
             {slecetdelemnt && (

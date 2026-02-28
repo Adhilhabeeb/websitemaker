@@ -3,7 +3,7 @@ import { Button } from './components/ui/button';
 import { NavContext } from './App';
 import { createhtml, createViewDesignHtml, mobileik } from './utils/vierw';
 
-async function Designviewer({mobref,lapref}:{
+ function Designviewer({mobref,lapref}:{
   
  mobref:React.RefObject< Map<string, any>>
  lapref:React.RefObject< Map<string, any>>
@@ -17,7 +17,7 @@ if (!context) {
 let {mode}=context
 
 
-let html=useMemo(async ()=>{
+let html=useMemo( ()=>{
 
  return  createViewDesignHtml(mobref.current,lapref.current,mode) 
 
@@ -32,7 +32,7 @@ console.log(  html,"is html")
  
   }}
 >
-  <iframe  style={{ width: mode === "mobile" ? "375px" : "100vw",minHeight: mode === "mobile" ? mobileik.y+"px" : "100vh",border:"1px solid black"}} srcDoc={await html} />
+  <iframe  style={{ width: mode === "mobile" ? "375px" : "100vw",minHeight: mode === "mobile" ? mobileik.y+"px" : "100vh",border:"1px solid black"}} srcDoc={ html} />
 </div>
     </div>
   )

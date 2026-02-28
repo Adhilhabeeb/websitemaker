@@ -279,9 +279,9 @@ handleclick()
                   path="/designview"
                   element={
                     <AuthGuard>
-                     <Suspense fallback={<Loader/>}>
+                   
                        <Designviewer mobref={mobMapRef}  lapref={lapMapRef}/>
-                     </Suspense>
+                    
                     </AuthGuard>
                   }
                 />

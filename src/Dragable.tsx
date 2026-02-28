@@ -40,7 +40,7 @@ if (!id) return;
  async function fetch(id:string) {
   let data= await fetchProjectById(id)
 
-
+  console.log(data,"is teh data is recived ")
 
 let mobref=JSON.parse(data.mobref)
  let lapref= JSON.parse(data.lapref)
@@ -52,8 +52,8 @@ console.log("lapref:", lapref)
 
 console.log("mobileOldMap:", mobileoldmap)
 
-console.log("historyMap:", historymap)
-historytmapref.current=new Map(histrorymap)
+console.log(" is hoistory map:", historymap)
+historytmapref.current=new Map()
 mobMapRef.current=new Map(mobref)
 lapMapRef.current=new Map(lapref)
 mobileoldmapstoreing.current=new Map(mobileoldmap)
@@ -85,7 +85,8 @@ let pathname=location.pathname
 let id=pathname.replace("/project/","")
 console.log(id,"id the id")
 updatemapsave(id,mobMapRef.current,lapMapRef.current,historytmapref.current,mobileoldmapstoreing.current)
-
+currenthistoryref.current=0
+recentscountref.current=0
     
  }
 },[])
@@ -108,10 +109,13 @@ let historymap=historytmapref.current
 
 useEffect(() => {
 
+
+
+  console.log(mobMapRef.current,"is current mobikl,",lapMapRef,"is currentyyy lapref",lapref)
   console.log("changed currenthistorref:",currenthistoryref.current)
   let oldmovbva=  Array.from(oldmobmap)
-let mobmapva= Array.from(mapref)
-let lapva=  Array.from(lapref)
+let mobmapva= Array.from(mobMapRef.current)
+let lapva=  Array.from(lapMapRef.current)
   
   let historyobj={
     mapref:mobmapva,
@@ -120,9 +124,11 @@ let lapva=  Array.from(lapref)
   }
 
   let stringhistroyobj=JSON.stringify(historyobj)
-// console.log(historyobj,"is obj",currenthistory,"is hisnum")
-historymap.set(currenthistory,stringhistroyobj)
+console.log(historyobj,"is obj",currenthistory,"is hisnum",stringhistroyobj)
+historytmapref.current.set(currenthistory,stringhistroyobj)
 
+
+console.log(historymap,"is  thebhistroy map",historytmapref.current)
 
 
 
@@ -170,6 +176,7 @@ let timeout;
 
 useEffect(() => {
 
+  
  let parsedhsitoryu= JSON.parse(  historymap.get(recentscountref.current))
 
 
@@ -273,6 +280,7 @@ forceRender(prev=>prev+1)
 
 
 let handlerecent=function (target:string) {
+
 console.log("called recen fffft")
 setrecentbuttonhold(true)
 timeout=setTimeout(() => {
@@ -280,12 +288,16 @@ timeout=setTimeout(() => {
 }, 700);
 
 if (target=="+") {
-  if (historymap.get(recentscountref.current+1)) {
+  console.log(historytmapref.current,"is the histry mapref")
+  console.log("called the plus",recentscountref.current+1,historytmapref.current.get(recentscountref.current+1))
+  if (historytmapref.current.get(recentscountref.current+1)) {
  recentscountref.current++
   
 }
 }else{
-  if (historymap.get(recentscountref.current-1)) {
+  console.log("called the  minuse",recentscountref.current-1,historytmapref.current.get(recentscountref.current-1))
+  console.log()
+  if (historytmapref.current.get(recentscountref.current-1)) {
 
  recentscountref.current--
   

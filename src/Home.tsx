@@ -18,6 +18,7 @@ import { NavContext, type Contextapptype } from "./App"
 import { insertDataSupabasefromnmap } from "./lib/Supabaseopertions"
 import { useQuery } from "@tanstack/react-query"
 import { supabase } from "./lib/supabase"
+import Loader from "./Loader"
 
 function Dashboard() {
  const [isPending, startTransition] = useTransition();
@@ -105,6 +106,9 @@ startTransition(async () => {
 
   }
 
+
+
+
   return (
     <div className="min-h-screen bg-background">
 
@@ -144,10 +148,11 @@ startTransition(async () => {
           Projects
         </h2>
 
-        <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-6">
+     {  !isLoading ?
+      <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-6">
 
           {/* Existing Projects */}
-          {projects.map((project, index) => (
+          {  projects.map((project, index) => (
             <Card 
               key={index}
               className="rounded-2xl hover:shadow-lg group transition relative cursor-pointer"
@@ -228,7 +233,7 @@ historytmapref.current=new Map()
             </DialogContent>
           </Dialog>
 
-        </div>
+        </div>:<Loader/>}
       </div>
     </div>
   )

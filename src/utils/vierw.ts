@@ -155,6 +155,7 @@ export  async function createhtml(
   lapmap: Map<string, any>
 ) {
 
+  
   console.log(mobilemap,"is mob lap:",lapmap)
   const mobileData = JSON.stringify(Array.from(mobilemap.entries()));
   const lapData = JSON.stringify(Array.from(lapmap.entries()));
@@ -225,7 +226,8 @@ export  async function createhtml(
           if(prop === "left"){
           console.log((window.innerWidth/100)*parseInt(config[prop]),"issss",config[prop])
 
-        el.style[prop]=    (window.innerWidth/100)*parseInt(config[prop])+"px";
+        // el.style[prop]=    (window.innerWidth/100)*parseInt(config[prop])+"px";
+        el.style[prop]= parseInt(config[prop])+"vw"
        continue;
           }
             el.style[prop] = config[prop];
@@ -258,6 +260,7 @@ export  async function createhtml(
 console.log(html,"is html")
    await navigator.clipboard.writeText(html);
   return html;
+
 }
 export function createViewDesignHtml(
   mobilemap: Map<string, any>,
@@ -319,10 +322,11 @@ export function createViewDesignHtml(
           el.src = config[prop];
           continue;
         }
-
+ 
         if (prop in el.style) {
           el.style[prop] = config[prop];
         }
+          
       }
 
       app.appendChild(el);

@@ -21,6 +21,7 @@ export type systemdetatype=typeof systemdetails
    
 
     
+
     systemdetails["cpuufree"] =  getfree();
 
   let systemspeci= staticdata()

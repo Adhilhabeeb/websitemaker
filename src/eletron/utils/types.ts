@@ -7,14 +7,20 @@ import  type { systemdetatype } from "../poll.js";
 export type subscribestatics = (staic: systemdetatype) => void;
 export type staticdatafunreturen = { ram: number; cpu: string; os: string };
 export type ostype = typeof process.platform;
-
+ export type sendingmenu="cpu"|"ram"
+type passdta={
+  callbackj:(data:sendingmenu)=>void ;
+  data:any;
+}
 export type polltye = {
   subscribestatics: (callback: subscribestatics) => void;
   getstaticdata: () => Promise<staticdatafunreturen>;
-  sendsystemmodel: () => Promise<ostype>;
+  sendsystemmodel: () => Promise<sendingmenu>;
+  sendmenuselected:({callbackj,data}:passdta) => void;
+
 };
 export type functionnames = keyof polltye;
-export type renderrpassnames = "statsdata";
+export type renderrpassnames = "statsdata" | "menuselected";
 
 export function sendhandlefunction<objreturn>(
   name: functionnames,

@@ -16,7 +16,16 @@ let functionpass = {
         return () => electron_1.default.ipcRenderer.off("statsdata", fun);
     },
     getstaticdata: () => ipcrendererinvoke("getstaticdata"),
-    sendsystemmodel: () => ipcrendererinvoke("sendsystemmodel")
+    sendsystemmodel: () => ipcrendererinvoke("sendsystemmodel"),
+    sendmenuselected: ({ callbackj, data: datas }) => {
+        console.log("datarecived from frontend ", datas);
+        let funct = (e, data) => {
+            console.log("called data", data, "and fromfromend", datas);
+            callbackj(data);
+        };
+        electron_1.default.ipcRenderer.on("menuselected", funct); //. send realtie. data to r
+        return () => electron_1.default.ipcRenderer.off("menuselected", funct);
+    }
 };
 electron_1.default.contextBridge.exposeInMainWorld("adhil", functionpass);
 function ipcrendererinvoke(params) {

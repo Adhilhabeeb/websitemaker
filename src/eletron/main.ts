@@ -1,16 +1,19 @@
-import { app, BrowserWindow, desktopCapturer, ipcMain, IpcMainEvent, session, shell, systemPreferences, WebFrameMain } from "electron";
+import { app, BrowserWindow, desktopCapturer, ipcMain, IpcMainEvent, session, shell, systemPreferences, WebFrameMain ,Tray,Menu} from "electron";
 import path from "path";
 import { Checkdev } from "./checkdev.js";
 import { poll } from "./poll.js";
 import { getassets, getpathresolver } from "./pathresolver.js";
-import { ostype, sendhandlefunction, staticdatafunreturen, validateurl } from "./utils/types.js";
-
+import { ostype, sendhandlefunction, sendingmenu, staticdatafunreturen, validateurl } from "./utils/types.js";
+import { createapplicationmenu } from "./templetemenu.js";
+let tray = null
 app.on("ready", async () => {
     let mainwidth = new BrowserWindow({
         webPreferences: {
             preload: getpathresolver()
         }
     });
+    const isMac = process.platform === 'darwin'
+
 session.defaultSession.setDisplayMediaRequestHandler((request, callback) => {
     desktopCapturer.getSources({ types: ['screen'] }).then((sources) => {
       // Grant access to the first screen found.
@@ -71,14 +74,73 @@ const checkCameraPermission = async () => {
     })
 
 
-    sendhandlefunction<ostype>("sendsystemmodel", () => {
-        return process.platform
-
-    })
+  
 console.log(getassets(),"is asets")
 
+  tray = new Tray(path.join(getassets(),"icon.png"))
+  console.log(path.join(getassets(),"react.svg"),"is asets path")
+const contextMenu = Menu.buildFromTemplate([
+    { label: 'Item1', type: 'normal' },
+     {
+      label: 'Open App',
+      click: () => {
+       mainwidth.show()
+       mainwidth.focus()
+      }
+    },
+   
+     { role: 'quit',click:()=>{
 
+       mainwidth.hide()
+      if (app.dock) {
+           app.dock.hide()
+      }
+     } }
+  ])
 
+   mainwidth.webContents.on('context-menu', (_event, params) => {
+    const menu = Menu.buildFromTemplate([
+      { label: 'Reload', role: 'reload' },
+      { label: 'Copy', role: 'copy' },
+      { label: 'Paste', role: 'paste' },
+      { type: 'separator' },
+      { label: 'Inspect', role: 'toggleDevTools' }
+    ])
+
+    console.log(params,"is patamsmsmsmms")
+    menu.popup({ window: mainwidth })
+  })
+Menu.setApplicationMenu(createapplicationmenu(mainwidth))
+  tray.setToolTip('This is  a awebsite maker application ny adhil habeeb .')
+ mainwidth.on("close",(e)=>{
+e.preventDefault()
+ mainwidth.hide()
+      if (app.dock) {
+           app.dock.hide()
+      }
+ })
+  app.on("before-quit",(e)=>{
+e.preventDefault()
+ mainwidth.hide()
+      if (app.dock) {
+           app.dock.hide()
+      }
+ })
+  tray.on("click",(e)=>{
+    if (mainwidth.isVisible()) {
+      mainwidth.hide();
+      
+
+      if (app.dock) {
+           app.dock.hide()
+      }
+    } else {
+      mainwidth.show();
+      // Optional: Bring the window to the front
+      mainwidth.focus(); 
+    }
+  })
+  tray.setContextMenu(contextMenu)
     if (Checkdev()) {
         // if itis production mode we need t. show   hotreloads. when we are updating
 

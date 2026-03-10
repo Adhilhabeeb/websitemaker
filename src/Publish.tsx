@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { createhtml } from "./utils/vierw";
 import Editor from "@monaco-editor/react";
-
+import axios from "axios"
 function Publish({ mobref, lapref }: any) {
   const [html, setHtml] = useState("");
   const [deploying, setDeploying] = useState(false);
@@ -15,25 +15,22 @@ function Publish({ mobref, lapref }: any) {
     generate();
   }, []);
 
-  async function deploy() {
-    setDeploying(true);
-    try {
-      const res = await fetch("http://localhost:3000/publish", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ html }),
-      });
+async function deploy() {
+  try {
+    const response = await axios.post("http://localhost:3000/publish", {
+      html: html
+    }, {
+      headers: {
+        "Content-Type": "application/json"
+      }
+    });
 
-      const data = await res.json();
-      setUrl(data.url);
-    } catch (err) {
-      console.error("Deployment failed:", err);
-      alert("Deployment failed! Check console for details.");
-    } finally {
-      setDeploying(false);
-    }
+    console.log(response.data, "is response");
+    setUrl(response.data.url); // set the deployed URL
+  } catch (error: any) {
+    console.error("Deployment failed:", error.response?.data || error.message);
   }
-
+}
   return (
     <div className="flex flex-col h-screen bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-white">
       {/* Header */}

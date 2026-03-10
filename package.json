@@ -5,7 +5,7 @@
   "type": "module",
   "main": "./disteletron/main.js",
   "scripts": {
-     "devbackend": "nodemon backend/index.js",
+    "devbackend": "nodemon backend/index.js",
     "startbackend": "node backend/index.js",
     "dev": "npm-run-all --parallel devr deve",
     "devr": "vite",
@@ -25,6 +25,7 @@
     "@tailwindcss/postcss": "^4.1.18",
     "@tailwindcss/vite": "^4.1.18",
     "@tanstack/react-query": "^5.90.21",
+    "axios": "^1.13.6",
     "chart.js": "^4.5.1",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",

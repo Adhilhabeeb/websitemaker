@@ -7,7 +7,7 @@ import  type { systemdetatype } from "../poll.js";
 export type subscribestatics = (staic: systemdetatype) => void;
 export type staticdatafunreturen = { ram: number; cpu: string; os: string };
 export type ostype = typeof process.platform;
- export type sendingmenu="cpu"|"ram"
+ export type sendingmenu="cpu"|"ram"|"Account Options"
 type passdta={
   callbackj:(data:sendingmenu)=>void ;
   data:any;

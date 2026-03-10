@@ -261,7 +261,7 @@ export  async function createhtml(
 </body>
 </html>`;
 console.log(html,"is html")
-   await navigator.clipboard.writeText(html);
+  //  await navigator.clipboard.writeText(html);
   return html;
 
 }

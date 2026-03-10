@@ -29,5 +29,5 @@
     "noUncheckedSideEffectImports": true
   },
   "exclude": ["src/eletron"],
-  "include": ["src", "utils", "disteletron/utils"]
+  "include": ["src", "utils", "disteletron/utils", "src/utils/publishhtml.ts"]
 }

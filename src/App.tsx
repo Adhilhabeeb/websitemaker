@@ -31,6 +31,7 @@ import Clerkprovider from "./Clerkprovider";
 
 import Dashboard from "./Home";
 import Designviewer from "./Designviewer";
+import Publish from "./Publish";
 
 declare global {
   interface Window {
@@ -269,6 +270,16 @@ handleclick()
                     <AuthGuard>
                    
                        <Designviewer mobref={mobMapRef}  lapref={lapMapRef}/>
+                    
+                    </AuthGuard>
+                  }
+                />
+                   <Route
+                  path="/Publish"
+                  element={
+                    <AuthGuard>
+                   
+                       <Publish mobref={mobMapRef}  lapref={lapMapRef}/>
                     
                     </AuthGuard>
                   }

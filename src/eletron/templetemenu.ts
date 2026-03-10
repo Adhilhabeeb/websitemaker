@@ -14,8 +14,24 @@ function createapplicationmenu(mainwidth: Electron.BrowserWindow) {
 
     })
 
+function createsubmenu(e:sendingmenu):any[] {
 
-let send: sendingmenu[] = ["ram", "cpu"];
+  if (e=="Account Options") {
+    return[  {
+          label: "logout ",
+          
+          click: () => {
+            mainwidth.webContents.send("logout-user");
+          },
+        },]
+  }
+
+
+
+  return[]
+  
+}
+let send: sendingmenu[] = ["ram", "cpu","Account Options"];
 let ma: Electron.MenuItemConstructorOptions[] = send.map(
   (e) => {
     return {
@@ -28,11 +44,12 @@ let ma: Electron.MenuItemConstructorOptions[] = send.map(
 
 
       },
+      submenu:createsubmenu(e)
     };
   }
 ) 
 
-  console.log(ma, "iss mmama");
+
   const template: Electron.MenuItem | Electron.MenuItemConstructorOptions[] = [
 ...ma,
     {

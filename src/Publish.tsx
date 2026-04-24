@@ -8,27 +8,42 @@ function Publish({ mobref, lapref }: any) {
   const [deploying, setDeploying] = useState(false);
   const [url, setUrl] = useState("");
   const [status, setStatus] = useState<"idle" | "success" | "error">("idle");
+  const [errorMsg, setErrorMsg] = useState("");
+  const [projectName, setProjectName] = useState("");
 
+  /* ---------- GENERATE HTML ---------- */
   useEffect(() => {
     async function generate() {
-      const result = await createhtml(mobref.current, lapref.current);
-      setHtml(result);
+      try {
+        const result = await createhtml(mobref.current, lapref.current);
+        setHtml(result);
+      } catch (err) {
+        console.error("HTML generation failed:", err);
+      }
     }
     generate();
-  }, []);
+  }, [mobref, lapref]);
 
+  /* ---------- DEPLOY ---------- */
   async function deploy() {
+    if (!html) return;
+
     setDeploying(true);
     setStatus("idle");
+    setErrorMsg("");
 
     try {
       const response = await axios.post("http://localhost:3000/publish", {
         html,
+        nameofproject: projectName,
       });
+
       setUrl(response.data.url);
       setStatus("success");
-    } catch (error) {
+    } catch (error: any) {
+      console.error(error);
       setStatus("error");
+      setErrorMsg(error?.response?.data || "Deployment failed");
     } finally {
       setDeploying(false);
     }
@@ -38,34 +53,22 @@ function Publish({ mobref, lapref }: any) {
     <div className="flex flex-col h-screen bg-gradient-to-br 
     from-gray-50 via-white to-gray-100
     dark:from-[#0a0a0a] dark:via-[#111] dark:to-black
-    text-gray-900 dark:text-white transition-all duration-300">
+    text-gray-900 dark:text-white">
 
       {/* HEADER */}
-      <header className="sticky top-0 z-50 w-full border-b
-        bg-gradient-to-r from-white/80 to-white/60
-        dark:from-black/70 dark:to-black/50
-        backdrop-blur-xl shadow-sm px-6 py-4 flex justify-between items-center">
-
+      <header className="sticky top-0 z-50 border-b px-6 py-4 flex justify-between items-center
+      bg-white/70 dark:bg-black/60 backdrop-blur-xl">
         <div>
-          <h1 className="text-xl font-semibold tracking-tight">
-            SiteCraft 🚀
-          </h1>
-          <p className="text-xs text-gray-500 dark:text-gray-400">
-            Publish your site instantly
-          </p>
+          <h1 className="text-xl font-semibold">SiteCraft 🚀</h1>
+          <p className="text-xs text-gray-500">Publish instantly</p>
         </div>
-
-     
       </header>
 
       {/* MAIN */}
       <main className="flex-1 grid grid-cols-2 gap-4 p-4">
 
         {/* EDITOR */}
-        <div className="rounded-xl overflow-hidden border
-        bg-white/60 dark:bg-white/5
-        backdrop-blur-xl border-gray-200 dark:border-white/10 shadow-md">
-
+        <div className="rounded-xl overflow-hidden border shadow-md">
           <Editor
             height="100%"
             defaultLanguage="html"
@@ -81,58 +84,63 @@ function Publish({ mobref, lapref }: any) {
         </div>
 
         {/* PREVIEW */}
-        <div className="rounded-xl overflow-hidden border
-        bg-white/60 dark:bg-white/5
-        backdrop-blur-xl border-gray-200 dark:border-white/10 shadow-md">
-
+        <div className="rounded-xl overflow-hidden border shadow-md">
           <iframe
             srcDoc={html}
-            className="w-full h-full bg-white dark:bg-black"
+            className="w-full h-full bg-white"
           />
         </div>
       </main>
 
       {/* FOOTER */}
       <footer className="border-t px-6 py-4 flex justify-between items-center
-      bg-gradient-to-r from-white/80 to-white/60
-      dark:from-black/70 dark:to-black/50
-      backdrop-blur-xl">
+      bg-white/70 dark:bg-black/60 backdrop-blur-xl">
 
-        {/* STATUS */}
-        <div className="text-sm">
+        {/* LEFT: INPUT + STATUS */}
+        <div className="flex flex-col gap-2 text-sm">
+
+          <input
+            type="text"
+            placeholder="Project name"
+            value={projectName}
+            onChange={(e) => setProjectName(e.target.value)}
+            className="px-3 py-1 rounded-md border text-black"
+          />
+
           {deploying && <span className="text-blue-500">Deploying...</span>}
           {status === "success" && (
             <span className="text-green-500">✅ Success</span>
           )}
           {status === "error" && (
-            <span className="text-red-500">❌ Failed</span>
+            <span className="text-red-500">❌ {errorMsg}</span>
           )}
         </div>
 
-        {/* BUTTON */}
-        <button
-          onClick={deploy}
-          disabled={deploying}
-          className="px-5 py-2 rounded-lg font-medium transition-all
-          bg-blue-600 hover:bg-blue-700
-          text-white shadow-md hover:shadow-lg
-          disabled:opacity-50 disabled:cursor-not-allowed"
-        >
-            
-          {deploying ? "Deploying..." :url?
-          
-        (
-          <a
-            href={url}
-            target="_blank"
-            className="text-amber-50 hover:underline text-sm"
-          >
-            Open Site →
-          </a>
-        ):"deploy"
-        
-        }
-        </button>
+        {/* RIGHT: BUTTON / LINK */}
+        <div>
+          {!url ? (
+            <button
+              onClick={deploy}
+              disabled={deploying}
+              className="px-5 py-2 rounded-lg font-medium
+              bg-blue-600 hover:bg-blue-700 text-white
+              disabled:opacity-50"
+            >
+              {deploying ? "Deploying..." : "Deploy"}
+            </button>
+          ) : (
+            <a
+              href={url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-5 py-2 rounded-lg font-medium
+              bg-green-600 hover:bg-green-700 text-white inline-block"
+            >
+              Open Site →
+            </a>
+          )}
+        </div>
+
       </footer>
     </div>
   );

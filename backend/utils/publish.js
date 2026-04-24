@@ -4,11 +4,11 @@ import { exec } from "child_process";
 import { randomUUID } from "crypto";
 import dotenv from "dotenv";
 dotenv.config()
-export async function publishToVercel(html) {
+export async function publishToVercel(html,nameofproject) {
   return new Promise((resolve, reject) => {
 
     const projectId = randomUUID();
-    const dir = path.join(process.cwd(), "deployments", projectId);
+    const dir = path.join(process.cwd(), "deployments", nameofproject.length>2?nameofproject:projectId);
 
     fs.mkdirSync(dir, { recursive: true });
 
@@ -27,7 +27,7 @@ console.log(process.env.VERCEL_TOKEN,"is envvverceltken"
 
         // Vercel CLI prints the deployed URL
         const urlMatch = stdout.match(/https:\/\/[^\s]+/);
-
+console.log(urlMatch,"ois   s urlll")
         if (urlMatch) {
           resolve(urlMatch[0]);
         } else {

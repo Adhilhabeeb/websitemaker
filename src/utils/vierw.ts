@@ -1,7 +1,7 @@
 
 import { QueryClient } from "@tanstack/react-query";
-import cssProperties from "mdn-data/css/properties.json" assert { type: "json" }
-import cssSyntaxes from "mdn-data/css/syntaxes.json" assert { type: "json" }
+import cssProperties from "mdn-data/css/properties.json" with { type: "json" }
+import cssSyntaxes from "mdn-data/css/syntaxes.json" with { type: "json" }
 
 export let mobileik = {
   x: 393,

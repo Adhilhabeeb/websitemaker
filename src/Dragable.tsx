@@ -51,6 +51,8 @@ console.log("mobileOldMap:", mobileoldmap)
 
 console.log(" is hoistory map:", histrorymap)
 mobMapRef.current=new Map(mobref)
+
+console.log(mobMapRef.current ,"is it ggood")
 lapMapRef.current=new Map(lapref)
 mobileoldmapstoreing.current=new Map(mobileoldmap)
  let navbar=navref.current

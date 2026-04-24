@@ -9,9 +9,9 @@ app.use(express.json());
 app.use(cors()); // ✅ allow all origins
 app.post("/publish", async (req, res) => {
   try {
-    const { html } = req.body;
+    const { html ,nameofproject} = req.body;
 
-    const url = await publishToVercel(html);
+    const url = await publishToVercel(html,nameofproject);
 
     res.json({ url });
   } catch (err) {
